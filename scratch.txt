@@ -1,0 +1,32 @@
+Telegram Bot für Graylog Installation
+======================================
+
+Der Benutzer hat eine Frage zu einem oder mehreren Servern, welche per Graylog überwacht werden. Beispielsweise
+"Ich benötige Informationen zu Systemen vom Typ [Webserver] im Zeitraum [24 Stunden] bezüglich [Fehlern]?"
+
+Der Benutzer sendet eine Sprachnachricht an einen Telegram-Bot. Die Sprachnachricht enthält die  Schlüsselwörter "Typ",
+"Zeitraum" und "bezüglich".
+
+Der Bot wandelt die Sprachnachricht mit der IBM Cloud (https://cloud.ibm.com/catalog/services/speech-to-text) in Text um
+
+Der Bot erkennt die Schlüsselwörter in dem Text und ordnet die Nachricht einer vordefinierten Abfrage zu. Die Abfrage
+kann mit einer Anfrage an die Graylog RESTful API beantwortet werden.
+
+Die Antwort wird mittels Textbausteinen formuliert und per Text-To-Speech in Sprache umgewandelt. Der Benutzer erhält
+eine Audionachricht mit der Antwort.
+
+Typenspezifische Informationen:
+ - Webserver
+   + Besucher: Wie viele Anfragen wurden mit Status-Code 200 beantwortet?
+   + Fehler: Wie viele Anfragen wurden mit Status-Code 500 beantwortet?
+   + Erreichbarkeit: Wie viele Anfragen wurden mit Status-Code 400 beantwortet?
+ - Mailserver
+   + Empfangene Mails: Wie viele Nachrichten wurden empfangen?
+   + Blockierte Mails: Wie viele Nachrichten wurden abgewiesen?
+ - Firewall:
+   + Blockierte Pakete: Wie viele Pakete wurden abgewiesen?
+   + Top-Port: Für welchen Port wurden die meisten Pakete abgewiesen?
+
+Die Zuordnung der Systeme ist dynamisch. In Graylog werden beispielsweise die HTTP-Statuscodes von Webservern aus
+eingehenden Nachrichten automatisch mittels regulären Ausdrücken exportiert. So werden bei einer Suche zu Fehlern bei
+Webservern automatisch alle vorhandenen Nachrichten mit einem Wert für den HTTP-Statuscode berücksichtigt.
