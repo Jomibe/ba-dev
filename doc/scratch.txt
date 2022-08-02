@@ -30,3 +30,19 @@ Typenspezifische Informationen:
 Die Zuordnung der Systeme ist dynamisch. In Graylog werden beispielsweise die HTTP-Statuscodes von Webservern aus
 eingehenden Nachrichten automatisch mittels regulären Ausdrücken exportiert. So werden bei einer Suche zu Fehlern bei
 Webservern automatisch alle vorhandenen Nachrichten mit einem Wert für den HTTP-Statuscode berücksichtigt.
+
+Informationen von Graylog können beispielsweise so empfangen werden:
+http://10.10.12.1:9000/api/views/search/messages
+{
+"streams": [
+"000000000000000000000001"
+],
+"timerange": [
+"absolute",
+{
+"from": "2022-07-01T00:00:00.000Z",
+"to": "2022-07-01T15:00:00.000Z"
+}
+],
+"query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }
+}
