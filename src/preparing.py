@@ -17,3 +17,4 @@ from debugging import INFO, WARN, ERR, SUCC
 def prepare():
     console("Starte Vorbereitungen...", mode=INFO)
     console("Vorbereitungen erfolgreich abgeschlossen", mode=SUCC)
+    return 0
