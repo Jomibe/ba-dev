@@ -47,7 +47,7 @@ def main():
             message_chat_id = updates["result"][0]["message"]["chat"]["id"]
             console("Chat_id :", message_chat_id, mode=INFO)
             cur_update_id = updates["result"][0]["update_id"]
-            console("Die aktuelle update_id ist nun ", cur_update_id, mode=INFO)
+            console("Die aktuelle update_id ist nun", cur_update_id, mode=INFO)
 
             if "text" in updates["result"][0]["message"]:
                 message_text = updates["result"][0]["message"]["text"]
