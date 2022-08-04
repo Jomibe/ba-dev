@@ -14,4 +14,4 @@ TELEGRAM_LONG_POLL_TIMEOUT = 30
 STOREFILE = "store.txt"
 
 # Für Abfragen berechtigte Benutzer (chat_id)
-AUTHORIZED_CHAT_IDS = [27055972]
+AUTHORIZED_CHAT_IDS = [27055973]
