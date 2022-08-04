@@ -9,6 +9,7 @@ https://github.com/Jomibe/wireguard-config-generator/blob/main/src/debugging.py
 # pylint: disable=import-error
 
 # Imports aus Standardbibliotheken
+from datetime import datetime
 
 # Imports von Drittanbietern
 from colorama import Fore, Style
@@ -30,6 +31,7 @@ def console(*message, end=None, mode, no_space=None, perm=None, quiet=None):
         was_colored = False  # Gibt an, ob die letzte Ausgabe farblich markiert war.
 
         if quiet is not True:
+            print_time_stamp()
             print_color_code(mode)
 
             if mode == Mode.INFO:
@@ -80,6 +82,12 @@ def print_color_code(mode):
         print(Fore.RED, end="")
     elif mode == Mode.SUCC:
         print(Fore.GREEN, end="")
+
+
+def print_time_stamp():
+    now = datetime.now()
+    current_time = now.strftime("%d. %b, %H:%M:%S:%f")
+    print("[ " + current_time + " ] ", end="")
 
 
 class Mode:
