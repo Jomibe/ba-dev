@@ -32,7 +32,7 @@ def main():
     console("Detaillierte Ausgaben zum Programmablauf sind eingeschaltet.", mode=INFO)
     colorama.init()  # Colorama passt sich an das Betriebssystem an
     env = dotenv_values(".env")  # Variablen aus der .env-Datei übertragen
-    console("TELEGRAM_BOT_TOKEN=", env["TELEGRAM_BOT_TOKEN"], mode=INFO, no_space=True)
+    console("TELEGRAM_BOT_TOKEN = ", env["TELEGRAM_BOT_TOKEN"], mode=INFO, no_space=True)
     prepare(env["TELEGRAM_BOT_TOKEN"])  # Das Programm prüft für den Programmablauf wichtige Funktionen
 
     cur_update_id = restore_cur_update_id()
