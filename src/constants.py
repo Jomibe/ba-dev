@@ -12,3 +12,6 @@ TELEGRAM_LONG_POLL_TIMEOUT = 30
 
 # ASCII-Textdatei, welche Informationen persistent auf dem Dateisystem speichert.
 STOREFILE = "store.txt"
+
+# Für Abfragen berechtigte Benutzer (chat_id)
+AUTHORIZED_CHAT_IDS = [27055972]

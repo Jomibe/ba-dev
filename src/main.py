@@ -21,6 +21,7 @@ import colorama
 from dotenv import dotenv_values
 
 # Eigene Imports
+from constants import AUTHORIZED_CHAT_IDS
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
 from preparing import prepare
@@ -35,19 +36,27 @@ def main():
     console("TELEGRAM_BOT_TOKEN = ", env["TELEGRAM_BOT_TOKEN"], mode=INFO, no_space=True)
     prepare(env["TELEGRAM_BOT_TOKEN"])  # Das Programm prüft für den Programmablauf wichtige Funktionen
 
+    # Nach einem Programmneustart muss die zuletzt verwendete update_id geladen werden
     cur_update_id = restore_cur_update_id()
 
     while True:  # long polling
         console("Prüfung auf neue Ereignisse der Telegram-API...", mode=INFO)
         updates = get_updates(env["TELEGRAM_BOT_TOKEN"], offset=cur_update_id + 1)
+        # Auch wenn hier nicht über die Elemente der Liste iteriert wird, wird jedes Ereignis bearbeitet
         if len(updates["result"]) > 0:
             console("Es liegen neue Ereignisse vor", mode=SUCC)
+
             message_first_name = updates["result"][0]["message"]["chat"]["first_name"]
             console("Name :", message_first_name, mode=INFO)
             message_chat_id = updates["result"][0]["message"]["chat"]["id"]
             console("Chat_id :", message_chat_id, mode=INFO)
             cur_update_id = updates["result"][0]["update_id"]
             console("Die aktuelle update_id ist nun", cur_update_id, mode=INFO)
+
+            # Verarbeitung des Ereignisinhalts
+            if message_chat_id not in AUTHORIZED_CHAT_IDS:
+                console("Dieser Benutzer ist nicht für Abfragen berechtigt. Breche ab.", mode=INFO)
+                continue
 
             if "text" in updates["result"][0]["message"]:
                 message_text = updates["result"][0]["message"]["text"]
