@@ -17,7 +17,7 @@ from debugging import INFO, WARN, ERR, SUCC
 
 
 def api_reachable(bot_token):
-    console("Checking API access...", mode=INFO)
+    console("Prüfung der Verbindung zur Telegram API...", mode=INFO)
     r = requests.get(f'https://api.telegram.org/bot{bot_token}/getMe')
     if r.status_code == 200:
         console("API ist erreichbar", mode=SUCC)

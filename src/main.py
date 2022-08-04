@@ -41,17 +41,17 @@ def main():
         console("Prüfung auf neue Ereignisse der Telegram-API...", mode=INFO)
         updates = get_updates(env["TELEGRAM_BOT_TOKEN"], offset=cur_update_id + 1)
         if len(updates["result"]) > 0:
-            console("Received updates!", mode=SUCC)
+            console("Es liegen neue Ereignisse vor", mode=SUCC)
             message_first_name = updates["result"][0]["message"]["chat"]["first_name"]
             console("Name :", message_first_name, mode=INFO)
             message_chat_id = updates["result"][0]["message"]["chat"]["id"]
             console("Chat_id :", message_chat_id, mode=INFO)
             cur_update_id = updates["result"][0]["update_id"]
-            console("Update_id is now", cur_update_id, mode=INFO)
+            console("Die aktuelle update_id ist nun ", cur_update_id, mode=INFO)
 
             if "text" in updates["result"][0]["message"]:
                 message_text = updates["result"][0]["message"]["text"]
-                console("Message :", message_text, mode=INFO)
+                console("Textnachricht :", message_text, mode=INFO)
                 if message_text == "/start":
                     send_hello(env["TELEGRAM_BOT_TOKEN"], message_chat_id, message_first_name)
 
