@@ -40,3 +40,10 @@ def send_hello(bot_token, message_chat_id, message_first_name):
                      params={"chat_id": f"{message_chat_id}",
                              "text": f"Hey there {message_first_name}!",
                              })
+
+
+def send_telegram_message(bot_token, message_chat_id, message_text):
+    r = requests.get(url=f'https://api.telegram.org/bot{bot_token}/sendMessage',
+                     params={"chat_id": f"{message_chat_id}",
+                             "text": message_text,
+                             })

@@ -25,7 +25,7 @@ from constants import AUTHORIZED_CHAT_IDS
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
 from preparing import prepare
-from telegram import get_updates, send_hello
+from telegram import get_updates, send_hello, send_telegram_message
 from store import store_cur_update_id, restore_cur_update_id
 
 
@@ -56,6 +56,8 @@ def main():
             # Verarbeitung des Ereignisinhalts
             if message_chat_id not in AUTHORIZED_CHAT_IDS:
                 console("Dieser Benutzer ist nicht für Abfragen berechtigt. Breche ab.", mode=INFO)
+                send_telegram_message(env["TELEGRAM_BOT_TOKEN"], message_chat_id, "Fehler: Dieser Account wurde noch "
+                                                                                  "nicht autorisiert.")
                 continue
 
             if "text" in updates["result"][0]["message"]:
