@@ -14,11 +14,20 @@ Diese Datei enthält Funktionen, welche für den ordnungsgemäßen Programmstart
 # Eigene Imports
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
-from telegram import api_reachable
+from telegram import telegram_reachable
+from graylog import graylog_reachable
+from store import restore_cur_update_id
 
 
-def prepare(telegram_bot_token):
+def prepare():
     console("Starte Vorbereitungen...", mode=INFO)
-    api_reachable(telegram_bot_token)
+    if not telegram_reachable():
+        return False
+    if not graylog_reachable():
+        return False
+    # Nach einem Programmneustart muss die zuletzt verwendete update_id geladen werden
+    if not restore_cur_update_id():
+        return False
+
     console("Vorbereitungen erfolgreich abgeschlossen", mode=SUCC)
-    return 0
+    return True

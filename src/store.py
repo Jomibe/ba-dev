@@ -9,6 +9,7 @@ Diese Datei enthält Funktionen, welche für das Persistieren von Daten auf dem 
 # Imports von Drittanbietern
 
 # Eigene Imports
+import constants
 from constants import STOREFILE
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
@@ -22,7 +23,7 @@ def store_cur_update_id(cur_update_id):
 
     with open(STOREFILE, "w", encoding='utf-8') as f:
         f.write(str(cur_update_id))
-        console("Speichern der aktuellen update_id abgeschlossen.", cur_update_id, mode=SUCC)
+        console("Speichern der aktuellen update_id", cur_update_id, "abgeschlossen.", mode=SUCC)
 
 
 def restore_cur_update_id():
@@ -35,4 +36,6 @@ def restore_cur_update_id():
         cur_update_id = int(f.read())
         console("Wiederherstellung der aktuellen update_id", cur_update_id, "abgeschlossen.", mode=SUCC)
 
-    return cur_update_id
+    constants.telegram_update_id = cur_update_id
+
+    return True

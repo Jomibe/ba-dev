@@ -15,3 +15,13 @@ STOREFILE = "store.txt"
 
 # Für Abfragen berechtigte Benutzer (chat_id)
 AUTHORIZED_CHAT_IDS = [27055973]
+
+# URL der Graylog-API, mit / am Ende
+GRAYLOG_API_URL = "http://10.10.12.1:9000/api/"
+
+# Globale Variablen, werden zur Laufzeit überschrieben
+telegram_bot_token = None
+telegram_update_id = None
+graylog_username = None
+graylog_password = None
+graylog_session_token = None
