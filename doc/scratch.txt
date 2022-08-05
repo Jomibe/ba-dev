@@ -46,3 +46,17 @@ http://10.10.12.1:9000/api/views/search/messages
 ],
 "query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }
 }
+
+Alternativ mit relativer Zeitangabe:
+{
+"streams": [
+"000000000000000000000001"
+],
+"timerange": [
+"relative",
+{
+"range": "300"
+}
+],
+"query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }
+}
