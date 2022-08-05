@@ -19,6 +19,11 @@ AUTHORIZED_CHAT_IDS = [27055973]
 # URL der Graylog-API, mit / am Ende
 GRAYLOG_API_URL = "http://10.10.12.1:9000/api/"
 
+# Schlüsselwörter, auf welche die Worterkennung reagiert
+KEYWORDS_TYPE = ["Typ", "Kategorie"]
+KEYWORDS_PROPERTIES = ["bezüglich", "in Sachen"]
+KEYWORDS_TIME = ["Zeitraum", "seit"]
+
 # Globale Variablen, werden zur Laufzeit überschrieben
 telegram_bot_token = None
 telegram_update_id = None

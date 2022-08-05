@@ -22,11 +22,11 @@ from dotenv import dotenv_values
 
 # Eigene Imports
 import constants  # für Zugriff auf globale Variablen
-from constants import AUTHORIZED_CHAT_IDS
+from constants import AUTHORIZED_CHAT_IDS, KEYWORDS_TYPE, KEYWORDS_TIME, KEYWORDS_PROPERTIES
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
 from preparing import prepare
-from telegram import get_updates, send_hello, send_telegram_message
+from telegram import get_updates, send_hello, send_telegram_message, extract_information
 from store import store_cur_update_id
 
 
@@ -70,6 +70,25 @@ def main():
                 console("Textnachricht :", message_text, mode=INFO)
                 if message_text == "/start":
                     send_hello(message_chat_id, message_first_name)
+                else:
+                    result_type = extract_information(message_text, KEYWORDS_TYPE, 1)
+                    if result_type is None:
+                        send_telegram_message(message_chat_id, "Fehler: Keine valide Eingabe. Es werden Informationen "
+                                                               f"zu folgenden Schlüsselwörtern benötigt: {result_type}")
+
+                    result_properties = extract_information(message_text, KEYWORDS_PROPERTIES, 1)
+                    if result_properties is None:
+                        send_telegram_message(message_chat_id, "Fehler: Keine valide Eingabe. Es werden Informationen "
+                                                               "zu folgenden Schlüsselwörtern benötigt: "
+                                                               f"{result_properties}")
+
+                    result_time = extract_information(message_text, KEYWORDS_TIME, 2)
+                    if result_time is None:
+                        send_telegram_message(message_chat_id, "Fehler: Keine valide Eingabe. Es werden Informationen "
+                                                               f"zu folgenden Schlüsselwörtern benötigt: {result_time}")
+
+                    if result_type is None or result_properties is None or result_time is None:
+                        continue
 
             store_cur_update_id(constants.telegram_update_id)
 
