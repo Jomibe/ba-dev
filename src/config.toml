@@ -1,0 +1,15 @@
+# In diesem TOML-Dokument werden die verfügbaren Abfragen definiert und mit Suchbegriffen für die
+# Elasticsearch-Suchmaschine in Graylog verknüpft.
+
+[Webserver]
+"Besucher Zugriffe" = "http_response_code: 200"
+"Interne Fehler" = "http_response_code:[500 TO 599]"
+"Erreichbarkeit" = "http_response_code:[400 TO 499]"
+
+[Mailserver]
+"Empfangenene Mails" = "INBOX"
+"Blockierte Mails" = "\"NOQUEUE: reject\""
+
+[Firewall]
+"Blockierte Pakete" = "\"[UFW BLOCK]\""
+"Top Port" = ""
