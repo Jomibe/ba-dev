@@ -22,36 +22,9 @@ from dotenv import dotenv_values
 
 # Eigene Imports
 import constants  # für Zugriff auf globale Variablen
-from constants import AUTHORIZED_CHAT_IDS, KEYWORDS_TYPE, KEYWORDS_TIME, KEYWORDS_PROPERTIES
-from debugging import console
-from debugging import INFO, WARN, ERR, SUCC
+from debugging import console, INFO, WARN, ERR, SUCC
 from preparing import prepare
-from telegram import get_updates, send_hello, send_telegram_message, extract_information
-from store import store_cur_update_id
-
-
-def compare(actual, target, wordcount):
-    """
-    Diese Funktion prüft, ob zwei Texte miteinander übereinstimmen. Beide Parameter können aus mehreren Wörtern
-    bestehen, jedoch nicht mehr als in wordcount angegeben. Es wird auch geprüft, ob target ("soll") eine Untermenge von
-    actual ("ist") ist.
-    """
-
-    actual = actual.lower()
-    target = target.lower()
-
-    console("Vergleiche", actual, "und", target, "miteinander", mode=INFO)
-    if actual == target:
-        console("Direkte Übereinstimmung", mode=SUCC)
-        return True
-
-    for i in range(1, wordcount):
-        console("Vergleiche Untermenge", ' '.join(actual.strip().split()[0:i]), "mit", target, mode=INFO)
-        if ' '.join(actual.strip().split()[0:i]) == target:
-            console("Übereinstimmung gefunden", mode=SUCC)
-            return True
-
-    return False
+from telegram import check_updates
 
 
 def main():
@@ -69,80 +42,7 @@ def main():
         return 1
 
     while True:  # long polling
-        console("Prüfung auf neue Ereignisse der Telegram-API...", mode=INFO)
-        updates = get_updates()
-        # Auch wenn hier nicht über die Elemente der Liste iteriert wird, wird jedes Ereignis bearbeitet
-        if len(updates["result"]) > 0:
-            console("Es liegen neue Ereignisse vor", mode=SUCC)
-
-            message_first_name = updates["result"][0]["message"]["chat"]["first_name"]
-            console("Name :", message_first_name, mode=INFO)
-            message_chat_id = updates["result"][0]["message"]["chat"]["id"]
-            console("Chat_id :", message_chat_id, mode=INFO)
-            constants.telegram_update_id = updates["result"][0]["update_id"]
-            store_cur_update_id(constants.telegram_update_id)
-            console("Die aktuelle update_id ist nun", constants.telegram_update_id, mode=INFO)
-
-            # Verarbeitung des Ereignisinhalts
-            if message_chat_id not in AUTHORIZED_CHAT_IDS:
-                console("Dieser Benutzer ist nicht für Abfragen berechtigt. Breche ab.", mode=INFO)
-                send_telegram_message(env["TELEGRAM_BOT_TOKEN"], message_chat_id, "Fehler: Dieser Account wurde noch "
-                                                                                  "nicht autorisiert.")
-                continue
-
-            if "text" in updates["result"][0]["message"]:  # Handelt es sich um eine Textnachricht?
-                message_text = updates["result"][0]["message"]["text"]  # Text extrahieren
-                console("Textnachricht :", message_text, mode=INFO)
-                if message_text == "/start":
-                    send_hello(message_chat_id, message_first_name)
-                else:
-                    result_type = extract_information(message_text, KEYWORDS_TYPE, constants.max_len_type_names)
-                    if result_type is None:
-                        send_telegram_message(message_chat_id, "Fehler: Keine valide Eingabe. Es werden Informationen "
-                                                               "zu folgenden Schlüsselwörtern benötigt: "
-                                                               f"{KEYWORDS_TYPE}")
-
-                    result_properties = extract_information(message_text, KEYWORDS_PROPERTIES,
-                                                            constants.max_len_property_names)
-                    if result_properties is None:
-                        send_telegram_message(message_chat_id, "Fehler: Keine valide Eingabe. Es werden Informationen "
-                                                               "zu folgenden Schlüsselwörtern benötigt: "
-                                                               f"{KEYWORDS_PROPERTIES}")
-
-                    result_time = extract_information(message_text, KEYWORDS_TIME, 2)
-                    if result_time is None:
-                        send_telegram_message(message_chat_id, "Fehler: Keine valide Eingabe. Es werden Informationen "
-                                                               "zu folgenden Schlüsselwörtern benötigt: "
-                                                               f"{KEYWORDS_TIME}")
-
-                    if result_type is None or result_properties is None or result_time is None:
-                        continue
-
-            success = False  # notwendig für den Abbruch der verschachtelden Schleife im Erfolgsfall
-
-            for system_type in constants.config_toml.keys():  # Webserver, Mailserver, Firewall, etc.
-                console("Prüfe", result_type, "auf Übereinstimmung mit Typ", system_type, mode=INFO)
-                # Wenn der Benutzer ein System erwähnt, prüfe ob die gefragte Eigenschaft existiert
-                if compare(result_type, system_type, constants.max_len_type_names):
-                    console("Typ", system_type, "identifiziert", mode=SUCC)
-                    for system_property in constants.config_toml[system_type].keys():  # Systemspezifische Eigenschaften
-                        console("Prüfe", result_properties, "auf Übereinstimmung mit Eigenschaft", system_property, mode=INFO)
-                        if compare(result_properties, system_property, constants.max_len_property_names):
-                            console("Übereinstimmung mit", system_property, mode=SUCC)
-                            console("Führe Abfrage", constants.config_toml[system_type][system_property], "aus",
-                                    mode=INFO)
-                            success = True
-                            break
-
-                    if not success:
-                        send_telegram_message(message_chat_id, f"Fehler: Unbekannte Eigenschaft {result_properties}")
-                        console("Unbekannte Eigenschaft", result_properties, mode=ERR)
-                    break
-                if not success:  # notwendig für den Abbruch der verschachtelden Schleife im Erfolgsfall
-                    send_telegram_message(message_chat_id, f"Fehler: Unbekanntes System {result_type}")
-                    console("Unbekanntes System", result_type, mode=ERR)
-                break
-
+        check_updates()
 
 
 if __name__ == "__main__":
