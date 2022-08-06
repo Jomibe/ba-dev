@@ -55,7 +55,7 @@ def send_telegram_message(message_chat_id, message_text):
 def extract_information(message_text, keywords, wordcount):
     """
     Diese Funktion durchsucht die Nachricht auf die Inhalte der Liste keywords und liefert die darauffolgenden Wörter
-    zurück. Wieviele Wörter zurückgegeben werden, wird mit wordcount definiert.
+    als String zurück. Wieviele Wörter zurückgegeben werden, wird mit wordcount definiert.
     """
 
     console("Untersuche Nachricht auf Schlüsselwörter...", mode=INFO)
@@ -63,9 +63,10 @@ def extract_information(message_text, keywords, wordcount):
     for keyword in keywords:
         console("Prüfe auf", keyword, mode=INFO)
         if re.search(f"{keyword}", message_text):
-            value = re.split(f"({keyword})", message_text)[-1].strip().split()
-            value = value[0:int(wordcount)]
-            console("Für das Schlüsselwort", keyword, "wurde die Information", value, "ermittelt", mode=SUCC)
+            # value = re.split(f"({keyword})", message_text)[-1].strip().split()
+            value = ' '.join(re.split(f"({keyword})", message_text)[-1].strip().split()[0:wordcount])
+            # value = value[0:int(wordcount)]
+            console("Schlüsselwort", keyword, "erkannt. Folgende", wordcount, "Wörter:", value, mode=SUCC)
             return value
     console("Kein Fund. Es kann keine Abfrage gebildet werden, da Informationen fehlen.", mode=ERR)
     return None

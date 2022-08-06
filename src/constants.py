@@ -30,3 +30,4 @@ telegram_update_id = None
 graylog_username = None
 graylog_password = None
 graylog_session_token = None
+config_toml = None

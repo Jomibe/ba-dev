@@ -10,8 +10,10 @@ Diese Datei enthält Funktionen, welche für den ordnungsgemäßen Programmstart
 # Imports aus Standardbibliotheken
 
 # Imports von Drittanbietern
+import toml
 
 # Eigene Imports
+import constants
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
 from telegram import telegram_reachable
@@ -28,6 +30,21 @@ def prepare():
     # Nach einem Programmneustart muss die zuletzt verwendete update_id geladen werden
     if not restore_cur_update_id():
         return False
+    if not load_config_toml():
+        return False
 
     console("Vorbereitungen erfolgreich abgeschlossen", mode=SUCC)
+    return True
+
+
+def load_config_toml():
+    """
+    Liest die Inhalte der Datei config.toml im Programmverzeichnis ein und speichert diese in der internen Datenstruktur
+    constants.config_toml.
+    """
+
+    console("Importiere Inhalt der Datei", "config.toml", mode=INFO)
+    constants.config_toml = toml.load("./src/config.toml")
+    console("Import erfolgreich", mode=SUCC)
+
     return True
