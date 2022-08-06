@@ -37,6 +37,9 @@ def compare(actual, target, wordcount):
     actual ("ist") ist.
     """
 
+    actual = actual.lower()
+    target = target.lower()
+
     console("Vergleiche", actual, "und", target, "miteinander", mode=INFO)
     if actual == target:
         console("Direkte Übereinstimmung", mode=SUCC)
