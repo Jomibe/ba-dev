@@ -1,6 +1,9 @@
 # In diesem TOML-Dokument werden die verfügbaren Abfragen definiert und mit Suchbegriffen für die
 # Elasticsearch-Suchmaschine in Graylog verknüpft.
 
+# Typ- und Eigenschaftsbezeichnungen müssen aus Wörtern bestehen, welche ggf. durch ein Leerzeichen getrennt sind.
+# Es wird nicht zwischen Groß- und Kleinschreibung unterschieden.
+
 [Webserver]
 "Besucher Zugriffe" = "http_response_code: 200"
 "Interne Fehler" = "http_response_code:[500 TO 599]"

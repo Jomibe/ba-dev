@@ -31,3 +31,5 @@ graylog_username = None
 graylog_password = None
 graylog_session_token = None
 config_toml = None
+max_len_type_names = 0  # Maximale Anzahl von Wörtern, welche in einem Sektionsnamen der config.toml vorkommen
+max_len_property_names = 0  # Maximale Anzahl von Wörtern, welche in einem Namen der config.toml vorkommen
