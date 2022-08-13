@@ -24,6 +24,9 @@ KEYWORDS_TYPE = ["Typ", "Kategorie"]
 KEYWORDS_PROPERTIES = ["bezüglich", "in Sachen"]
 KEYWORDS_TIME = ["Zeitraum", "seit"]
 
+# Relativer Speicherpfad für heruntergeladene Dateien von der Telegram API. Muss mit einem / enden.
+SAVEDIR_TELEGRAM_DL_FILES = "files/"
+
 # Globale Variablen, werden zur Laufzeit überschrieben
 telegram_bot_token = None
 telegram_update_id = None

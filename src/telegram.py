@@ -13,7 +13,7 @@ import requests
 
 # Eigene Imports
 import constants  # für den Zugriff auf globale Variablen
-from constants import TELEGRAM_LONG_POLL_TIMEOUT, AUTHORIZED_CHAT_IDS
+from constants import TELEGRAM_LONG_POLL_TIMEOUT, AUTHORIZED_CHAT_IDS, SAVEDIR_TELEGRAM_DL_FILES
 from debugging import console, INFO, WARN, ERR, SUCC
 from store import store_cur_update_id
 from message_processing import process_text_message
@@ -73,6 +73,43 @@ def extract_information(message_text, keywords, wordcount):
     return None
 
 
+def get_file_path(file_id):
+    """
+    Diese Funktion bezieht eine relative URL von der Telegram API, unter welcher die mit dem Parameter file_id
+    verknüpfte Datei zum Download angeboten wird und gibt diese als Rückgabewert zurück.
+    """
+
+    console("Ermittlung des Dateipfads für den Download über die Telegram API", mode=INFO)
+    r = requests.get(url=f'https://api.telegram.org/bot{constants.telegram_bot_token}/getFile',
+                     params={"file_id": file_id})
+
+    console("Dateipfad bezogen", mode=SUCC)
+    return json.loads(r.text)["result"]["file_path"]
+
+
+def download_file(file_path, unique_file_id, mime_type):
+    """
+    Diese Funktion bezieht eine Datei (Audiodatei, Bilddatei, Video) anhand der URL über die Telegram API und
+    speichert diese auf dem lokalen Dateisystem. Der Dateiname setzt sich aus der unique_file_id und dem MIME-Typ als
+    Dateiendung zusammen.
+    """
+
+    # Download-URL bilden
+    url = f"https://api.telegram.org/file/bot{constants.telegram_bot_token}/{file_path}"
+    console("Lade Datei herunter. URL:", url, mode=INFO)
+
+    # Dateinamen bilden
+    # TODO mit RegEx aus mime_type exportieren
+    filename = f"{unique_file_id}.oga"
+
+    console("Speichere auf dem Dateisystem. Dateipfad:", f"{SAVEDIR_TELEGRAM_DL_FILES}{filename}", mode=INFO)
+    r = requests.get(url, allow_redirects=True)
+    with open(f"{SAVEDIR_TELEGRAM_DL_FILES}{filename}", 'wb') as file:
+        file.write(r.content)
+        file.close()
+    console("Speichern abgeschlossen", mode=INFO)
+
+
 def check_updates():
     """
     Diese Funktion ruft Aktualisierungen von der Telegram API ab und verarbeitet diese, falls es sich um Text- oder
@@ -108,5 +145,14 @@ def check_updates():
                 send_hello(message_chat_id, message_first_name)
             else:
                 process_text_message(message_text, message_chat_id)
+
+        if "voice" in updates["result"][0]["message"]:  # Handelt es sich um eine Sprachnachricht?
+            console("Sprachnachricht erhalten", mode=INFO)
+            voice_file_id = updates["result"][0]["message"]["voice"]["file_id"]  # ID der Audionachricht extrahieren
+            console("file_id :", voice_file_id, mode=INFO)
+            mime_type = updates["result"][0]["message"]["voice"]["mime_type"]  # Dateityp extrahieren
+            console("Dateityp :", mime_type, mode=INFO)
+            file_path = get_file_path(voice_file_id)
+            download_file(file_path, voice_file_id, mime_type)
 
     return True
