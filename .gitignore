@@ -3,4 +3,4 @@ __pycache__/
 .env
 store.txt
 .DS_Store
-files/
+files/*
