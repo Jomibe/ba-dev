@@ -12,7 +12,7 @@ import re
 import requests
 
 # Eigene Imports
-from aws import upload_file_to_s3, speech_to_text
+from aws import upload_file_to_s3, speech_to_text, text_to_speech
 import constants  # für den Zugriff auf globale Variablen
 from constants import TELEGRAM_LONG_POLL_TIMEOUT, AUTHORIZED_CHAT_IDS, SAVEDIR_TELEGRAM_DL_FILES
 from debugging import console, INFO, WARN, ERR, SUCC
@@ -48,10 +48,30 @@ def send_hello(message_chat_id, message_first_name):
 
 
 def send_telegram_message(message_chat_id, message_text):
+    """
+    Diese Funktion sendet eine Textnachricht per Telegram.
+    """
     r = requests.get(url=f'https://api.telegram.org/bot{constants.telegram_bot_token}/sendMessage',
                      params={"chat_id": f"{message_chat_id}",
                              "text": message_text,
                              })
+
+
+def send_audio_message(message_chat_id, voice_file):
+    """
+    Diese Funktion sendet eine Sprachnachricht per Telegram. Die Audiodatei muss im Format OGG (OPUS) vorliegen und
+    darf nicht größer als 1 MB sein.
+    """
+    console("Sende Audiodatei", voice_file, "als Sprachnachricht", mode=INFO)
+
+    with open(voice_file, 'rb') as f:
+        r = requests.post(url=f"https://api.telegram.org/bot{constants.telegram_bot_token}/sendVoice",
+                          data={"chat_id": message_chat_id},
+                          files={"voice": f}
+                          )
+
+    console("Sprachnachricht versendet", mode=SUCC)
+    return True
 
 
 def extract_information(message_text, keywords, wordcount):
@@ -146,6 +166,7 @@ def check_updates():
             console("Textnachricht :", message_text, mode=INFO)
             if message_text == "/start":
                 send_hello(message_chat_id, message_first_name)
+                send_audio_message(message_chat_id, "files/bla.mp3")
             else:
                 process_text_message(message_text, message_chat_id)
 

@@ -36,7 +36,7 @@ def init_s3_api():
 
 def init_transcribe_api():
     """
-    Diese Funktion prüft die Verbindung zur AWS API und bereitet den Zugriff auf den Übersetzungsdienst vor.
+    Diese Funktion prüft die Verbindung zur AWS API und bereitet den Zugriff auf den Transcribe-Übersetzungsdienst vor.
     """
 
     console("Prüfe Verbindung zu AWS Transcribe in der Region", constants.aws_region, mode=INFO)
@@ -47,6 +47,23 @@ def init_transcribe_api():
         aws_secret_access_key=constants.aws_secret_access_key
     )
     console("Verbindung zu AWS Transcribe aufgebaut", mode=SUCC)
+
+    return True
+
+
+def init_polly_api():
+    """
+    Diese Funktion prüft die Verbindung zur AWS API und bereitet den Zugriff auf den Polly-Übersetzungsdienst vor.
+    """
+
+    console("Prüfe Verbindung zu AWS Polly in der Region", constants.aws_region, mode=INFO)
+    constants.aws_polly_obj = boto3.client(
+        service_name='polly',
+        region_name=constants.aws_region,
+        aws_access_key_id=constants.aws_access_key_id,
+        aws_secret_access_key=constants.aws_secret_access_key
+    )
+    console("Verbindung zu AWS Polly aufgebaut", mode=SUCC)
 
     return True
 
@@ -128,4 +145,52 @@ def speech_to_text(filename):
         transcript_result = json.load(transcript_result_file)["results"]["transcripts"][0]["transcript"]
         console("Extrahierter Text:", transcript_result, mode=SUCC)
         return transcript_result
+
+
+def text_to_speech(text):
+    """
+    Diese Funktion wandelt mittels AWS Polly einen Text in eine Audiodatei mit gesprochenem Text um.
+    """
+
+    console("Starte Umwandlung von Text zu Sprache", mode=INFO)
+
+    tts_job = constants.aws_polly_obj.start_speech_synthesis_task(
+        Engine='neural',
+        LanguageCode='de-DE',
+        OutputFormat='mp3',
+        OutputS3BucketName=constants.aws_s3_bucket_name,
+        OutputS3KeyPrefix=constants.aws_s3_bucket_voice_dir,
+        Text=text,
+        TextType='text',
+        VoiceId='Vicki'
+    )
+
+    tts_job_task_id = tts_job["SynthesisTask"]["TaskId"]
+    console("Sprachsynthesevorgang", tts_job_task_id, "gestartet", mode=INFO)
+
+    tts_s3_uri = None
+    while tts_s3_uri is None:
+        sleep(2)
+        tts_job_status = constants.aws_polly_obj.get_speech_synthesis_task(
+            TaskId=tts_job_task_id
+        )
+
+        if tts_job_status["SynthesisTask"]["TaskStatus"] == "completed":
+            console("Sprachsynthesevorgang abgeschlossen", mode=SUCC)
+            # TODO
+            # tts_s3_uri = tts_job_status["SynthesisTask"]["OutputUri"]
+            tts_s3_uri = "TODO"
+        elif tts_job_status["SynthesisTask"]["TaskStatus"] == "scheduled":
+            console("Sprachsynthesevorgang befindet sich in der Warteschlange", mode=INFO)
+        elif tts_job_status["SynthesisTask"]["TaskStatus"] == "inProgress":
+            console("Sprachsynthesevorgang wird ausgeführt", mode=INFO)
+        elif tts_job_status["SynthesisTask"]["TaskStatus"] == "failed":
+            console("Sprachsynthesevorgang war nicht erfolgreich", mode=ERR)
+            return False
+
+    tts_s3_uri = f"s3://{constants.aws_s3_bucket_name}/{constants.aws_s3_bucket_voice_dir}.{tts_job_task_id}.mp3"
+    console("Rufe Audiodatei von", tts_s3_uri, "ab", mode=INFO)
+    download_file_from_s3(f".{tts_job_task_id}.mp3")
+
+
 

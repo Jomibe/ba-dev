@@ -43,3 +43,4 @@ aws_s3_bucket_voice_dir = None
 aws_region = None
 aws_s3_obj = None  # boto3.resource()-Objekt für den Zugriff auf AWS S3
 aws_transcribe_obj = None  # boto3.client()-Objekt für den Zugriff auf Übersetzungsdienst AWS Transcribe
+aws_polly_obj = None  # boto3.client()-Objekt für den Zugriff auf Übersetzungsdienst AWS Polly

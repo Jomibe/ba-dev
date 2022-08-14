@@ -14,7 +14,7 @@ import toml
 from dotenv import dotenv_values
 
 # Eigene Imports
-from aws import init_s3_api, init_transcribe_api
+from aws import init_s3_api, init_transcribe_api, init_polly_api
 import constants
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
@@ -26,21 +26,32 @@ from store import restore_cur_update_id
 def prepare():
     console("Starte Vorbereitungen...", mode=INFO)
     if not load_env():
+        console("Umgebungsvariablen konnten nicht initialisiert werden", mode=ERR)
         return False
     if not telegram_reachable():
+        console("Verbindungsaufbau zu Telegram API nicht möglich", mode=ERR)
         return False
     if not graylog_reachable():
+        console("Verbindungsaufbau zu Graylog API nicht möglich", mode=ERR)
         return False
     if not init_s3_api():
+        console("Verbindungsaufbau zu AWS S3 nicht möglich", mode=ERR)
         return False
     if not init_transcribe_api():
+        console("Verbindungsaufbau zu AWS Transcribe nicht möglich", mode=ERR)
+        return False
+    if not init_polly_api():
+        console("Verbindungsaufbau zu AWS Polly nicht möglich", mode=ERR)
         return False
     # Nach einem Programmneustart muss die zuletzt verwendete update_id geladen werden
     if not restore_cur_update_id():
+        console("Wiederherstellung des Aktualisierungszählers für die Telegram API nicht möglich", mode=ERR)
         return False
     if not load_config_toml():
+        console("Laden der Stichwortzuordnungen nicht möglich", mode=ERR)
         return False
     if not determine_max_len_config_toml():
+        console("Verarbeitung der Stichwortzuordnungen fehlgeschlagen", mode=ERR)
         return False
 
     console("Vorbereitungen erfolgreich abgeschlossen", mode=SUCC)
