@@ -18,7 +18,7 @@ import sys
 
 # Imports von Drittanbietern
 import colorama
-from dotenv import dotenv_values
+
 
 # Eigene Imports
 import constants  # für Zugriff auf globale Variablen
@@ -28,15 +28,8 @@ from telegram import check_updates
 
 
 def main():
-    console("Detaillierte Ausgaben zum Programmablauf sind eingeschaltet.", mode=INFO)
     colorama.init()  # Colorama passt sich an das Betriebssystem an
-    env = dotenv_values(".env")  # Variablen aus der .env-Datei übertragen
-    constants.telegram_bot_token = env["TELEGRAM_BOT_TOKEN"]
-    constants.graylog_username = env["GRAYLOG_USERNAME"]
-    constants.graylog_password = env["GRAYLOG_PASSWORD"]
-    console("TELEGRAM_BOT_TOKEN =", constants.telegram_bot_token, mode=INFO)
-    console("GRAYLOG_USERNAME =", constants.graylog_username, mode=INFO)
-    console("GRAYLOG_PASSWORD =", constants.graylog_password, mode=INFO)
+    console("Detaillierte Ausgaben zum Programmablauf sind eingeschaltet.", mode=INFO)
     if not prepare():  # Das Programm prüft für den Programmablauf wichtige Funktionen
         console("Der Programmablauf wird abgebrochen", mode=ERR)
         return 1

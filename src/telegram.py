@@ -12,6 +12,7 @@ import re
 import requests
 
 # Eigene Imports
+from aws import upload_file_to_s3, speech_to_text
 import constants  # für den Zugriff auf globale Variablen
 from constants import TELEGRAM_LONG_POLL_TIMEOUT, AUTHORIZED_CHAT_IDS, SAVEDIR_TELEGRAM_DL_FILES
 from debugging import console, INFO, WARN, ERR, SUCC
@@ -91,7 +92,7 @@ def download_file(file_path, unique_file_id, mime_type):
     """
     Diese Funktion bezieht eine Datei (Audiodatei, Bilddatei, Video) anhand der URL über die Telegram API und
     speichert diese auf dem lokalen Dateisystem. Der Dateiname setzt sich aus der unique_file_id und dem MIME-Typ als
-    Dateiendung zusammen.
+    Dateiendung zusammen. Die Funktion gibt den Dateinamen ohne Dateipfad zurück.
     """
 
     # Download-URL bilden
@@ -108,6 +109,8 @@ def download_file(file_path, unique_file_id, mime_type):
         file.write(r.content)
         file.close()
     console("Speichern abgeschlossen", mode=INFO)
+
+    return filename
 
 
 def check_updates():
@@ -153,6 +156,10 @@ def check_updates():
             mime_type = updates["result"][0]["message"]["voice"]["mime_type"]  # Dateityp extrahieren
             console("Dateityp :", mime_type, mode=INFO)
             file_path = get_file_path(voice_file_id)
-            download_file(file_path, voice_file_id, mime_type)
+            filename = download_file(file_path, voice_file_id, mime_type)
+            upload_file_to_s3(filename, SAVEDIR_TELEGRAM_DL_FILES)
+            spoken_text = speech_to_text(filename)
+            send_telegram_message(message_chat_id, f"Die Anfrage \"{spoken_text}\" wird verarbeitet...")
+            process_text_message(spoken_text, message_chat_id)
 
     return True

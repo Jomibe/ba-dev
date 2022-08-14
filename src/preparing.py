@@ -11,8 +11,10 @@ Diese Datei enthält Funktionen, welche für den ordnungsgemäßen Programmstart
 
 # Imports von Drittanbietern
 import toml
+from dotenv import dotenv_values
 
 # Eigene Imports
+from aws import init_s3_api, init_transcribe_api
 import constants
 from debugging import console
 from debugging import INFO, WARN, ERR, SUCC
@@ -23,9 +25,15 @@ from store import restore_cur_update_id
 
 def prepare():
     console("Starte Vorbereitungen...", mode=INFO)
+    if not load_env():
+        return False
     if not telegram_reachable():
         return False
     if not graylog_reachable():
+        return False
+    if not init_s3_api():
+        return False
+    if not init_transcribe_api():
         return False
     # Nach einem Programmneustart muss die zuletzt verwendete update_id geladen werden
     if not restore_cur_update_id():
@@ -75,5 +83,32 @@ def determine_max_len_config_toml():
 
     console("Prüfung erfolgreich. Maximale Wortanzahl Typbezeichnungen:", constants.max_len_type_names,
             ". Maximale Wortanzahl Eigenschaftsbezeichnungen:", constants.max_len_property_names, mode=SUCC)
+
+    return True
+
+
+def load_env():
+    """
+    Mit dieser Funktion werden sämtliche Umgebungsvariablen initialisiert. Umgebungsvariablen werden verwendet, um
+    sensible Daten zu hinterlegen.
+    """
+
+    env = dotenv_values(".env")  # Variablen aus der .env-Datei übertragen
+    constants.telegram_bot_token = env["TELEGRAM_BOT_TOKEN"]
+    constants.graylog_username = env["GRAYLOG_USERNAME"]
+    constants.graylog_password = env["GRAYLOG_PASSWORD"]
+    constants.aws_access_key_id = env["AWS_ACCESS_KEY_ID"]
+    constants.aws_secret_access_key = env["AWS_SECRET_ACCESS_KEY"]
+    constants.aws_s3_bucket_name = env["AWS_S3_BUCKET_NAME"]
+    constants.aws_s3_bucket_voice_dir = env["AWS_S3_BUCKET_VOICE_DIR"]
+    constants.aws_region = env["AWS_REGION"]
+    console("TELEGRAM_BOT_TOKEN =", constants.telegram_bot_token, mode=INFO)
+    console("GRAYLOG_USERNAME =", constants.graylog_username, mode=INFO)
+    console("GRAYLOG_PASSWORD =", constants.graylog_password, mode=INFO)
+    console("AWS_ACCESS_KEY_ID =", constants.aws_access_key_id, mode=INFO)
+    console("AWS_SECRET_ACCESS_KEY =", constants.aws_secret_access_key, mode=INFO)
+    console("AWS_S3_BUCKET_NAME =", constants.aws_s3_bucket_name, mode=INFO)
+    console("AWS_S3_BUCKET_VOICE_DIR =", constants.aws_s3_bucket_voice_dir, mode=INFO)
+    console("AWS_REGION =", constants.aws_region, mode=INFO)
 
     return True
