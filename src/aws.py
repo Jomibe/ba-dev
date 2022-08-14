@@ -192,5 +192,4 @@ def text_to_speech(text):
     console("Rufe Audiodatei von", tts_s3_uri, "ab", mode=INFO)
     download_file_from_s3(f".{tts_job_task_id}.mp3")
 
-
-
+    return f".{tts_job_task_id}.mp3"

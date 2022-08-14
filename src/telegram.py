@@ -47,7 +47,7 @@ def send_hello(message_chat_id, message_first_name):
                              })
 
 
-def send_telegram_message(message_chat_id, message_text):
+def send_telegram_text_message(message_chat_id, message_text):
     """
     Diese Funktion sendet eine Textnachricht per Telegram.
     """
@@ -57,7 +57,25 @@ def send_telegram_message(message_chat_id, message_text):
                              })
 
 
-def send_audio_message(message_chat_id, voice_file):
+def send_telegram_message(message_chat_id, message_text):
+    """
+    Diese Funktion versendet eine kombinierte Sprachnachricht mit dem gesprochenen Text als Wert für 'caption'.
+    :param message_chat_id: int, entspricht dem Parameter chat_id der Telegram API
+    :param message_text: str, der Nachrichtentext in Textform
+    :return: bool, ob die Ausführung erfolgreich war
+    """
+
+    console("Sende Text", message_text, "an Chat", message_chat_id, "in einer kombinierten Sprachnachricht.", mode=INFO)
+    send_audio_message(message_chat_id,
+                       f"{constants.SAVEDIR_TELEGRAM_DL_FILES}{text_to_speech(message_text)}",
+                       message_text
+                       )
+
+    console("Versand der kombinierten Nachricht abgeschlossen", mode=SUCC)
+    return True
+
+
+def send_audio_message(message_chat_id, voice_file, caption):
     """
     Diese Funktion sendet eine Sprachnachricht per Telegram. Die Audiodatei muss im Format OGG (OPUS) vorliegen und
     darf nicht größer als 1 MB sein.
@@ -66,7 +84,7 @@ def send_audio_message(message_chat_id, voice_file):
 
     with open(voice_file, 'rb') as f:
         r = requests.post(url=f"https://api.telegram.org/bot{constants.telegram_bot_token}/sendVoice",
-                          data={"chat_id": message_chat_id},
+                          data={"chat_id": message_chat_id, "caption": caption},
                           files={"voice": f}
                           )
 
@@ -157,8 +175,7 @@ def check_updates():
         # Verarbeitung des Ereignisinhalts
         if message_chat_id not in AUTHORIZED_CHAT_IDS:
             console("Dieser Benutzer ist nicht für Abfragen berechtigt. Breche ab.", mode=INFO)
-            send_telegram_message(constants.telegram_bot_token, message_chat_id, "Fehler: Dieser Account wurde noch "
-                                                                              "nicht autorisiert.")
+            send_telegram_message(message_chat_id, "Fehler: Dieser Account wurde noch nicht autorisiert.")
             return False
 
         if "text" in updates["result"][0]["message"]:  # Handelt es sich um eine Textnachricht?
@@ -166,7 +183,7 @@ def check_updates():
             console("Textnachricht :", message_text, mode=INFO)
             if message_text == "/start":
                 send_hello(message_chat_id, message_first_name)
-                send_audio_message(message_chat_id, "files/bla.mp3")
+                send_audio_message(message_chat_id, f"files/{text_to_speech('Hallo Welt')}", "Hallo Welt")
             else:
                 process_text_message(message_text, message_chat_id)
 
