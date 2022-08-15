@@ -8,7 +8,7 @@ Enthält vom Programm verwendete statische Veriablen. Die Parameter können auf 
 DEBUG = True
 
 # Alle Textnachrichten zusätzlich als Sprachnachricht senden
-TTS_ENABLED = False
+TTS_ENABLED = True
 
 # Wert in Sekunden, wie lange die "long poll" Vorgänge zum Abruf von Aktualisierungen der Telegram-API dauern sollen
 TELEGRAM_LONG_POLL_TIMEOUT = 30
@@ -29,6 +29,10 @@ KEYWORDS_TIME = ["Zeitraum", "seit"]
 
 # Relativer Speicherpfad für heruntergeladene Dateien von der Telegram API. Muss mit einem / enden.
 SAVEDIR_TELEGRAM_DL_FILES = "files/"
+
+# AWS Polly Einstellungen
+AWS_POLLY_ENGINE = "standard"  # standard oder neural
+AWS_POLLY_VOICE = "Marlene"  # standard: Marlene oder Hans; neural: Vicki
 
 # Globale Variablen, werden zur Laufzeit überschrieben
 telegram_bot_token = None

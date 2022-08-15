@@ -155,14 +155,14 @@ def text_to_speech(text):
     console("Starte Umwandlung von Text zu Sprache", mode=INFO)
 
     tts_job = constants.aws_polly_obj.start_speech_synthesis_task(
-        Engine='neural',
+        Engine=constants.AWS_POLLY_ENGINE,
         LanguageCode='de-DE',
         OutputFormat='mp3',
         OutputS3BucketName=constants.aws_s3_bucket_name,
         OutputS3KeyPrefix=constants.aws_s3_bucket_voice_dir,
         Text=text,
         TextType='text',
-        VoiceId='Vicki'
+        VoiceId=constants.AWS_POLLY_VOICE
     )
 
     tts_job_task_id = tts_job["SynthesisTask"]["TaskId"]
