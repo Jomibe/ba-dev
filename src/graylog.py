@@ -65,15 +65,18 @@ def execute_query(query):
     """
     Diese Funktion führt eine ElasticSearch-Abfrage über die Graylog API aus.
     :param query: str, Graylog ElasticSearch-Abfrage
-    :return: bool, ob die Abfrage erfolgreich war
+    :return: Gibt die Anzahl der gezählten Ereignisse zurück
     """
 
     console("Führe Abfrage", query, "in Graylog aus", mode=INFO)
 
-    payload = '{\n"streams": [\n"000000000000000000000001"\n],\n"timerange": [\n"absolute",\n{\n"from": "2022-07-01T00:00:00.000Z",\n"to": "2022-07-01T15:00:00.000Z"\n}\n],\n"query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }\n}'
+    payload = {"streams": ["000000000000000000000001"],
+               "timerange": ["absolute", {"from": "2022-07-01T00:00:00.000Z", "to": "2022-07-01T15:00:00.000Z"}],
+               "query_string": { "type": "elasticsearch", "query_string": "http_response_code: 200"}}
+    payload["query_string"]["query_string"] = query
 
     r = requests.post(url=f'{GRAYLOG_API_URL}views/search/messages',
-                      data=payload,
+                      json=payload,
                       headers={"X-Requested-By": "cli",
                               "Content-Type": "application/json",
                               "Accept": "text/csv",
@@ -82,6 +85,11 @@ def execute_query(query):
                       )
 
     if r.status_code != 200:
-        console("Fehler bei der Kommunikation mit der Graylog API. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
+        console("Fehler bei der Kommunikation mit der Graylog API. Details:", f"{r.status_code} {r.reason} - {r.text}",
+                mode=ERR)
 
-    print(r.text)
+    # Es werden Daten im CSV-Format mit einer Überschrift zurückgegeben. Diese muss bei der Zählung der Zeilen ignoriert
+    # werden.
+    console("Ergebnis der Abfrage:", r.text.count('\n')-1, "Ereignisse", mode=SUCC)
+
+    return r.text.count('\n')-1

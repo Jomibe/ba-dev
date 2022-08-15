@@ -10,6 +10,7 @@ Diese Datei enthält Funktionen, welche für die Verarbeitung von Sprach- und Te
 import constants
 from constants import KEYWORDS_TIME, KEYWORDS_TYPE, KEYWORDS_PROPERTIES
 from debugging import console, INFO, WARN, ERR, SUCC
+from graylog import execute_query
 
 
 def compare(actual, target, wordcount):
@@ -74,6 +75,10 @@ def process_text_message(message_text, message_chat_id):
                     console("Übereinstimmung mit", system_property, mode=SUCC)
                     console("Führe Abfrage", constants.config_toml[system_type][system_property], "aus",
                             mode=INFO)
+                    event_count = execute_query(constants.config_toml[system_type][system_property])
+                    send_telegram_message(message_chat_id, f"Ergebnis der Anfrage zur Eigenschaft {system_property} "
+                                                           f"des Typs {system_type} im Zeitraum der letzten 24 Stunden:"
+                                                           f" es wurden {event_count} Ereignisse erfasst.")
                     success = True
                     break
 

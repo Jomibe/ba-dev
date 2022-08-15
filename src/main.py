@@ -23,6 +23,7 @@ import colorama
 # Eigene Imports
 import constants  # für Zugriff auf globale Variablen
 from debugging import console, INFO, WARN, ERR, SUCC
+from graylog import execute_query
 from preparing import prepare
 from telegram import check_updates
 
