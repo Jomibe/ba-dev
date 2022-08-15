@@ -59,3 +59,29 @@ def get_session_token():
     else:
         console("Authentifizierungsschlüssel", json.loads(r.text)["session_id"], "erfolgreich bezogen", mode=SUCC)
         constants.graylog_session_token = json.loads(r.text)["session_id"]
+
+
+def execute_query(query):
+    """
+    Diese Funktion führt eine ElasticSearch-Abfrage über die Graylog API aus.
+    :param query: str, Graylog ElasticSearch-Abfrage
+    :return: bool, ob die Abfrage erfolgreich war
+    """
+
+    console("Führe Abfrage", query, "in Graylog aus", mode=INFO)
+
+    payload = '{\n"streams": [\n"000000000000000000000001"\n],\n"timerange": [\n"absolute",\n{\n"from": "2022-07-01T00:00:00.000Z",\n"to": "2022-07-01T15:00:00.000Z"\n}\n],\n"query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }\n}'
+
+    r = requests.post(url=f'{GRAYLOG_API_URL}views/search/messages',
+                      data=payload,
+                      headers={"X-Requested-By": "cli",
+                              "Content-Type": "application/json",
+                              "Accept": "text/csv",
+                              "Cookie": f"authentication={constants.graylog_session_token}"
+                              }
+                      )
+
+    if r.status_code != 200:
+        console("Fehler bei der Kommunikation mit der Graylog API. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
+
+    print(r.text)
