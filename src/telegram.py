@@ -60,10 +60,15 @@ def send_telegram_text_message(message_chat_id, message_text):
 def send_telegram_message(message_chat_id, message_text):
     """
     Diese Funktion versendet eine kombinierte Sprachnachricht mit dem gesprochenen Text als Wert für 'caption'.
+    Die Sprachausgabe wird ausgelassen, wenn der Konfigurationsparameter TTS_ENABLED den Wert False hat.
     :param message_chat_id: int, entspricht dem Parameter chat_id der Telegram API
     :param message_text: str, der Nachrichtentext in Textform
     :return: bool, ob die Ausführung erfolgreich war
     """
+
+    if not constants.TTS_ENABLED:
+        send_telegram_text_message(message_chat_id, message_text)
+        return True
 
     console("Sende Text", message_text, "an Chat", message_chat_id, "in einer kombinierten Sprachnachricht.", mode=INFO)
     send_audio_message(message_chat_id,

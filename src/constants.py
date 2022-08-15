@@ -7,6 +7,9 @@ Enthält vom Programm verwendete statische Veriablen. Die Parameter können auf 
 # Zusätzliche Ausgaben zum Programmablauf ausgeben
 DEBUG = True
 
+# Alle Textnachrichten zusätzlich als Sprachnachricht senden
+TTS_ENABLED = False
+
 # Wert in Sekunden, wie lange die "long poll" Vorgänge zum Abruf von Aktualisierungen der Telegram-API dauern sollen
 TELEGRAM_LONG_POLL_TIMEOUT = 30
 
