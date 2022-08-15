@@ -149,47 +149,29 @@ def speech_to_text(filename):
 
 def text_to_speech(text):
     """
-    Diese Funktion wandelt mittels AWS Polly einen Text in eine Audiodatei mit gesprochenem Text um.
+    Diese Funktion wandelt mittels AWS Polly einen Text in Echtzeit in eine Audiodatei mit gesprochenem Text um und
+    stellt damit eine Alternative zur Funktion text_to_speech() dar.
+    :param text: str, der umzuwandelnde Text
+    :return: str, Dateiname der MP3-Datei mit der Ausgabe. Die Datei befindet sich im res-Ordner
     """
 
-    console("Starte Umwandlung von Text zu Sprache", mode=INFO)
+    console("Beginne mit Sprachsynthese", mode=INFO)
 
-    tts_job = constants.aws_polly_obj.start_speech_synthesis_task(
+    tts_job = constants.aws_polly_obj.synthesize_speech(
+        Text=text,
+        OutputFormat="mp3",
+        VoiceId=constants.AWS_POLLY_VOICE,
         Engine=constants.AWS_POLLY_ENGINE,
         LanguageCode='de-DE',
-        OutputFormat='mp3',
-        OutputS3BucketName=constants.aws_s3_bucket_name,
-        OutputS3KeyPrefix=constants.aws_s3_bucket_voice_dir,
-        Text=text,
-        TextType='text',
-        VoiceId=constants.AWS_POLLY_VOICE
+        TextType='text'
     )
+    tts_job_task_id = tts_job["ResponseMetadata"]["RequestId"]
+    console("Der Sprachsynthesevorgang", tts_job_task_id, "wurde gestartet", mode=SUCC)
 
-    tts_job_task_id = tts_job["SynthesisTask"]["TaskId"]
-    console("Sprachsynthesevorgang", tts_job_task_id, "gestartet", mode=INFO)
+    stream = tts_job["AudioStream"]
 
-    tts_s3_uri = None
-    while tts_s3_uri is None:
-        sleep(2)
-        tts_job_status = constants.aws_polly_obj.get_speech_synthesis_task(
-            TaskId=tts_job_task_id
-        )
+    console("Schreibe in Datei", mode=INFO)
+    with open(f"{constants.SAVEDIR_TELEGRAM_DL_FILES}{tts_job_task_id}.mp3", 'wb') as audio_output:
+        audio_output.write(stream.read())
 
-        if tts_job_status["SynthesisTask"]["TaskStatus"] == "completed":
-            console("Sprachsynthesevorgang abgeschlossen", mode=SUCC)
-            # TODO
-            # tts_s3_uri = tts_job_status["SynthesisTask"]["OutputUri"]
-            tts_s3_uri = "TODO"
-        elif tts_job_status["SynthesisTask"]["TaskStatus"] == "scheduled":
-            console("Sprachsynthesevorgang befindet sich in der Warteschlange", mode=INFO)
-        elif tts_job_status["SynthesisTask"]["TaskStatus"] == "inProgress":
-            console("Sprachsynthesevorgang wird ausgeführt", mode=INFO)
-        elif tts_job_status["SynthesisTask"]["TaskStatus"] == "failed":
-            console("Sprachsynthesevorgang war nicht erfolgreich", mode=ERR)
-            return False
-
-    tts_s3_uri = f"s3://{constants.aws_s3_bucket_name}/{constants.aws_s3_bucket_voice_dir}.{tts_job_task_id}.mp3"
-    console("Rufe Audiodatei von", tts_s3_uri, "ab", mode=INFO)
-    download_file_from_s3(f".{tts_job_task_id}.mp3")
-
-    return f".{tts_job_task_id}.mp3"
+    return f"{tts_job_task_id}.mp3"

@@ -31,8 +31,8 @@ KEYWORDS_TIME = ["Zeitraum", "seit"]
 SAVEDIR_TELEGRAM_DL_FILES = "files/"
 
 # AWS Polly Einstellungen
-AWS_POLLY_ENGINE = "standard"  # standard oder neural
-AWS_POLLY_VOICE = "Marlene"  # standard: Marlene oder Hans; neural: Vicki
+AWS_POLLY_ENGINE = "neural"  # standard oder neural
+AWS_POLLY_VOICE = "Vicki"  # standard: Marlene oder Hans; neural: Vicki
 
 # Globale Variablen, werden zur Laufzeit überschrieben
 telegram_bot_token = None
