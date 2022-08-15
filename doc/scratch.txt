@@ -60,3 +60,8 @@ Alternativ mit relativer Zeitangabe:
 ],
 "query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }
 }
+
+[!] Texterkennung: KI zu kompliziert -> Keywords
+[!] Umgangssprache wird nicht verstanden -> Aliase in config.toml
+[!] Erkennung der Zeitangabe
+[!] Dauer der Spracherkennung und Sprachsynthese
