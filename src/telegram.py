@@ -202,8 +202,7 @@ def check_updates():
             filename = download_file(file_path, voice_file_id, mime_type)
             upload_file_to_s3(filename, SAVEDIR_TELEGRAM_DL_FILES)
             spoken_text = speech_to_text(filename)
-            # dauert zu lange
-            # send_telegram_message(message_chat_id, f"Die Anfrage \"{spoken_text}\" wird verarbeitet...")
+            send_telegram_message(message_chat_id, f"Die Anfrage \"{spoken_text}\" wird verarbeitet...")
             process_text_message(spoken_text, message_chat_id)
 
     return True
