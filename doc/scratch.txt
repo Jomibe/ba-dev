@@ -66,3 +66,5 @@ Alternativ mit relativer Zeitangabe:
 [!] Erkennung der Zeitangabe
 [!] Dauer der Spracherkennung -> Verwendung der boto3-Funktion synthesize_speech (i.d.R. weniger als 0,2 Sekunden)
     statt start_speech_synthesis_task (i.d.R. mehr als 10 Sekunden)
+[?] Nebenläufigkeit implementieren
+[?] Qualität der Sprachbedienung und -rückmeldung
