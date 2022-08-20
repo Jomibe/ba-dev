@@ -26,6 +26,7 @@ from debugging import console, INFO, WARN, ERR, SUCC
 from graylog import execute_query
 from preparing import prepare
 from telegram import check_updates
+from transcribe_rt import transcribe_rt
 
 
 def main():
@@ -34,6 +35,8 @@ def main():
     if not prepare():  # Das Programm prüft für den Programmablauf wichtige Funktionen
         console("Der Programmablauf wird abgebrochen", mode=ERR)
         return 1
+
+    transcribe_rt("files/beispiel.oga")
 
     while True:  # long polling
         check_updates()
