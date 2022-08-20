@@ -37,7 +37,7 @@ class MyEventHandler(TranscriptResultStreamHandler):
 async def basic_transcribe(filename):
     console("Stelle Verbindung zu AWS Transcribe in der Region", "eu-central-1", "her", mode=INFO)
     # Setup up our client with our chosen AWS region
-    client = TranscribeStreamingClient(region="eu-central-1")
+    client = TranscribeStreamingClient(region=constants.aws_region)
 
     console("Beginne mit Datenübertragung zu AWS Transcribe", mode=INFO)
     # Start transcription to generate our async stream
