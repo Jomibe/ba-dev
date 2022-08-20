@@ -57,7 +57,8 @@ def get_session_token():
         return False
 
     else:
-        console("Authentifizierungsschlüssel", json.loads(r.text)["session_id"], "erfolgreich bezogen", mode=SUCC)
+        console("Authentifizierungsschlüssel", json.loads(r.text)["session_id"], "erfolgreich bezogen", mode=SUCC,
+                secret=True)
         constants.graylog_session_token = json.loads(r.text)["session_id"]
 
 

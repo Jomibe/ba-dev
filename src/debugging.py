@@ -15,23 +15,50 @@ from datetime import datetime
 from colorama import Fore, Style
 
 # Eigene Imports
-from constants import DEBUG
+import constants
+from constants import DEBUG, LOGDIR
 
 
-def console(*message, end=None, mode, no_space=None, perm=None, quiet=None):
+def console(*message, end=None, mode, no_space=None, perm=None, quiet=None, secret=None):
     """
-    Gibt die Inhalte von message in abwechselnden Farben auf der Konsole aus, wenn DEBUG oder perm aktiv ist.
+    Gibt die Inhalte von message in abwechselnden Farben auf der Konsole aus, wenn DEBUG oder perm aktiv ist. Unabhängig
+    vom Status von DEBUG oder perm wird in eine Datei unter LOGDIR geschrieben.
     end gibt das Zeilenende für print() an.
     Wenn quiet=True, dann wird 'Info:', usw. weggelassen.
     Wenn no_space=True, werden keine Leerzeichen zwischen den Parametern ausgegeben
     mode muss beim Aufruf zwingend einen Wert zugewiesen werden
+    Wenn secret=True, erfolgt keine Ausgabe in die Datei
     """
+
+    # Unabhängig vom Status von DEBUG oder perm wird in eine Datei unter LOGDIR geschrieben, sobald der Dateiname
+    # bekannt ist. Es erfolgt keine Ausgabe, wenn sensible Daten (secret) protokolliert werden.
+    if not secret and constants.log_filename is not None:
+        with open(f"{LOGDIR}{constants.log_filename}", 'a+') as f:
+            f.write("[ " + get_time_stamp(pretty=True) + " ] ")
+
+            if mode == Mode.INFO:
+                f.write("Info: ")
+            elif mode == Mode.WARN:
+                f.write("Warnung: ")
+            elif mode == Mode.ERR:
+                f.write("Fehler: ")
+            elif mode == Mode.SUCC:
+                f.write("Erfolg: ")
+
+            for part in message:
+                if no_space:
+                    f.write(part)
+                else:
+                    f.write(f"{part} ")
+            f.write("\n")
+
+    # Konsolenausgabe
     if DEBUG or perm:
 
         was_colored = False  # Gibt an, ob die letzte Ausgabe farblich markiert war.
 
         if quiet is not True:
-            print_time_stamp()
+            print("[ " + get_time_stamp(pretty=True) + " ] ", end="")
             print_color_code(mode)
 
             if mode == Mode.INFO:
@@ -84,10 +111,16 @@ def print_color_code(mode):
         print(Fore.GREEN, end="")
 
 
-def print_time_stamp():
+def get_time_stamp(pretty):
+    """
+    Gibt das derzeitige Datum inkl. Uhrzeit zurück.
+    :return: Angabe von Zeit und Datum
+    """
     now = datetime.now()
-    current_time = now.strftime("%d. %b, %H:%M:%S:%f")
-    print("[ " + current_time + " ] ", end="")
+    if pretty:  # für die Ausgabe auf der Konsole
+        return now.strftime("%d. %b, %H:%M:%S:%f")
+    else:  # für die Verwendung im Dateinamen
+        return now.strftime("%y%m%d-%S%M%H")
 
 
 class Mode:

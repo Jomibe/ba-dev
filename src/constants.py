@@ -30,6 +30,9 @@ KEYWORDS_TIME = ["Zeitraum", "seit"]
 # Relativer Speicherpfad für heruntergeladene Dateien von der Telegram API. Muss mit einem / enden.
 SAVEDIR_TELEGRAM_DL_FILES = "files/"
 
+# Ordner für die Ablage der Protokolldateien
+LOGDIR = "log/"
+
 # AWS Polly Einstellungen
 AWS_POLLY_ENGINE = "neural"  # standard oder neural
 AWS_POLLY_VOICE = "Vicki"  # standard: Marlene oder Hans; neural: Vicki
@@ -41,6 +44,7 @@ graylog_username = None
 graylog_password = None
 graylog_session_token = None
 config_toml = None
+log_filename = None  # Dateiname der aktuellen Logdatei unter LOGDIR
 max_len_type_names = 0  # Maximale Anzahl von Wörtern, welche in einem Sektionsnamen der config.toml vorkommen
 max_len_property_names = 0  # Maximale Anzahl von Wörtern, welche in einem Namen der config.toml vorkommen
 aws_access_key_id = None

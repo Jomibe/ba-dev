@@ -16,7 +16,7 @@ from dotenv import dotenv_values
 # Eigene Imports
 from aws import init_s3_api, init_transcribe_api, init_polly_api
 import constants
-from debugging import console
+from debugging import console, get_time_stamp
 from debugging import INFO, WARN, ERR, SUCC
 from telegram import telegram_reachable
 from graylog import graylog_reachable
@@ -25,6 +25,9 @@ from store import restore_cur_update_id
 
 def prepare():
     console("Starte Vorbereitungen...", mode=INFO)
+    if not set_logfile_filename():
+        console("Vorbereitungen für die Protokollaufzeichnung in eine Datei fehlgeschlagen", mode=ERR)
+        return False
     if not load_env():
         console("Umgebungsvariablen konnten nicht initialisiert werden", mode=ERR)
         return False
@@ -113,13 +116,25 @@ def load_env():
     constants.aws_s3_bucket_name = env["AWS_S3_BUCKET_NAME"]
     constants.aws_s3_bucket_voice_dir = env["AWS_S3_BUCKET_VOICE_DIR"]
     constants.aws_region = env["AWS_REGION"]
-    console("TELEGRAM_BOT_TOKEN =", constants.telegram_bot_token, mode=INFO)
-    console("GRAYLOG_USERNAME =", constants.graylog_username, mode=INFO)
-    console("GRAYLOG_PASSWORD =", constants.graylog_password, mode=INFO)
-    console("AWS_ACCESS_KEY_ID =", constants.aws_access_key_id, mode=INFO)
-    console("AWS_SECRET_ACCESS_KEY =", constants.aws_secret_access_key, mode=INFO)
-    console("AWS_S3_BUCKET_NAME =", constants.aws_s3_bucket_name, mode=INFO)
-    console("AWS_S3_BUCKET_VOICE_DIR =", constants.aws_s3_bucket_voice_dir, mode=INFO)
-    console("AWS_REGION =", constants.aws_region, mode=INFO)
+    console("TELEGRAM_BOT_TOKEN =", constants.telegram_bot_token, mode=INFO, secret=True)
+    console("GRAYLOG_USERNAME =", constants.graylog_username, mode=INFO, secret=True)
+    console("GRAYLOG_PASSWORD =", constants.graylog_password, mode=INFO, secret=True)
+    console("AWS_ACCESS_KEY_ID =", constants.aws_access_key_id, mode=INFO, secret=True)
+    console("AWS_SECRET_ACCESS_KEY =", constants.aws_secret_access_key, mode=INFO, secret=True)
+    console("AWS_S3_BUCKET_NAME =", constants.aws_s3_bucket_name, mode=INFO, secret=True)
+    console("AWS_S3_BUCKET_VOICE_DIR =", constants.aws_s3_bucket_voice_dir, mode=INFO, secret=True)
+    console("AWS_REGION =", constants.aws_region, mode=INFO, secret=True)
+
+    return True
+
+
+def set_logfile_filename():
+    """
+    Diese Funktion bildet den Namen für die aktuelle Logdatei unter LOGDIR
+    :return: bool, ob die Aktion erfolgreich war
+    """
+    console("Bereite die Protokollaufzeichnung in eine Datei vor", mode=INFO)
+    constants.log_filename = f"{get_time_stamp(pretty=False)}.log"
+    console("Name für die Protolldatei:", f"{constants.LOGDIR}{constants.log_filename}", mode=SUCC)
 
     return True
