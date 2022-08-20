@@ -155,8 +155,13 @@ def send_audio_message(message_chat_id, voice_file, caption):
 
 def extract_information(message_text, keywords, wordcount):
     """
-    Diese Funktion durchsucht die Nachricht auf die Inhalte der Liste keywords und liefert die darauffolgenden Wörter
-    als String zurück. Wieviele Wörter zurückgegeben werden, wird mit wordcount definiert.
+    Durchsucht die Nachricht auf die Inhalte der Liste keywords und liefert die darauffolgenden Wörter
+    als String zurück.
+
+    :param message_text: str, der Nachrichtentext.
+    :param keywords: list mit str, welche die zu prüfenden Schlüsselwörter enthält.
+    :param wordcount: int, Anzahl der auf das Schlüsselwort folgenden Wörter, welche zurückgegeben werden.
+    :return: str, wenn Wörter gefunden wurden. None, wenn das Schlüsselwort nicht gefunden wurde.
     """
 
     console("Untersuche Nachricht auf Schlüsselwörter...", mode=INFO)
