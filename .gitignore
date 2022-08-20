@@ -4,3 +4,4 @@ __pycache__/
 store.txt
 .DS_Store
 files/*
+log/*
