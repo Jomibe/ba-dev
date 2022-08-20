@@ -61,6 +61,9 @@ Alternativ mit relativer Zeitangabe:
 "query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }
 }
 
+# Quelle transcribe_rt: https://github.com/awslabs/amazon-transcribe-streaming-sdk/blob/v0.6.0/examples/simple_file.py
+# @v0.6.0
+
 [!] Texterkennung: KI zu kompliziert -> Keywords
 [!] Umgangssprache wird nicht verstanden -> Aliase in config.toml
 [!] Erkennung der Zeitangabe
