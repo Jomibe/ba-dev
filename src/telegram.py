@@ -128,9 +128,15 @@ def send_telegram_message(message_chat_id, message_text):
 
 def send_audio_message(message_chat_id, voice_file, caption):
     """
-    Diese Funktion sendet eine Sprachnachricht per Telegram. Die Audiodatei muss im Format OGG (OPUS) vorliegen und
-    darf nicht größer als 1 MB sein.
+    Sendet eine Sprachnachricht per Telegram.
+
+    :param message_chat_id: int, entspricht dem Parameter chat_id der Telegram API.
+    :param voice_file: str, Dateipfad der zu sendenden Sprachnachricht. Die Datei muss im Format OGG (OPUS) vorliegen
+    und darf nicht größer als 1 MB sein.
+    :param caption: str, in der Sprachnachricht enthaltener Text.
+    :return: bool, ob die Aktion erfolgreich war.
     """
+
     console("Sende Audiodatei", voice_file, "als Sprachnachricht", mode=INFO)
 
     with open(voice_file, 'rb') as f:
@@ -139,8 +145,12 @@ def send_audio_message(message_chat_id, voice_file, caption):
                           files={"voice": f}
                           )
 
-    console("Sprachnachricht versendet", mode=SUCC)
-    return True
+    if r.status_code == 200:
+        console("Nachricht in", f"{r.elapsed.microseconds / 1000}ms", "übermittelt", mode=SUCC)
+        return True
+    else:
+        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
+        return False
 
 
 def extract_information(message_text, keywords, wordcount):
