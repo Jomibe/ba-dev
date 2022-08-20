@@ -38,11 +38,22 @@ def telegram_reachable():
 
 
 def get_updates():
+    """
+    Ruft Aktualisierungen von der Telegram API ab.
+
+    :return: JSON-Objekt mit dem Inhalt der API-Antwort, None im Fehlerfall
+    """
+    console("Rufe Aktualisierungen von der Telegram API ab", mode=INFO)
     r = requests.get(url=f'https://api.telegram.org/bot{constants.telegram_bot_token}/getUpdates',
                      params={"offset": constants.telegram_update_id + 1,
                              "timeout": f"{TELEGRAM_LONG_POLL_TIMEOUT}",
                              "allowed_updates": '["message"]'
                              })
+    if r.status_code == 200:
+        console("Antwort in", f"{r.elapsed.microseconds/1000}ms", "erhalten", mode=SUCC)
+    else:
+        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
+        return None
     return json.loads(r.text)
 
 
