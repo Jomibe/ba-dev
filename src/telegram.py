@@ -58,10 +58,23 @@ def get_updates():
 
 
 def send_hello(message_chat_id, message_first_name):
+    """
+    Sendet eine Begrüßungsnachricht an einen Telegram-Chat.
+
+    :param message_chat_id: int, entspricht Wert message_chat_id der Telegram API
+    :param message_first_name: str, Vorname des Adressaten
+    :return: bool, ob die Aktion erfolgreich war
+    """
     r = requests.get(url=f'https://api.telegram.org/bot{constants.telegram_bot_token}/sendMessage',
                      params={"chat_id": message_chat_id,
                              "text": f"Hey there {message_first_name}!",
                              })
+
+    if r.status_code == 200:
+        console("Nachricht in", f"{r.elapsed.microseconds / 1000}ms", "übermittelt", mode=SUCC)
+    else:
+        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
+        return None
 
 
 def send_telegram_text_message(message_chat_id, message_text):
