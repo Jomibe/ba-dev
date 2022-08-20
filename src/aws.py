@@ -6,12 +6,19 @@ sowie für die Umwandlung zwischen Sprache und Text.
 # Imports aus Standardbibliotheken
 from time import sleep
 import json
+import os
 
 # Imports von Drittanbietern
 import boto3  # AWS Python SDK
+import asyncio
+import aiofile
+from amazon_transcribe.client import TranscribeStreamingClient
+from amazon_transcribe.handlers import TranscriptResultStreamHandler
+from amazon_transcribe.model import TranscriptEvent
 
 # Eigene Imports
 import constants
+from constants import SAVEDIR_TELEGRAM_DL_FILES
 from debugging import console, INFO, WARN, ERR, SUCC
 
 
@@ -19,6 +26,11 @@ def init_s3_api():
     """
     Diese Funktion prüft die Verbindung zur AWS API und bereitet den Zugriff auf den S3-Bucket vor.
     """
+    if not constants.ENABLE_FAILSAFE_TRANSCRIPTION:
+        # Die Verbindung zu S3 wird nur benötigt, wenn die Option ENABLE_FAILSAFE_TRANSCRIPTION aktiviert ist.
+        # Siehe constants.py
+        return True
+
     console("Prüfe Verbindung zu AWS S3 in der Region", constants.aws_region, mode=INFO)
     constants.aws_s3_obj = boto3.resource(
         service_name='s3',
@@ -39,6 +51,11 @@ def init_transcribe_api():
     Diese Funktion prüft die Verbindung zur AWS API und bereitet den Zugriff auf den Transcribe-Übersetzungsdienst vor.
     """
 
+    if not constants.ENABLE_FAILSAFE_TRANSCRIPTION:
+        # Die Verbindung zu Transcribe über boto3 wird nur benötigt, wenn die Option ENABLE_FAILSAFE_TRANSCRIPTION
+        # aktiviert ist. Siehe constants.py
+        return True
+
     console("Prüfe Verbindung zu AWS Transcribe in der Region", constants.aws_region, mode=INFO)
     constants.aws_transcribe_obj = boto3.client(
         service_name='transcribe',
@@ -47,6 +64,25 @@ def init_transcribe_api():
         aws_secret_access_key=constants.aws_secret_access_key
     )
     console("Verbindung zu AWS Transcribe aufgebaut", mode=SUCC)
+
+    return True
+
+
+def init_transcribe_rt_api():
+    """
+    Diese Funktion prüft die Verbindung zur AWS API und bereitet den Zugriff auf den Transcribe-Übersetzungsdienst für
+    Echtzeit-Transkription vor.
+    :return: bool, ob die Aktion erfolgreich war.
+    """
+
+    if constants.ENABLE_FAILSAFE_TRANSCRIPTION:
+        # Die Verbindung zu Transcribe über das AWS Transcribe SDK wird nur benötigt, wenn die Option
+        # ENABLE_FAILSAFE_TRANSCRIPTION aktiviert ist. Siehe constants.py
+        return True
+
+    console("Stelle Verbindung zu AWS Transcribe in der Region", constants.aws_region, "her", mode=INFO)
+    # Die Übermittlung der API-Zugangsdaten erfolgt über Umgebungsvariablen
+    constants.aws_transcribe_rt_obj = TranscribeStreamingClient(region=constants.aws_region)
 
     return True
 
@@ -99,6 +135,8 @@ def speech_to_text(filename):
     """
     Diese Funktion extrahiert mittels dem AWS Übersetzungsdienst Transcribe den gesprochenen Text aus einer Audiodatei.
     """
+    upload_file_to_s3(filename, SAVEDIR_TELEGRAM_DL_FILES)
+
     console("Starte Umwandlung der Sprachnachricht in Text", mode=INFO)
     s3_uri = f"s3://{constants.aws_s3_bucket_name}/{constants.aws_s3_bucket_voice_dir}{filename}"
 
@@ -175,3 +213,62 @@ def text_to_speech(text):
         audio_output.write(stream.read())
 
     return f"{tts_job_task_id}.mp3"
+
+
+class TranscriptEventHandler(TranscriptResultStreamHandler):
+    text = ""  # Variable für das Ergebnis der Transkription
+
+    async def handle_transcript_event(self, transcript_event: TranscriptEvent):
+        # This handler can be implemented to handle transcriptions as needed.
+        # Here's an example to get started.
+        results = transcript_event.transcript.results
+
+        for result in results:
+            for alt in result.alternatives:
+                if not result.is_partial:  # Quelle: https://stackoverflow.com/questions/72875996
+                    console("Transkription abgeschlossen. Ergebnis:", alt.transcript, mode=SUCC)
+                else:
+                    self.text = alt.transcript
+                    console("Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt:",
+                            alt.transcript, mode=INFO)
+
+
+async def basic_transcribe(filename):
+    console("Beginne mit Datenübertragung zu AWS Transcribe", mode=INFO)
+    # Start transcription to generate our async stream
+    stream = await constants.aws_transcribe_rt_obj.start_stream_transcription(
+        language_code="de-DE",
+        media_sample_rate_hz=16000,
+        media_encoding="ogg-opus",
+        enable_partial_results_stabilization="True"
+    )
+
+    async def write_chunks():
+        async with aiofile.AIOFile(filename, "rb") as afp:
+            reader = aiofile.Reader(afp, chunk_size=1024 * 16)
+            async for chunk in reader:
+                console("Übertrage Abschnitt von", f"{1024*16}B", "der Datei", filename, "an AWS Transcribe", mode=INFO)
+                await stream.input_stream.send_audio_event(audio_chunk=chunk)
+        await stream.input_stream.end_stream()
+        console("Datenübertragung abgeschlossen. Warte auf Abschluss des Transkriptionsprozesses", mode=SUCC)
+
+    # Instantiate our handler and start processing events
+    handler = TranscriptEventHandler(stream.output_stream)
+    console("Bereite Verarbeitung der von AWS Transcribe übermittelten Daten vor", mode=INFO)
+    await asyncio.gather(write_chunks(), handler.handle_events())
+    return handler.text
+
+
+def transcribe_realtime(filename):
+    console("Beginne mit Echtzeitübersetzung Sprache zu Text", mode=INFO)
+
+    os.environ["AWS_ACCESS_KEY_ID"] = constants.aws_access_key_id
+    os.environ["AWS_SECRET_ACCESS_KEY"] = constants.aws_secret_access_key
+
+    # loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
+    # Der Rückgabewert der asynchronen Funktion wird durchgereicht
+    text = loop.run_until_complete(basic_transcribe(filename))
+    loop.close()
+
+    return text

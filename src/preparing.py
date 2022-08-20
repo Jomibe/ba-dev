@@ -14,7 +14,7 @@ import toml
 from dotenv import dotenv_values
 
 # Eigene Imports
-from aws import init_s3_api, init_transcribe_api, init_polly_api
+from aws import init_s3_api, init_transcribe_api, init_transcribe_rt_api, init_polly_api
 import constants
 from debugging import console, get_time_stamp
 from debugging import INFO, WARN, ERR, SUCC
@@ -42,6 +42,9 @@ def prepare():
         return False
     if not init_transcribe_api():
         console("Verbindungsaufbau zu AWS Transcribe nicht möglich", mode=ERR)
+        return False
+    if not init_transcribe_rt_api():
+        console("Verbindungsaufbau zu AWS Transcribe für Echtzeittranskription nicht möglich", mode=ERR)
         return False
     if not init_polly_api():
         console("Verbindungsaufbau zu AWS Polly nicht möglich", mode=ERR)

@@ -37,6 +37,12 @@ LOGDIR = "log/"
 AWS_POLLY_ENGINE = "neural"  # standard oder neural
 AWS_POLLY_VOICE = "Vicki"  # standard: Marlene oder Hans; neural: Vicki
 
+# Einstellungen für die Sprachtranskription
+# Die Anbindung der Echtzeittranskription mit Python befindet sich noch in der Testphase. Sollte es zu Problemen kommen,
+# kann folgende Option aktiviert werden. Die Daten werden dann nicht per Stream sondern per S3-Bucket an den Dienst
+# übermittelt. Dies führt zu einer um wenige Sekunden erhöhten Wartezeit bei der Verarbeitung einer Sprachnachricht.
+ENABLE_FAILSAFE_TRANSCRIPTION = False
+
 # Globale Variablen, werden zur Laufzeit überschrieben
 telegram_bot_token = None
 telegram_update_id = None
@@ -54,4 +60,6 @@ aws_s3_bucket_voice_dir = None
 aws_region = None
 aws_s3_obj = None  # boto3.resource()-Objekt für den Zugriff auf AWS S3
 aws_transcribe_obj = None  # boto3.client()-Objekt für den Zugriff auf Übersetzungsdienst AWS Transcribe
+# TranscribeStreamingClient()-Objekt für den Zugriff auf Übersetzungsdienst AWS Transcribe (Echtzeit)
+aws_transcribe_rt_obj = None
 aws_polly_obj = None  # boto3.client()-Objekt für den Zugriff auf Übersetzungsdienst AWS Polly

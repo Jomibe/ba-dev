@@ -14,10 +14,12 @@ import requests
 # Eigene Imports
 from aws import upload_file_to_s3, speech_to_text, text_to_speech
 import constants  # für den Zugriff auf globale Variablen
-from constants import TELEGRAM_LONG_POLL_TIMEOUT, AUTHORIZED_CHAT_IDS, SAVEDIR_TELEGRAM_DL_FILES
+from constants import TELEGRAM_LONG_POLL_TIMEOUT, AUTHORIZED_CHAT_IDS, SAVEDIR_TELEGRAM_DL_FILES, \
+    ENABLE_FAILSAFE_TRANSCRIPTION
 from debugging import console, INFO, WARN, ERR, SUCC
 from store import store_cur_update_id
 from message_processing import process_text_message
+from aws import transcribe_realtime
 
 
 def telegram_reachable():
@@ -200,8 +202,10 @@ def check_updates():
             console("Dateityp :", mime_type, mode=INFO)
             file_path = get_file_path(voice_file_id)
             filename = download_file(file_path, voice_file_id, mime_type)
-            upload_file_to_s3(filename, SAVEDIR_TELEGRAM_DL_FILES)
-            spoken_text = speech_to_text(filename)
+            if ENABLE_FAILSAFE_TRANSCRIPTION:
+                spoken_text = speech_to_text(filename)
+            else:
+                spoken_text = transcribe_realtime(f"{constants.SAVEDIR_TELEGRAM_DL_FILES}{filename}")
             send_telegram_message(message_chat_id, f"Die Anfrage \"{spoken_text}\" wird verarbeitet...")
             process_text_message(spoken_text, message_chat_id)
 
