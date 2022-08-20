@@ -79,12 +79,24 @@ def send_hello(message_chat_id, message_first_name):
 
 def send_telegram_text_message(message_chat_id, message_text):
     """
-    Diese Funktion sendet eine Textnachricht per Telegram.
+    Sendet eine Textnachricht per Telegram.
+
+    :param message_chat_id: int, entspricht dem gleichnamigen Parameter der Telegram API.
+    :param message_text: str, Text der zu sendenden Nachricht.
+    :return: bool, ob die Aktion erfolgreich war.
     """
+
     r = requests.get(url=f'https://api.telegram.org/bot{constants.telegram_bot_token}/sendMessage',
                      params={"chat_id": f"{message_chat_id}",
                              "text": message_text,
                              })
+
+    if r.status_code == 200:
+        console("Nachricht in", f"{r.elapsed.microseconds / 1000}ms", "übermittelt", mode=SUCC)
+        return True
+    else:
+        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
+        return False
 
 
 def send_telegram_message(message_chat_id, message_text):
