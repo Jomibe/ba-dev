@@ -23,13 +23,17 @@ from aws import transcribe_realtime
 
 
 def telegram_reachable():
+    """
+    Prüft die Verbindung zur Telegram API durch die API-Funktion 'getMe'.
+    :return: bool, ob die Aktion erfolgreich war
+    """
     console("Prüfung der Verbindung zur Telegram API...", mode=INFO)
-    r = requests.get(f'https://api.telegram.org/bot{constants.telegram_bot_token}/getMe')
+    r = requests.get(f'https://api.telegram.org/bot{constants.telegram_bot_token}/getMe', timeout=3)
     if r.status_code == 200:
-        console("Telegram API ist erreichbar", mode=SUCC)
+        console("Telegram API ist in", f"{r.elapsed.microseconds/1000}ms", "erreichbar", mode=SUCC)
         return True
     else:
-        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} - {r.text}", mode=ERR)
+        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
         return False
 
 
