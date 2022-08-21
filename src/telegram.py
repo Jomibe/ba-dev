@@ -118,13 +118,6 @@ def send_telegram_message(message_chat_id, message_text):
                        message_text
                        )
 
-    if r.status_code == 200:
-        console("Nachricht in", f"{r.elapsed.microseconds / 1000}ms", "übermittelt", mode=SUCC)
-        return True
-    else:
-        console("Telegram API ist nicht erreichbar. Details:", f"{r.status_code} {r.reason} - {r.text}", mode=ERR)
-        return False
-
 
 def send_audio_message(message_chat_id, voice_file, caption):
     """
