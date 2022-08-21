@@ -12,9 +12,12 @@
 
 [Webserver]
 "Besucher Zugriffe" = "http_response_code: 200"
+"Besucher" = "::ALIAS::Besucher Zugriffe"
 "Interne Fehler" = "http_response_code:[500 TO 599]"
-"Fehler" = "::ALIAS::Interne Fehler"
+"Fehler" = "::ALIAS::Besucher"
+"drei" = "::ALIAS::Fehler"
 "Erreichbarkeit" = "http_response_code:[400 TO 499]"
+"Verfügbarkeit" = "::ALIAS::Erreichbarkeit"
 
 [Eins]
 "::ALIAS::" = "Webserver"
@@ -23,6 +26,11 @@
 "Empfangenene Mails" = "INBOX"
 "Blockierte Mails" = "\"NOQUEUE: reject\""
 
+[Zwei]
+"::ALIAS::" = "Mailserver"
+
 [Firewall]
 "Blockierte Pakete" = "\"[UFW BLOCK]\""
+"Blockiert" = "::ALIAS::Blockierte Pakete"
+"Abgewiesene Pakete" = "::ALIAS::Blockiert"
 "Top Port" = ""

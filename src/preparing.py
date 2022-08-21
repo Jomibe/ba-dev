@@ -8,6 +8,8 @@ Diese Datei enthält Funktionen, welche für den ordnungsgemäßen Programmstart
 # pylint: disable=import-error
 
 # Imports aus Standardbibliotheken
+import copy
+import re
 
 # Imports von Drittanbietern
 import toml
@@ -73,6 +75,25 @@ def load_config_toml():
     console("Importiere Inhalt der Datei", "config.toml", mode=INFO)
     constants.config_toml = toml.load("./src/config.toml")
     console("Import erfolgreich", mode=SUCC)
+
+    console("Prüfe auf Aliase", mode=INFO)
+
+    for typ in constants.config_toml.keys():
+        if "::ALIAS::" in constants.config_toml[typ].keys():  # Erkennung Typ-Alias
+            target_typ = constants.config_toml[typ]["::ALIAS::"]
+            console("Typ-Alias", typ, "mit Ziel", target_typ, "erkannt", mode=SUCC)
+            console("Stelle Verbindung zum Zieltyp", target_typ, "her", mode=INFO)
+            constants.config_toml[typ] = copy.deepcopy(constants.config_toml[target_typ])
+            console("Der Typ", f"{typ} -> {target_typ}", "wurde verknüpft", mode=INFO)
+
+        for eigenschaft in constants.config_toml[typ].keys():
+            console("Prüfe auf Alias bei Wert", constants.config_toml[typ][eigenschaft], "von Eigenschaft",
+                    eigenschaft, mode=INFO)
+            if re.search(r"^::ALIAS::.*", constants.config_toml[typ][eigenschaft]):  # re.match untersucht nur den Anfang
+                target_eigenschaft = re.split("::ALIAS::", constants.config_toml[typ][eigenschaft])[1]
+                console("Eigenschafts-Alias", eigenschaft, "mit Ziel", target_eigenschaft, "erkannt", mode=SUCC)
+                console("Verbinde Ziel", target_eigenschaft, "mit Quelle", eigenschaft, mode=INFO)
+                constants.config_toml[typ][eigenschaft] = constants.config_toml[typ][target_eigenschaft]
 
     return True
 
