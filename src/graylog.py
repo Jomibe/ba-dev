@@ -62,19 +62,27 @@ def get_session_token():
         constants.graylog_session_token = json.loads(r.text)["session_id"]
 
 
-def execute_query(query):
+def execute_query(query, seconds):
     """
     Diese Funktion führt eine ElasticSearch-Abfrage über die Graylog API aus.
     :param query: str, Graylog ElasticSearch-Abfrage
+    :param seconds: int, Anzahl der Sekunden des relativen Zeitraums
     :return: Gibt die Anzahl der gezählten Ereignisse zurück
     """
 
-    console("Führe Abfrage", query, "in Graylog aus", mode=INFO)
+    console("Führe Abfrage", query, "im Zeitraum der letzten", seconds, "Sekunden in Graylog aus", mode=INFO)
 
+    # Mit absoluter Zeitangabe
+    # payload = {"streams": ["000000000000000000000001"],
+    #           "timerange": ["absolute", {"from": "2022-07-01T00:00:00.000Z", "to": "2022-07-01T15:00:00.000Z"}],
+    #           "query_string": { "type": "elasticsearch", "query_string": "http_response_code: 200"}}
+
+    # Mit relativer Zeitangabe
     payload = {"streams": ["000000000000000000000001"],
-               "timerange": ["absolute", {"from": "2022-07-01T00:00:00.000Z", "to": "2022-07-01T15:00:00.000Z"}],
-               "query_string": { "type": "elasticsearch", "query_string": "http_response_code: 200"}}
+               "timerange": ["relative", {"range": "86400"}],
+               "query_string": {"type": "elasticsearch", "query_string": "http_response_code: 200"}}
     payload["query_string"]["query_string"] = query
+    payload["timerange"][1]["range"] = seconds
 
     r = requests.post(url=f'{GRAYLOG_API_URL}views/search/messages',
                       json=payload,
