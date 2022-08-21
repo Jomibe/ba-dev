@@ -2,12 +2,22 @@
 # Elasticsearch-Suchmaschine in Graylog verknüpft.
 
 # Typ- und Eigenschaftsbezeichnungen müssen aus Wörtern bestehen, welche ggf. durch ein Leerzeichen getrennt sind.
-# Es wird nicht zwischen Groß- und Kleinschreibung unterschieden.
+# Es wird nicht zwischen Groß- und Kleinschreibung unterschieden. Wird nach einem bestimmten Begriff gesucht, sodass in
+# der Suchmaschine Anführungszeichen verwendet werden müssten, muss vor diesen ein Backslash gestellt werden.
+
+# Aliaskonfiguration: es können Aliase für Typen und Eigenschaften erstellt werden. Ein Typ-Alias wird definiert, indem
+# eine Eigenschaft "::ALIAS::" mit dem Namen des Ziels als Wert erstellt wird. Ein Eigenschafts-Alias wird definiert,
+# indem das Ziel nach der Angabe von "::ALIAS::" im Wert hinterlegt wird. Aliase können nur für Ziele eingerichtet
+# werden, welche in einer vorherigen Zeile der Konfigurationsdatei definiert wurden.
 
 [Webserver]
 "Besucher Zugriffe" = "http_response_code: 200"
 "Interne Fehler" = "http_response_code:[500 TO 599]"
+"Fehler" = "::ALIAS::Interne Fehler"
 "Erreichbarkeit" = "http_response_code:[400 TO 499]"
+
+[Eins]
+"::ALIAS::" = "Webserver"
 
 [Mailserver]
 "Empfangenene Mails" = "INBOX"
