@@ -62,16 +62,19 @@ def process_text_message(message_text, message_chat_id):
     if result_type is None or result_properties is None or result_time is None:
         return False
 
-    success = False  # notwendig für den Abbruch der verschachtelden Schleife im Erfolgsfall
+    type_found = False
+    prop_found = False
 
     for system_type in constants.config_toml.keys():  # Webserver, Mailserver, Firewall, etc.
         console("Prüfe", result_type, "auf Übereinstimmung mit Typ", system_type, mode=INFO)
         # Wenn der Benutzer ein System erwähnt, prüfe ob die gefragte Eigenschaft existiert
         if compare(result_type, system_type, constants.max_len_type_names):
+            type_found = True
             console("Typ", system_type, "identifiziert", mode=SUCC)
             for system_property in constants.config_toml[system_type].keys():  # Systemspezifische Eigenschaften
                 console("Prüfe", result_properties, "auf Übereinstimmung mit Eigenschaft", system_property, mode=INFO)
                 if compare(result_properties, system_property, constants.max_len_property_names):
+                    prop_found = True
                     console("Übereinstimmung mit", system_property, mode=SUCC)
                     console("Führe Abfrage", constants.config_toml[system_type][system_property], "aus",
                             mode=INFO)
@@ -79,16 +82,14 @@ def process_text_message(message_text, message_chat_id):
                     send_telegram_message(message_chat_id, f"Ergebnis der Anfrage zur Eigenschaft {system_property} "
                                                            f"des Typs {system_type} im Zeitraum der letzten 24 Stunden:"
                                                            f" es wurden {event_count} Ereignisse erfasst.")
-                    success = True
-                    break
-
-            if not success:
+                    return True
+            if not prop_found:
                 send_telegram_message(message_chat_id, f"Fehler: Unbekannte Eigenschaft {result_properties}")
                 console("Unbekannte Eigenschaft", result_properties, mode=ERR)
-            break
-        if not success:  # notwendig für den Abbruch der verschachtelden Schleife im Erfolgsfall
-            send_telegram_message(message_chat_id, f"Fehler: Unbekanntes System {result_type}")
-            console("Unbekanntes System", result_type, mode=ERR)
-        break
+            #break
+    if not type_found:  # notwendig für den Abbruch der verschachtelden Schleife im Erfolgsfall
+        send_telegram_message(message_chat_id, f"Fehler: Unbekanntes System {result_type}")
+        console("Unbekanntes System", result_type, mode=ERR)
+        # break
 
     return True
