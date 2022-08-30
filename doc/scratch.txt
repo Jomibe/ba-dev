@@ -66,9 +66,10 @@ Alternativ mit relativer Zeitangabe:
 
 [!] Texterkennung: KI zu kompliziert -> Keywords
 [!] Umgangssprache wird nicht verstanden -> Aliase in config.toml
-[!] Erkennung der Zeitangabe
+[!] Erkennung der Zeitangabe mit ausgeschriebenen Worten
 [!] Dauer der Sprachsynthese -> Verwendung der boto3-Funktion synthesize_speech (i.d.R. weniger als 0,2 Sekunden)
     statt start_speech_synthesis_task (i.d.R. mehr als 10 Sekunden)
 [!] Dauer der Spracherkennung -> Verwendung der AWS Transcribe SDK
 [?] Nebenläufigkeit implementieren
 [?] Qualität der Sprachbedienung und -rückmeldung
+[?] Betrieb als Dienst oder Docker-Container
