@@ -5,3 +5,12 @@ store.txt
 .DS_Store
 files/*
 log/*
+doc/tex/*.log
+doc/tex/*.aux
+doc/tex/*.bcf
+doc/tex/*.lof
+doc/tex/*.lol
+doc/tex/*.lot
+doc/tex/*.xml
+doc/tex/*.gz
+doc/tex/*.toc
