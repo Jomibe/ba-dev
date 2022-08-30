@@ -14,3 +14,4 @@ doc/tex/*.lot
 doc/tex/*.xml
 doc/tex/*.gz
 doc/tex/*.toc
+doc/tex/*.pdf
