@@ -1,83 +1,13 @@
-\chapter{Überschrift Ebene eins}
+\chapter{Einleitung}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Unternehmen haben heutzutage einen großen Anspruch an eine IT-Umgebung, welche möglichst fehler- und unterbrechungsfrei funktioniert. Um den Status der Geräte und Systeme in einem Firmennetzwerk bestmöglich überwachen und somit Fehler frühzeitig erkennen zu können, stehen den Systemadministratoren zahlreiche Werkzeuge zur Verfügung, welche die Überwachung auf Fehlerzustände eigenständig übernehmen und den Verantwortlichen somit eine mühselige und monotone Arbeit ersparen. Für die Überwachung der Systeme werden häufig zwei verschiedene Systeme verwendet: ein klassisches Monitoring-System überwacht im festgelegten Sekunden- oder Minutentakt einzelne Systeme auf ihre Erreichbarkeit und Funktionsfähigkeit. Weiterhin können im Monitoring Zustände wie der Füllungsgrad der Datenspeicher oder die Auslastung von CPU- und Arbeitsspeicherressourcen überwacht werden. Das Monitoring-System sorgt so für eine Überwachung der Betriebszustände der Systeme rund um die Uhr. In vielen Netzwerken wird zusätzlich ein Logserver eingesetzt, welcher die anfallenden Systemprotokolle der Geräte im Netzwerk zentral aufnimmt und durchsuchbar macht. Jede Software besitzt eine Art von Fehlerausgabe, welche je nach Einsatzzweck in das zentrale Systemprotokoll des Betriebssystems oder eine Textdatei geschrieben wird. Im Zeitalter von virtualisierten Umgebungen und Microservices hat sich die Anzahl der eigenständigen Systeme in einem Firmennetzwerk vervielfacht. Häufig werden Dienste in die Cloud ausgelagert, da dort Ressourcen und Kosten besser skaliert werden können. Fällt nun ein Dienst aus und es soll die Ursache ermittelt werden, können die Protokolle vom Logserver bezogen werden. Der Logserver bietet damit den weiteren Vorteil, dass Zusammenhänge besser sichtbar werden, da die Protokolleinträge der verschiedenen Systeme nebeneinander angezeigt werden. 
 
-Eine Abbildungen:
+Das Produkt Graylog Open stellt Administratoren eine quelloffene und kostenlose Lösung zur Verfügung, welche eine Vielzahl von Schnittstellen für die Anbindung an Systeme in einem Netzwerk bietet. Für die Bedienung von Graylog und den Zugriff auf die erfassten Protokolle steht eine HTTP-Webschnittstelle für den Webbrowser zur Verfügung. Weiterhin bietet das Produkt eine REST-API für den programmgesteuerten Zugriff an. Mit dieser Schnittstelle können vielseitige benutzerdefinierte Lösungen entwickelt werden, wie eine Aufbereitung der Daten mittels Diagrammen oder der Anschluss der Software an ein Self-Service Portal. In Graylog können Regeln zur Aufbereitung der erfassten Daten definiert werden. So können spezifische Informationen wie HTTP-Statuscodes eines Webservers oder spezielle Schlüsselwörter mittels regulären Ausdrücken zum Zeitpunkt der Erfassung gefiltert und mittels Attributen global durchsuchbar gemacht werden.
 
-\begin{figure}[hb!]
-\centering
-\includegraphics[scale=0.5]{einstein}
-\caption{Beschreibung der Abbildung.}
-\label{abb_einstein}
-\end{figure}
+\section{Ziel der Bachelorarbeit}
 
-Abbildung \ref{abb_einstein} kann referenziert werden. Zitat aus \cite{scheme} und \cite[S. 17]{knuth}.
+Es soll die Entwicklung eines Bots für den Telegram-Messenger in der Programmiersprache Python geplant und durchgeführt werden. Der Bot interagiert mit dem Benutzer über gesprochene Sprache indem der Anwender als Administrator eines Netzwerks die gewünschten Informationen zu Systemen im Netzwerk in einer Sprachnachricht beschreibt und der Bot mit einer per Sprachsynthese erstellte Nachricht antwortet. Die Informationsquelle ist eine Installation des Logservers Graylog Open. Es wird vorausgesetzt, dass die Software bereits für den Betrieb im Firmennetzwerk eingerichtet wurde und sämtliche zu überwachende Systeme angeschlossen wurden. Der Anwender kann beispielsweise Informationen zu Webservern im Firmennetzwerk anfordern: "Liefere mir Informationen zu Fehlern bei Webservern im Zeitraum der letzten 24 Stunden". Der Bot soll nun die Inhalte der Nachricht in eine Anfrage an die in Graylog integrierte Suchmaschine umwandeln und dem Anwender das Ergebnis aufbereitet wiedergeben, z.B.: "Es wurden 30 Ereignisse gefunden". Zu den Aufgaben der zu entwickelnden Software gehört die Koordination der Ereignisse inklusive der Behandlung von Fehlerfällen sowie die Kommunikation mit dem Benutzer.
 
-\section{Überschrift Ebene zwei}
+\section{Aufbau der Bachelorarbeit}
 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-\subsection{Überschrift Ebene drei}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-Eine Aufzählung:
-
-\begin{itemize}
-\item Lorem ipsum
-\item dolor sit amet
-\item consetetur sadipscing elitr
-\item sed diam nonumy
-\end{itemize}
-
-Eine nummerierte Aufzählung:
-
-\begin{enumerate}
-\item Erster Punkt
-\item Zweiter Punkt
-\item Dritter Punkt
-\end{enumerate}
-
-Es folgt Tabelle \ref{beispieltabelle}.
-
-\begin{table}[hb!]
-\centering
-\begin{tabular}{lrc}
-\toprule
-Linksbündig & Rechtsbündig & Zentriert \\
-\midrule
-Abc &  13 & Mno \\ \addlinespace
-Def & 104 & Pqr \\ \addlinespace
-Ghi &   7 & Stu \\ \addlinespace
-Jkl &  -5 & Vwx \\
-\bottomrule
-\end{tabular}
-\caption{Beschreibung der Tabelle.}
-\label{beispieltabelle}
-\end{table}
-
-Es folgt Programmlisting \ref{beispiellisting}.
-
-\begin{lstlisting}[caption={Beschreibung des Listings.}, label=beispiellisting]
-#include <stdio.h>
-
-int main(void)
-{
-    printf("Hello, world\n");
-}
-\end{lstlisting}
-
-Ein Listing ohne Titel, welches nicht im Listingverzeichnis aufgefühert wird:
-
-\begin{lstlisting}[numbers=none]
-#include <stdio.h>
-
-int main(void)
-{
-    printf("Good bye!\n");
-}
-\end{lstlisting}
-
-Programmcode im Fließtext: \lstinline{int summe(int a, int b)}
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Im Anschluss an dieses Kapitel werden die technischen Grundlagen erläutert. Hierzu zählen insbesondere die verwendeten Produkte und eine genauere technische Erläuterung, wie die Systeme in der zu entwickelnden Software zusammenarbeiten. Im dritten Kapitel wird die Planung der Software erläutert. Dabei wird auf Modelle des Softwareengineering zurückgegriffen sowie der Programmablauf mit UML-Diagrammen erläutert. Schließlich werden Entscheidungen erläutert, welche bei der Planung getroffen wurden. Im vierten Kapitel wird die Implementierung behandelt. Das Kapitel startet mit der Beschreibung der Einrichtung der Softwareentwicklungsumgebung und der Implementierung erster funktionaler Prototypen. Außerdem werden Konzepte erläutert, welche zum Zeitpunkt der Umsetzung der Theorie in die Praxis erstellt wurden. Das fünfte Kapitel handelt von dem Einsatz der Software in der Praxis. Im sechsten Kapitel erfolgt eine Zusammenfassung und ein Ausblick auf mögliche technische Optimierungen.
