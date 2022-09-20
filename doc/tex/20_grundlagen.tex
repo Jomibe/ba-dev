@@ -6,6 +6,35 @@ In diesem Kapitel werden die für die Entwicklung benötigten verwendeten techni
 
 REST ist eine Abkürzung für Representational State Transfer und wurde von Roy Fielding in seiner Dissertation aus dem Jahr 2000 \cite{rest} definiert. Es handelt sich hierbei um eine Auflistung von Eigenschaften und Anforderungen, welche durch eine REST-API erfüllt werden sollen. REST-APIs werden für viele Dienste des Internets meist unsichtbar für die Anwender für die Kommunikation zwischen informationstechnischen Systemen verwendet. In der englischen Sprache wird häufig der Begriff "RESTful" für Ressourcen verwendet, welche die REST-Prinzipien anwenden.
 
+\subsection{Anwendung in der Praxis}
+
+Heutzutage stellen viele Dienste HTTP-APIs zur Verfügung, welche als RESTful bezeichnet werden können. Die Kommunikation mit den Programmierschnittstellen beschränkt sich dabei auf das HTTP- und HTTPS-Protokoll, welches ebenfalls für den Abruf von Webinhalten im Browser verwendet wird. Durch die hohe Verbreitung wird die Implementierung neuer vernetzter Applikationen für Softwareentwickler stark vereinfacht. Das ursprünglich von Tim Berners-Lee entworfene Konzept des World Wide Web als Hypermedium wird so ebenfalls unterstützt. Ein Hypermedium beschreibt eine Ansammlung von Informationen (beispielsweise Websiten, welche im Quellcode vorliegen) mit Verweisen auf andere Informationen in dieser Menge. Bei in der Beschreibungssprache HTML (Hypertext Markup Language) geschriebenem Quellcode im World Wide Web handelt es sich um Hypertext mit Verweisen auf andere Medien (beispielsweise Quellcode anderer Webseiten, Audio- Video- oder Bilddaten). 
+
+Der Zugriff auf HTTP-APIs erfolgt analog zum Zugriff auf Webseiten im Internet. Je nach Anforderung werden die HTTP-Methoden \lstinline{GET}, \lstinline{POST} und weitere verwendet. Die von der HTTP-API beziehbaren Informationen werden mit der URL (Uniform Resource Locator) lokalisiert und angefordert. Zusätzlich können Informationen über Header (Kopfzeilen) und Cookies ausgetauscht werden, um beispielsweise Zustandsinformationen (Status des Warenkorbs in einem Webshop, Identifikationsnummer des angemeldeten Benutzers) austauschen zu können.
+
+\begin{lstlisting}[caption={Beispiel eines Aufrufs der Graylog REST-API.}, label=bsp-rest-api]
+GET http://10.10.12.1:9000/api/cluster
+
+{
+  "12ac8e44-0c59-4c38-bd5e-4fe247a55893": {
+    "facility": "graylog-server",
+    "codename": "Noir",
+    "node_id": "12ac8e44-0c59-4c38-bd5e-4fe247a55893",
+    "cluster_id": "8421ad08-fe62-4a04-8576-a81cab1a9c55",
+    "version": "4.3.6+36120cf",
+    "started_at": "2022-09-10T23:15:05.435Z",
+    "hostname": "graylog.home.arpa",
+    "lifecycle": "running",
+    "lb_status": "alive",
+    "timezone": "Europe/Berlin",
+    "operating_system": "Linux 5.4.0-125-generic",
+    "is_processing": true
+  }
+}
+\end{lstlisting}
+
+Die Antwort der HTTP-API erfolgt in vielen Fällen maschinenlesbar in der Sprache JSON.
+
 \section{Telegram Messenger}
 
 Der Dienst Telegram bietet seinen Nutzern eine Möglichkeit um kostenlos miteinander u.A. über Apps für die Mobilbetriebssysteme Android und iOS zu kommunizieren. Telegram hatte nach nach eigenen Angaben weltweit im Juni 2022 erstmals über 700 Millionen monatliche Nutzer und befand sich unter den fünf Apps mit den höchsten Downloadzahlen \cite{telegram-700-million}. Der Dienst stellt damit eine beliebte Alternative zu anderen Messengern wie WhatsApp oder Signal dar. Ein Alleinstellungsmerkmal von Telegram sind die Bots und die dazugehörige API.
