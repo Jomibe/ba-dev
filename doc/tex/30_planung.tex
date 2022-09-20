@@ -6,11 +6,13 @@ In diesem Kapitel wird die Planung der Software mit Prinzipien des Softwareengin
 
 Die Software soll in der Skriptsprache Python entwickelt werden. Die Programmiersprache bietet eine einmalige Kombination von Vorteilen gegenüber anderen populären Programmiersprachen: die Plattformunabhängigkeit wird durch die Verfügbarkeit von Interpretern sowohl für unixoide Betriebssysteme als auch Windows ermöglicht. Die Software liegt jederzeit im Quellcode vor und kann so einfach gewartet und erweitert werden. Des weiteren existiert aufgrund der hohen Popularität \cite{tiobe-python} eine reichhaltige Auswahl an Bibliotheken und Onlinedokumentationen, welche die Entwicklung der Software vereinfachen. 
 
-\section{Systemumgebung}
+\section{Anforderungen}
+
+\subsection{Systemumgebung}
 
 Die Software soll auf den nicht interaktiven Betrieb als Dienst auf unixoiden Betriebssystemen ausgelegt werden. Dies hat u.A. Auswirkungen auf die geplanten Benutzerschnittstellen. Das Programm soll zur Laufzeit keine Konsoleneingaben verlangen, da diese nur bei einem interaktiven Betrieb, z.B. in der Shell, vorgenommen werden können. Stattdessen soll mit dem Anwender vollständig über den Telegram-Messenger interagiert werden und administrative Einstellungen sollen über Konfigurationsdateien vorgenommen werden können. Zur Anwendung von geänderten Einstellungen ist u.U. ein Neustart der Software notwendig. Die Software sollte daher zustandslos arbeiten, um einen möglichen Verlust von eingegangenen und noch nicht verarbeiteten Daten zu verhindern. Weiterhin sollte die durch einen Neustart verursachte Ausfallzeit so gering wie möglich gehalten werden. Die Software soll Ereignismeldungen über die Standardausgabe sowie über eine textbasierte Protokolldatei ausgeben, um Fehleranalysen zu vereinfachen.
 
-\section{Systemanforderungen}
+\subsection{Systemkonfiguration}
 Für den Betrieb der Software ist eine vorinstallierte Python 3 Umgebung notwendig. Die benötigten Bibliotheken sollen über den Paketmanager pip bezogen und aktuell gehalten werden können. Auch wenn die Software auf den Betrieb als Dienst ausgelegt werden soll, soll eine interaktive Verwendung sowohl mit unixoiden Betriebssystemen als auch mit Windows möglich sein. Weiterhin muss eine Verbindung zum Internet über die Protokolle HTTP und HTTPS möglich sein, um mit externen Diensten kommunizieren zu können.
 
 \section{Programmablauf}
@@ -18,6 +20,8 @@ Für den Betrieb der Software ist eine vorinstallierte Python 3 Umgebung notwend
 \subsection{Grundsätzlicher Aufbau}
 
 Nach dem Start der Software muss geprüft werden, ob ein einwandfreier Betrieb möglich ist. Dazu ist es notwendig, die Erreichbarkeit und Funktion sämtlicher Dienste mittels geeigneter API-Abfragen zu prüfen. Nachdem die Vorbereitungen abgeschlossen sind, kann in den Regelbetrieb übergegangen werden, in welchem sich das Programm bis zum Programmende befindet. 
+
+\subsection{Regelbetrieb}
 
 Im Regelbetrieb reagiert die Software in Echtzeit auf eingehende Nachrichten vom Anwender. 
 Um den Betrieb der Software auch mit nicht-öffentlichen IP-Adressen (beispielsweise in einem Heimnetzwerk hinter einem NAT-Router oder einer Firewall) zu ermöglichen, soll das Verfahren des \lstinline{long-polling} für den Abruf von Informationen von der Telegram API verwendet werden.
