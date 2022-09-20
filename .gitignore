@@ -17,3 +17,5 @@ doc/tex/*.toc
 doc/tex/*.pdf
 doc/tex/*.bbl
 doc/tex/*.blg
+doc/tex/*.out
+
