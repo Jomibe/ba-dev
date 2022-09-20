@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm *.log *.aux *.bcf *.lof *.lol *.lot *.xml *.gz *.toc *.bbl *.blg
+rm *.log *.aux *.bcf *.lof *.lol *.lot *.xml *.gz *.toc *.bbl *.blg *.synctex\(busy\)
