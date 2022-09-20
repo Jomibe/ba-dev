@@ -26,13 +26,19 @@ Der Begriff Bot stammt von dem englischen Begriff robot ab und bezeichnet ein Pr
 
 Aufgrund der weitreichenden Möglichkeiten, der kostenlosen Benutzbarkeit und der auch für frequentierte Applikationen ausreichend dimensionierten Durchsatzratenbegrenzung \cite{telegram-bot-rate-limit} steht eine Vielzahl von Bots für die Benutzer der Plattform zur Verfügung. Als Beispiele seien genannt der Bot "WDR aktuell" <\lstinline{@WDRaktuell_bot}> für den Abruf von regionalen Informationen in Nordrhein-Westfalen, der von Google angebotene und daher als "verifiziert" markierte "Gmail Bot" <\lstinline{@GmailBot}> für den Nachrichtenabruf und das Senden von Antworten für Gmail sowie der Bot IFTTT <\lstinline{@IFTTT}>, welcher ebenfalls als "verifiziert" markiert wurde, da dieser vom Entwickler des Dienstes für Automatisierung und Verknüpfungen von Webanwendungen IFTTT ("if this then that") bereitgestellt wurde.
 
-\begin{figure}[hb!]
+\begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{verified_ifttt_bot}
 \caption{Verifizierter IFTTT-Bot in der Suche von Telegram für macOS.}
-\label{abb_einstein}
 \end{figure}
 
-\subsection{Beziehen von Aktualisierungen von der Telegram API}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{telegram-bot-beispiel}
+\caption{Interaktion mit dem Bot von WDR aktuell in Telegram für macOS.}
+\end{figure}
+
+\subsubsection{Beziehen von Aktualisierungen von der Telegram API}
+\label{sec:telegram-getting-updates}
 
 Laut der technischen Dokumentation der Telegram API \cite{telegram-getting-updates} stehen zwei Möglichkeiten zur Verfügung, um Aktualisierungen zu erhalten: \lstinline{long-polling} der API-Methode \lstinline{getUpdates()} oder die Verwendung eines \lstinline{webhooks}. Die beiden Möglichkeiten verwenden unterschiedliche Konzepte und bieten damit verschiedene Vor- und Nachteile. Im Fachbereich der Informatik steht der Begriff \lstinline{polling} für eine dauerhafte wiederkehrende Abfrage von Informationen bei einem Dienst. Diese Technik beansprucht viel CPU-Zeit eines Systems und wird aufgrund des geringen Gegenwerts der meist leer ausgehenden Abfragen als teuer bezeichnet. \lstinline{long-polling} beschreibt eine Technik, bei welcher der Client einer HTTP-Abfrage einen verlängerten Zeitraum bis zum Erhalt der Antwort vom Server akzeptiert, ohne die Abfrage aufgrund einer Zeitüberschreitung abzubrechen. Die Länge des Zeitraums ist variabel. \lstinline{long-polling} bietet damit gegenüber dem klassischen \lstinline{polling} den Vorteil, dass die benötigte Rechenzeit durch die verlängerten Abfragezeiträume stark reduziert wird. Die Software- und Betriebssystementwicklung bietet eine Technik, um die Verwendung von teurem \lstinline{polling} zu umgehen: die Verwendung von \lstinline{interrupts} oder \lstinline{callbacks} (zu deutsch "Rückruf"). Hierbei erhält der Absender der Anfrage eine Rückmeldung, sobald die Antwort vorliegt. Der Vorteil dieser Technik ist, dass nach dem Absenden der Anfrage keine CPU-Zeit seitens des Absenders notwendig ist. Es muss jedoch eine Möglichkeit vorhanden sein, den Absender im Falle einer eingehenden Antwort zum Vorgang zurückzuführen, sodass die weitere Bearbeitung möglich wird. Im Falle der Anbindung der Telegram API übernimmt dies der \lstinline{webhook}. Der \lstinline{webhook} muss (durch die Telegram-API) öffentlich aus dem Internet erreichbar und durch den Verwalter des Bots im Vorhinein durch eine entsprechenden URL definiert worden sein. Wird eine Nachricht an den Bot gesendet, prüft die Telegram-API, intern, ob Definitionen für webhooks vorliegen. Im positiven Fall sendet die Telegram API eine HTTP-Anfrage an die URL des webhooks mit den Details zur eingegangenen Nachricht. Nach Erhalt der Anfrage durch den webhook muss dieser die Daten zur verarbeitenden Software zurückführen und die weitere Bearbeitung auslösen.
