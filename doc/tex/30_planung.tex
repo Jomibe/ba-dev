@@ -39,3 +39,23 @@ Trifft eine Nachricht ein, muss wie folgt verfahren werden:
 \item Umwandeln des Texts in eine Audiodatei mittels Text-To-Speech
 \item Senden einer Antwort an den Absender der Nachricht. Audiodatei als Sprachnachricht der Nachricht anhängen.
 \end{enumerate}
+
+\subsection{Spracherkennung}
+
+Bei der Ausarbeitung eines Konzepts für die Funktionsweise der Spracherkennung müssen einige funktionale und nicht-funktionale Eigenschaften beachtet werden. Die Entscheidung wird u.A. beeinflusst durch Aspekte der... 
+
+\begin{itemize}
+\item Erweiterbarkeit: es soll einfach und insbesondere ohne ein notwendiges Training von Sprachmodellen möglich sein, neue Systeme und Abfragen zu definieren.
+\item Fehlertoleranz: gesprochene Sprache enthält Umgangssprache und verändert sich durch grammatikalische Eigenschaften je nach Satzbau leicht in der Aussprache. Die Erkennung muss trotz dieser Veränderungen zuverlässig funktionieren.
+\item Rechenkapazität: die Geschwindigkeit (Wartezeit während dem Vorgang) der Spracherkennung sollte nicht von limitierten Rechenressourcen oder der Länge der zu übersetzenden Sprache abhängen.
+\item finanziellen Kosten: diese sollten möglichst gering gehalten werden.
+\item Plattformunabhängigkeit: die Software und ggf. trainierte Modelle sollten wie die gewählte Programmiersprache Python plattformunabhängig und portabel sein.
+\item Nachvollziehbarkeit: während der Entwicklung und bei der Definition neuer Begriffe sollten auftretende Fehler einfach erkenn- und behebbar sein.
+\item Sprache: das System soll Sätze verstehen, welche Begriffe aus mehreren Sprachen (deutsch und englisch) beinhalten.
+\end{itemize}
+
+Es bestehen verschiedene Möglichkeiten, Sprache zu Text zu transkribieren und den Inhalt im Anschluss zu analysieren, um das Anliegen des Anwenders zu erkennen und eine passende Anfrage für die Suchmaschine in Graylog zu bilden. Für die Transkription ist es notwendig, künstliche Intelligenz einzusetzen. Diese kann lokal oder entfernt ausgeführt werden. Die entfernte Ausführung bietet Vorteile bezüglich der Plattformunabhängigkeit und der (von den lokalen Ressourcen unabhängigen) Geschwindigkeit.
+
+\subsubsection{Syntax}
+
+Liegt die eingegangene Nachricht als Text vor, müssen die Inhalte analysiert werden. Aufgrund des notwendigen Trainings für neue Begriffsdefinitionen ist der Einsatz von künstlicher Intelligenz bei dieser Programmkomponente nicht sinnvoll. Der Aufbau der Nachricht muss stattdessen einem festen Muster folgen, welches durch eine Prozedur analysiert werden kann. Hierzu eignet sich die Verwendung von Schlüsselwörtern. Diese bieten den Vorteil, dass keine Analyse der Grammatik notwendig ist. Um die Erweiterung zu vereinfachen, wird ein Aufbau aus Produktkategorie, Eigenschaft und Zeitraum gewählt. Die Produktkategorie entspricht der abzufragenden Gerätegruppe, beispielsweise \lstinline{Webserver}. Für jede Produktkategorie können Eigenschaften definiert werden, für die Abfrage von Ereignissen mit einem Statuscode \lstinline{4xx} oder \lstinline{5xx} der Gruppe \lstinline{Webserver} beispielsweise \lstinline{Fehlermeldungen}. Ein weiteres Schlüsselwort führt zu den Informationen für den abzufragenden Zeitraum, welcher relativ angegeben wird ("letzte fünf Tage", "letzte Woche", "letzte 20 Minuten")
