@@ -1,1 +1,11 @@
 \chapter{Implementierung}
+
+\section{Grundlegender Aufbau}
+
+Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode öffentlich bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten:
+
+Um die Installation des Programms zu vereinfachen, befindet sich eine Liste mit den Abhängigkeiten zu Bibliotheken von Drittanbietern in der Datei \lstinline{requirements.txt}. Diese Datei kann verwendet werden, um alle für die Ausführung benötigten Abhängigkeiten über den Paketmanager \lstinline{pip} aus dem Python Package Index \lstinline{PyPI} zu laden. Die Datei beinhaltet ebenfalls Angaben zu benötigten Softwareversionen.
+
+Die Programmkonfiguration wird über die Datei \lstinline{constants.py} vorgenommen. Diese beinhaltet Variablen, mit welchen der Ablauf des Programms gesteuert werden kann (beispielsweise können detaillierte Meldungen zum Programmablauf aktiviert oder bestimmte Telegram-Benutzer für den Zugriff auf den Bot autorisiert werden). Des Weiteren beinhaltet die Datei Variablen, welche zur Laufzeit mit Objektdefinitionen der boto3-Bibliothek überschrieben werden. Dies ermöglicht einen durchgehenden Zugriff auf die AWS-API ohne wiederkehrende Authentifizierungen.
+
+Sämtliche Zugangsdaten zu Telegram, Graylog und AWS werden in der Datei \lstinline{.env} hinterlegt. Die Datei wird nicht in das öffentliche GitHub-Repository hochgeladen.
