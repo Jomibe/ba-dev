@@ -90,23 +90,8 @@ Systemprotokolle aus Windows können nicht direkt verarbeitet werden. Es ist der
 
 Für die Verarbeitung der erfassten Daten stellt Graylog dem Systemadministrator eine Vielzahl von Möglichkeiten zur Verfügung, welche aufgrund der Fokussierung der Abschlussarbeit auf die Implementierung eines Bots für die Informationsabfrage aus Graylog mittels der angebotenen REST-API nur bezogen auf das Ziel der Abschlussarbeit erläutert werden. Nach der Erfassung der Daten über die konfigurierten Input-Kanäle werden diese in einer Elasticsearch Suchmaschine hinterlegt und nach vom Administrator definierten Filterausdrücken durchsucht. Schließlich sind die erfassten Nachrichten über die Weboberfläche durchsuchbar. Für die Suche wird eine an Apache Lucene (Programmbibliothek für Volltextsuche) angelehnte Syntax verwendet. Der Administrator kann Informationen mittels regulären Ausdrücken aus eingehenden Nachrichten extrahieren und die Graylog-Instanz so auf die zu überwachenden Applikationen anpassen. Beispielsweise kann der HTTP Statuscode eines Eintrags von einem Webserver extrahiert werden:
 
-\begin{lstlisting}[caption={Beispiel für eine Erfasste syslog-Meldung in Graylog.}, label=bsp-graylog-syslog]
-GET http://10.10.12.1:9000/api/cluster
-
-{
-  "12ac8e44-0c59-4c38-bd5e-4fe247a55893": {
-    "facility": "graylog-server",
-    "codename": "Noir",
-    "node_id": "12ac8e44-0c59-4c38-bd5e-4fe247a55893",
-    "cluster_id": "8421ad08-fe62-4a04-8576-a81cab1a9c55",
-    "version": "4.3.6+36120cf",
-    "started_at": "2022-09-10T23:15:05.435Z",
-    "hostname": "graylog.home.arpa",
-    "lifecycle": "running",
-    "lb_status": "alive",
-    "timezone": "Europe/Berlin",
-    "operating_system": "Linux 5.4.0-125-generic",
-    "is_processing": true
-  }
-}
-\end{lstlisting}
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{graylog-bsp-msg}
+\caption{Extrahieren von Daten aus eingehenden Meldungen in Graylog.}
+\end{figure}
