@@ -1,6 +1,6 @@
 \chapter{Implementierung}
 
-\section{Grundlegender Aufbau}
+\section{Struktur}
 
 Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Dazu wurde wie folgt vorgegangen:
 
@@ -12,7 +12,7 @@ Sämtliche Zugangsdaten zu Telegram, Graylog und AWS werden in der Datei \lstinl
 
 Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8 \footnote{https://peps.python.org/pep-0008/} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Für sämtliche Module und Funktionen sind \lstinline{Docstring}-Dokumentationen nach PEP 257 \footnote{https://peps.python.org/pep-0257/} im Quellcode vorhanden.
 
-\subsection{Module}
+\section{Module}
 
 Der Quellcode wurde in mehrere Module aufgeteilt:
 
@@ -28,16 +28,16 @@ Der Quellcode wurde in mehrere Module aufgeteilt:
 \item \lstinline{store}: Dieses Modul enthält Funktionen, welche für die Persistierung von Informationen notwendig sind. Die Telegram-API verwendet einen Zahlenwert, welcher für jede Aktualisierung um einen Schritt inkrementiert wird. Ruft der Client Aktualisierungen von der API ab, erhält er den derzeitigen Stand als Wert der \lstinline{update_id} (vgl. \autoref{lst:bsp-telegram-api}, Zeile 7). Bei weiteren Anfragen an die API gibt der Client die \lstinline{update_id} an, um nur Aktualisierungen zu erhalten, die seit der letzten Abfrage eingetroffen sind (und daher einen höheren Wert der \lstinline{update_id} haben). Die \lstinline{update_id} wird nach jeder Abfrage in einer Textdatei in das lokale Dateisystem geschrieben.
 \end{itemize}
 
-\subsection{Protokollierung}
+\section{Protokollierung}
 \label{sec:protokollierung}
 
 Für die Protokollierung wurde ein selbstentwickeltes Programmmodul erweitert. Als Grundlage diente das Modul \lstinline{debugging} des GitHub-Projekts \lstinline{Jomibe/wireguard-config-generator} \footnote{https://github.com/Jomibe/wireguard-config-generator/blob/main/src/debugging.py}. Die Funktion \lstinline{console()} des Moduls wird verwendet, um die Ausgabe von Statusmeldungen zentral zu koordinieren. Alle Statusmeldungen werden in einer Textdatei hinterlegt, wessen Pfad in der Datei \lstinline{config.py} konfiguriert wird. Ist der \lstinline{DEBUG}-Modus aktiv, erscheinen alle Meldungen zusätzlich auf der Konsole. Ist die Fehlermeldung mit dem Parameter \lstinline{secret} gekennzeichnet, erfolgt keine Protokollierung in der Textdatei. Werden Meldungen auf der Konsole ausgegeben, werden diese gemäß dem Schweregrad farblich markiert: Fehler werden rot markiert, Warnungen gelb, Erfolgsmeldungen grün und Infomeldungen blau. Parameternamen können farblich abgesetzt werden.
 
-\subsection{Startvorgang}
+\section{Startvorgang}
 \label{sec:startvorgang}
 
 Das Modul \lstinline{main} enthält die Methode \lstinline{main()}, welche den Startpunkt des Programms darstellt. In der Vorbereitungsphase (vgl. \autoref{sec:grundsaetzlicher-aufbau}) wird zuerst die Programmbibliothek \lstinline{colorama} initialisiert. Dies ist notwendig, um die Steuerung der Farbausgabe auf der Konsole an das zur Laufzeit verwendete Betriebssystem anzupassen \footnote{https://github.com/tartley/colorama\#initialisation}. Nach der Initialisierung wird die Funktion \lstinline{prepare()} aus dem Modul \lstinline{preparing} aufgerufen. Diese Funktion stellt einen sogenannten \lstinline{Hook} dar, welcher sämtliche Prüfungen vor Beginn des Regelbetriebs beinhaltet. Wird eine Prüfung nicht erfolgreich abgeschlossen, gibt \lstinline{prepare()} den Wert \lstinline{False} zurück und der Programmablauf wird nach Ausgabe einer detaillierten Fehlermeldung abgebrochen. Falls kein Fehlerstatus zurückgegeben wird, wird zum Regelbetrieb übergegangen. Dieser besteht aus einer Endlosschleife, in welcher die Funktion \lstinline{check_updates()} des Moduls \lstinline{telegram} aufgerufen wird.
 
-\subsection{Regelbetrieb}
+\section{Regelbetrieb}
 
 Im Regelbetrieb wird die Funktion \lstinline{getUpdates} der Telegram-API mittels \lstinline{long-polling} aufgerufen. Der Wert für den Ablauf der HTTP-Anfrage kann mittels des Parameters \lstinline{TELEGRAM_LONG_POLL_TIMEOUT} verändert werden, standardmäßig sind 30 Sekunden eingestellt.
