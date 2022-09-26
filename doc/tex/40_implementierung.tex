@@ -64,4 +64,63 @@ Die Dauer des Text-To-Speech Vorgangs wurde in ähnlicher Weise optimiert wie di
 
 \subsection{Verarbeitung des Nachrichtentexts}
 
-Die weitere Verarbeitung des Nachrichtentexts erfolgt nach dem zuvor definierten Modell (vgl. \autoref{sec:syntax}) aus Produktkategorie, Eigenschaft und Zeitraum. Die Schlüsselwörter für die drei zu erkennenden Werte können über \lstinline{constants.KEYWORDS*} festgelegt werden.
+Die weitere Verarbeitung des Nachrichtentexts erfolgt nach dem zuvor definierten Modell (vgl. \autoref{sec:syntax}) aus Produktkategorie, Eigenschaft und Zeitraum. Die Schlüsselwörter für die drei zu erkennenden Werte können über \lstinline{constants.KEYWORDS*} festgelegt werden. Voreingestellt für die Produktkategorie sind \lstinline{Typ} und \lstinline{Kategorie}, für die Eigenschaft die Schlüsselwörter \lstinline{bezüglich} und \lstinline{in Sachen} und für den Zeitraum \lstinline{Zeitraum} und \lstinline{seit}. Die Software ermittelt beim Startvorgang, wie viele Wörter die Bezeichnungen für Produktkategorie und Eigenschaft maximal umfassen (hat eine Produktkategorie die Eigenschaften \lstinline{Unerreichbarkeit} und \lstinline{Interne Fehler}, entspricht die maximale Länge der Bezeichnungen von Eigenschaften der Anzahl zwei). Die Texterkennung prüft nun im ersten Schritt, ob die eingegangene Nachricht jeweils ein Schlüsselwort für die Produktkategorie, Eigenschaft und den Zeitraum enthält. Im nächsten Schritt werden die auf die Schlüsselwörter folgenden Wörter für die Weiterverarbeitung erfasst. Dabei werden so viele Wörter gespeichert, wie beim Startvorgang ermittelt. Zur Erläuterung:
+
+\begin{lstlisting}[caption={Auszug aus der Datei config.toml}, label=config-toml]
+[Webserver]
+"Zugriffe" = "http_response_code: 200"
+"Interne Fehler" = "http_response_code:[500 TO 599]"
+\end{lstlisting}
+
+Die maximale Länge von Bezeichnungen der Produktkategorie ist \textbf{1}. Die maximale Länge von Bezeichnungen der Eigenschaft ist \textbf{2}.
+
+Nachricht: "Ich benötige Informationen zu Systemen vom \lstinline{Typ} \underline{Webserver} \lstinline{bezüglich} \underline{Zugriffe \lstinline{Zeitraum}} 24 Stunden"
+
+\begin{itemize}
+\item Produktkategorie: Schlüsselwort \lstinline{Typ}, folgende \textbf{1} Wörter: \underline{Webserver}
+\item Eigenschaft: Schlüsselwort \lstinline{bezüglich}, folgende \textbf{2} Wörter: \underline{Zugriffe Zeitraum}
+\end{itemize}
+
+Nun prüft die Software, ob zu den erfassten Daten Einträge in der Datei \lstinline{config.toml} bestehen. Im obigen Fall führt \underline{Webserver} durch direkte Übereinstimmung mit der ersten TOML-Sektion zu einem Fund. Im Folgenden werden die Eigenschaften der ermittelten Produktkategorie auf Übereinstimmung mit \underline{Zugriffe Zeitraum} verglichen. Eine solche Eigenschaft existiert nicht. Besteht der erfasste Wert aus mehr als einem Wort, wird das letzte Wort entfernt. Aus \underline{Zugriffe Zeitraum} wird \underline{Zugriffe}. Damit gibt es eine direkte Übereinstimmung zu Zeile 2 des obigen Listings. Die Software entnimmt der Datenstruktur den Suchbegriff \lstinline{http_response_code: 200} und startet eine Abfrage an die Graylog-API.
+
+Der Zeitraum wird in ähnlicher Form ermittelt. Hierbei wird die Anzahl der zu erfassenden Wörter auf die Anzahl zwei festgelegt. Das zweite Wort entspricht der Zeiteinheit, das erste Wort entspricht der Anzahl der Zeiteinheit. Die Texterkennung der Anzahl erkennt sowohl Zahlen als auch Zahlwörter ("ein", "eine", "letzte"). Wurde eine Übereinstimmung bei der Erkennung beider Werte erreicht, wird die Anzahl der Sekunden berechnet (zwei Tage entsprechen 60s*60*24*2 = 172800s) und der Anfrage an die Graylog-API angehängt.
+
+\begin{lstlisting}[caption={Anfrage der Software an Graylog mit den ermittelten Daten}, label=config-toml]
+GET http://10.10.12.1:9000/api/views/search/messages
+
+{
+"streams": [
+"000000000000000000000001"
+],
+"timerange": [
+"relative",
+{
+"range": "172800"
+}
+],
+"query_string": { "type":"elasticsearch", "query_string":"http_response_code: 200" }
+}
+\end{lstlisting}
+
+Der Benutzer erhält eine spezifische Fehermeldung für den Fall, dass
+
+\begin{itemize}
+\item die Produktkategorie nicht ermittelt werden konnte
+\item die Produktkategorie ermittelt werden konnte, aber die Eigenschaft nicht
+\item der Zeitraum nicht ermittelt werden konnte
+\end{itemize}
+
+Die Antwort der Graylog-API erfolgt in einem JSON-Objekt, welches sämtliche auf den Suchbegriff und Zeitraum passende Ereignisse beinhaltet. Die Software bestimmt die Anzahl der Ereignisse und gibt diese an den Benutzer zurück. Im Anschluss wird die nächste Nachricht verarbeitet.
+
+\subsubsection{Implementierung von Aliasdefinitionen}
+
+Um die Erkennung von Begriffen und die Erweiterbarkeit des Zuordnungssystems in der Datei \lstinline{config.toml} zu verbessern, wurden Alias-Bezeichnungen für Produktkategorien und Eigenschaften implementiert. Ein Alias einer Produktkategorie übernimmt sämtliche Eigenschaften der Zieldefinition. Ein Alias einer Eigenschaft übernimmt den Suchbegriff der Zieldefinition. Im folgenden Listing führt die Eigenschaft Besucher der Produktkategorie eins zum Suchbegriff \lstinline{http_response_code: 200}
+
+\begin{lstlisting}[caption={Aliasdefinitionen in der Datei config.toml}, label=alias-config-toml]
+[Webserver]
+"Besucher Zugriffe" = "http_response_code: 200"
+"Besucher" = "::ALIAS::Besucher Zugriffe"
+
+[Eins]
+"::ALIAS::" = "Webserver"
+\end{lstlisting}
