@@ -19,3 +19,4 @@ doc/tex/*.bbl
 doc/tex/*.blg
 doc/tex/*.out
 
+*.synctex(busy)
