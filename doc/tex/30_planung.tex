@@ -27,19 +27,15 @@ Nach dem Start der Software muss geprüft werden, ob ein einwandfreier Betrieb m
 Im Regelbetrieb reagiert die Software in Echtzeit auf eingehende Nachrichten vom Anwender. 
 Um den Betrieb der Software auch mit nicht-öffentlichen IP-Adressen (beispielsweise in einem Heimnetzwerk hinter einem NAT-Router oder einer Firewall) zu ermöglichen, soll das Verfahren des 'long-polling' für den Abruf von Informationen von der Telegram API verwendet werden (vgl. \autoref{sec:telegram-getting-updates}).
 
-Trifft eine Nachricht ein, muss wie folgt verfahren werden: 
+Der geplante Ablauf des Regelbetriebs ist in folgendem Sequenzdiagramm abgebildet:
 
-\begin{enumerate}
-\item Benutzerautorisierung prüfen (der Bot ist öffentlich erreichbar, eine Zugriffsbeschränkung seitens Telegram ist nicht vorgesehen)
-\item Prüfung der Nachrichtenbestandteile
-\subitem 2.1 Bei einer Sprachnachricht: Transkribieren der Audiodatei in Text
-\item Erfassung der für eine Abfrage notwendigen Informationen
-\item Stellen der Abfrage an das Graylog-Backend
-\item Erhalten einer Antwort vom Graylog-Backend
-\item Einbetten der erhaltenen Rohdaten in einen Nachrichtentext
-\item Umwandeln des Texts in eine Audiodatei mittels Text-To-Speech
-\item Senden einer Antwort an den Absender der Nachricht. Audiodatei als Sprachnachricht der Nachricht anhängen.
-\end{enumerate}
+\newpage
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{dia-seq}
+\caption{Sequenzdiagramm für Regelbetrieb.}
+\end{figure}
 
 \subsection{Spracherkennung}
 
