@@ -17,7 +17,21 @@ Sämtliche Zugangsdaten zu Telegram, Graylog und AWS werden in der Datei \lstinl
 
 Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8 \footnote{https://peps.python.org/pep-0008/} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Für sämtliche Module und Funktionen sind \lstinline{Docstring}-Dokumentationen nach PEP 257 \footnote{https://peps.python.org/pep-0257/} im Quellcode vorhanden.
 
+\section{Dateisystem}
+
+Nachfolgend wird die Struktur der für den Betrieb notwendigen Ordner und Dateien erläutert.
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.7]{dateisystem}
+\caption{Gekürzte Ausgabe des Programms 'tree' im Basisverzeichnis.}
+\label{fig:dateisystem}
+\end{figure}
+
+In absteigender Reihenfolge: die Datei \lstinline{.env} beinhaltet sensible Zugangsdaten für die verschiedenen APIs. Das Verzeichnis \lstinline{files} dient als Zwischenspeicher für anfallende Audiodateien, welche aus den eingehenden Sprachnachrichten extrahiert wurden oder per Sprachsynthese erzeugt wurden. Im Verzeichnis \lstinline{log} werden die textbasierten Protokolle der Software gespeichert. Zu jedem Start der Software wird eine neue Datei mit dem aktuellen Datum erzeugt. Die Inhalte der Dateien entsprechen der Konsolenausgabe mit der Ausnahme, dass sensible Daten nur in der Konsolenausgabe ausgegeben werden. Die Datei requirements.txt beinhaltet Angaben für den Paketmanager pip, mit welchem die Abhängigkeiten aus dem Python Package Index installiert werden können. Der Ordner \lstinline{src} (Abkürzung für engl. 'source', zu deutsch 'Quelle') beinhaltet den Quellcode. Die Datei \lstinline{__init__.py} ist notwendig für die Moduldefinitionen in Python und hat keinen Inhalt. Weitere Dateien im Quellcode-Verzeichnis entsprechen den Modulen und werden in \autoref{sec:module} detaillierter erläutert. Schließlich wird die Datei \lstinline{store.txt} für die Persistierung des Werts für den Parameter update\_id der Telegram Bot API verwendet.
+
 \section{Module}
+\label{sec:module}
 
 Der Quellcode wurde in mehrere Module aufgeteilt:
 
