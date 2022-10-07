@@ -7,17 +7,9 @@ Die Software soll in der Skriptsprache Python entwickelt werden. Für die Entsch
 
 \section{Struktur}
 
-Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Dazu wurde wie folgt vorgegangen:
+Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Die Unterteilung der für den Betrieb notwendigen Dateien inkl. des Quellcodes wird in den folgenden beiden Unterkapiteln beschrieben. Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8 \footnote{https://peps.python.org/pep-0008/} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Für sämtliche Module und Funktionen sind \lstinline{Docstring}-Dokumentationen nach PEP 257 \footnote{https://peps.python.org/pep-0257/} im Quellcode vorhanden.
 
-Um die Installation des Programms zu vereinfachen, befindet sich eine Liste mit den Abhängigkeiten zu Bibliotheken von Drittanbietern in der Datei \lstinline{requirements.txt}. Diese Datei kann verwendet werden, um alle für die Ausführung benötigten Abhängigkeiten über den Paketmanager \lstinline{pip} aus dem Python Package Index \lstinline{PyPI} zu laden. Die Datei beinhaltet ebenfalls Angaben zu benötigten Softwareversionen.
-
-Die Programmkonfiguration wird über die Datei \lstinline{constants.py} vorgenommen. Diese beinhaltet Variablen, mit welchen der Ablauf des Programms gesteuert werden kann (beispielsweise können detaillierte Meldungen zum Programmablauf aktiviert oder bestimmte Telegram-Benutzer für den Zugriff auf den Bot autorisiert werden). Des Weiteren beinhaltet die Datei Variablen, welche zur Laufzeit mit Objektdefinitionen der boto3-Bibliothek überschrieben werden. Dies ermöglicht einen durchgehenden Zugriff auf die AWS-API ohne wiederkehrende Authentifizierungen.
-
-Sämtliche Zugangsdaten zu Telegram, Graylog und AWS werden in der Datei \lstinline{.env} hinterlegt. Die Datei wird nicht in das öffentliche GitHub-Repository hochgeladen.
-
-Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8 \footnote{https://peps.python.org/pep-0008/} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Für sämtliche Module und Funktionen sind \lstinline{Docstring}-Dokumentationen nach PEP 257 \footnote{https://peps.python.org/pep-0257/} im Quellcode vorhanden.
-
-\section{Dateisystem}
+\subsection{Dateisystem}
 
 Nachfolgend wird die Struktur der für den Betrieb notwendigen Ordner und Dateien erläutert.
 
@@ -28,9 +20,9 @@ Nachfolgend wird die Struktur der für den Betrieb notwendigen Ordner und Dateie
 \label{fig:dateisystem}
 \end{figure}
 
-In absteigender Reihenfolge: die Datei \lstinline{.env} beinhaltet sensible Zugangsdaten für die verschiedenen APIs. Das Verzeichnis \lstinline{files} dient als Zwischenspeicher für anfallende Audiodateien, welche aus den eingehenden Sprachnachrichten extrahiert wurden oder per Sprachsynthese erzeugt wurden. Im Verzeichnis \lstinline{log} werden die textbasierten Protokolle der Software gespeichert. Zu jedem Start der Software wird eine neue Datei mit dem aktuellen Datum erzeugt. Die Inhalte der Dateien entsprechen der Konsolenausgabe mit der Ausnahme, dass sensible Daten nur in der Konsolenausgabe ausgegeben werden. Die Datei requirements.txt beinhaltet Angaben für den Paketmanager pip, mit welchem die Abhängigkeiten aus dem Python Package Index installiert werden können. Der Ordner \lstinline{src} (Abkürzung für engl. 'source', zu deutsch 'Quelle') beinhaltet den Quellcode. Die Datei \lstinline{__init__.py} ist notwendig für die Moduldefinitionen in Python und hat keinen Inhalt. Weitere Dateien im Quellcode-Verzeichnis entsprechen den Modulen und werden in \autoref{sec:module} detaillierter erläutert. Schließlich wird die Datei \lstinline{store.txt} für die Persistierung des Werts für den Parameter update\_id der Telegram Bot API verwendet.
+In absteigender Reihenfolge: die Datei \lstinline{.env} beinhaltet sensible Zugangsdaten für die verschiedenen Dienste und wird nicht in das öffentliche GitHub-Repository hochgeladen. Das Verzeichnis \lstinline{files} dient als Zwischenspeicher für anfallende Audiodateien, welche aus den eingehenden Sprachnachrichten extrahiert wurden oder per Sprachsynthese erzeugt wurden. Im Verzeichnis \lstinline{log} werden die textbasierten Protokolle der Software gespeichert. Zu jedem Start der Software wird eine neue Datei mit dem aktuellen Datum erzeugt. Die Inhalte der Dateien entsprechen der Konsolenausgabe mit der Ausnahme, dass sensible Daten nur in der Konsolenausgabe ausgegeben werden. Die Datei requirements.txt dient als Informationsquelle für den Paketmanager pip, mit welchem die Abhängigkeiten aus dem Python Package Index installiert werden können. Sie beinhaltet Namen und Versionsnummern von externen Softwaremodulen. Der Ordner \lstinline{src} (Abkürzung für engl. 'source', zu deutsch 'Quelle') beinhaltet den Quellcode. Die Datei \lstinline{__init__.py} ist notwendig für die Moduldefinitionen in Python und hat keinen Inhalt. Weitere Dateien im Quellcode-Verzeichnis entsprechen den Modulen und werden in \autoref{sec:module} detaillierter erläutert. Schließlich wird die Datei \lstinline{store.txt} für die Persistierung des Werts für den Parameter update\_id der Telegram Bot API verwendet.
 
-\section{Module}
+\subsection{Module}
 \label{sec:module}
 
 Der Quellcode wurde in mehrere Module aufgeteilt:
