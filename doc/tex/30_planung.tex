@@ -47,7 +47,58 @@ Bei der Ausarbeitung eines Konzepts für die Funktionsweise der Spracherkennung 
 \item Sprache: das System soll Sätze verstehen, welche Begriffe aus mehreren Sprachen (deutsch und englisch) beinhalten.
 \end{itemize}
 
-Es bestehen verschiedene Möglichkeiten, Sprache zu Text zu transkribieren und den Inhalt im Anschluss zu analysieren, um das Anliegen des Anwenders zu erkennen und eine passende Anfrage für die Suchmaschine in Graylog zu bilden. Für die Transkription ist es notwendig, künstliche Intelligenz einzusetzen. Diese kann lokal oder entfernt ausgeführt werden. Die entfernte Ausführung bietet Vorteile bezüglich der Plattformunabhängigkeit und der (von den lokalen Ressourcen unabhängigen) Geschwindigkeit. Es stehen verschiedene gleichwertige Online-Dienste für die Transkription zur Verfügung, darunter 'Watson Speech to Text' von IBM und 'Amazon Transcribe' von AWS.
+Es bestehen verschiedene Möglichkeiten, Sprache zu Text zu transkribieren und den Inhalt im Anschluss zu analysieren, um das Anliegen des Anwenders zu erkennen und eine passende Anfrage für die Suchmaschine in Graylog zu bilden. Für die Transkription ist es notwendig, künstliche Intelligenz einzusetzen. Diese kann lokal oder entfernt ausgeführt werden. Die entfernte Ausführung bietet Vorteile bezüglich der Plattformunabhängigkeit und der (von den lokalen Ressourcen unabhängigen) Geschwindigkeit. Es stehen verschiedene Online-Dienste für die Transkription zur Verfügung, darunter 'Watson Speech to Text' von IBM, 'Amazon Transcribe' von AWS und 'Speech-To-Text' von Google Cloud. 
+
+\newpage
+
+\subsubsection{Vergleich diverser Transktriptionsdienste}
+
+Die Umwandlungsgenauigkeit der genannten Dienste soll mit einem Testset bestehend aus umzuwandelnden Audiodateien mit möglichen Sprachanfragen geprüft werden. Dazu wurden 11 Sprachnachrichten über die Telegram App für iOS auf einem iPhone aufgenommen. Im Anschluss wurden die Audiodaten von der Telegram API extrahiert, sodass diese im OGG-Format vorlagen. Die drei Dienste bevorzugen jeweils andere Audioformate, daher wurden die Dateien aus dem OGG-Format (für das Produkt von Google) ebenfalls in das MP3- (für das Produkt von AWS) und das FLAC-Format (für das Produkt von IBM) umgewandelt. Schließlich wurden jeweils 11 Audiodateien über eine Webkonsole, welche von allen Anbietern angeboten wurde \footnote{\url{https://eu-central-1.console.aws.amazon.com/transcribe/home?region=eu-central-1\#createJob}} \footnote{\url{https://speech-to-text-demo.ng.bluemix.net}} \footnote{\url{https://cloud.google.com/speech-to-text}}, an den Dienst übermittelt. Die Webkonsolen verwendeten jeweils die APIs, welche ebenfalls für den programmgesteuerten Zugriff verwendet werden. Die Ergebnisse werden in der \autoref{tab:erg-transkrip} abgebildet:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[scale=0.5]{feier-wohl}
+\caption{Eingabemaske von IBM Watson Speech to Text nach Bearbeitung von Testset06.}
+\label{fig:feier-wohl}
+\end{figure}
+
+Die Audionachrichten beinhalten folgende gesprochene Texte: \\
+Testset01: "Typ Webserver Eigenschaft Fehler Zeitraum 24 Stunden" \\
+Testset02: "Typ Webserver bezüglich Erreichbarkeit Zeitraum 24 Stunden" \\
+Testset03: "Dies ist ein weiterer Test" \\
+Testset04: "Typ Webserver bezüglich Besucherzugriffe Zeitraum 24 Stunden" \\
+Testset05: "Typ Webserver bezüglich Besucherzugriffe Zeitraum 24 Stunden" \\
+Testset06: "Ich benötige Informationen zu Systemen vom Typ Firewall im Zeitraum 24 Stunden bezüglich blockierte Pakete" \\
+Testset07: "Typ eins bezüglich drei Zeitraum ein Tag" \\
+Testset08: "Typ eins bezüglich drei Zeitraum ein Tag" \\
+Testset09: "Typ Webserver Zeitraum 24 Stunden bezüglich Erreichbarkeit" \\
+Testset10: "Typ Webserver Zeitraum 24 Stunden bezüglich Erreichbarkeit" \\
+Testset11: "Typ Mailserver bezüglich empfangene Mails Zeitraum ein Jahr" \\
+
+
+\begin{table}[hb!]
+\centering
+\begin{tabular}{ccccc}
+Nummer 		& AWS	& Google		& IBM \\
+01			& n.i.O.	& i.O.		& i.O. \\
+02			& i.O.	& i.O.		& n.i.O. \\
+03			& i.O.	& i.O.		& n.i.O. \\
+04			& i.O.	& i.O.		& i.O. \\
+05			& n.i.O.	& n.i.O.		& n.i.O. \\
+06			& i.O.	& i.O.		& n.i.O. \\
+07			& i.O.	& i.O.		& n.i.O. \\
+08			& i.O.	& i.O.		& n.i.O. \\
+09			& i.O.	& i.O.		& n.i.O. \\
+10			& i.O.	& n.i.O.		& n.i.O. \\
+11			& i.O.	& i.O.		& n.i.O. \\
+\hline
+Summe Fehler	& 2		& 2			& 9
+\end{tabular}
+\caption{Ergebnisse der Transkriptionsaufträge.}
+\label{tab:erg-transkript}
+\end{table}
+
+\FloatBarrier
 
 \subsubsection{Syntax}
 \label{sec:syntax}
