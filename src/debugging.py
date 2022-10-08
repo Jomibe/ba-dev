@@ -120,7 +120,7 @@ def get_time_stamp(pretty):
     if pretty:  # für die Ausgabe auf der Konsole
         return now.strftime("%d. %b, %H:%M:%S:%f")
     else:  # für die Verwendung im Dateinamen
-        return now.strftime("%y%m%d-%S%M%H")
+        return now.strftime("%y%m%d-%H%M%S")
 
 
 class Mode:
