@@ -51,7 +51,7 @@ Es bestehen verschiedene Möglichkeiten, Sprache zu Text zu transkribieren und d
 
 \newpage
 
-\subsubsection{Vergleich diverser Transktriptionsdienste}
+\subsubsection{Vergleich diverser Transkriptionsdienste}
 
 Die Umwandlungsgenauigkeit der genannten Dienste soll mit einem Testset bestehend aus umzuwandelnden Audiodateien mit möglichen Sprachanfragen geprüft werden. Dazu wurden 11 Sprachnachrichten über die Telegram App für iOS auf einem iPhone aufgenommen. Im Anschluss wurden die Audiodaten von der Telegram API extrahiert, sodass diese im OGG-Format vorlagen. Die drei Dienste bevorzugen jeweils andere Audioformate, daher wurden die Dateien aus dem OGG-Format (für das Produkt von Google) ebenfalls in das MP3- (für das Produkt von AWS) und das FLAC-Format (für das Produkt von IBM) umgewandelt. Schließlich wurden jeweils 11 Audiodateien über eine Webkonsole, welche von allen Anbietern angeboten wurde \footnote{\url{https://eu-central-1.console.aws.amazon.com/transcribe/home?region=eu-central-1\#createJob}} \footnote{\url{https://speech-to-text-demo.ng.bluemix.net}} \footnote{\url{https://cloud.google.com/speech-to-text}}, an den Dienst übermittelt. Die Webkonsolen verwendeten jeweils die APIs, welche ebenfalls für den programmgesteuerten Zugriff verwendet werden. Die Ergebnisse werden in der \autoref{tab:erg-transkrip} abgebildet:
 
