@@ -48,6 +48,8 @@ Für die Protokollierung wurde ein selbstentwickeltes Programmmodul erweitert. A
 
 Alle Statusmeldungen werden in einer Textdatei hinterlegt, wessen Pfad in der Datei 'config.py' konfiguriert wird. Ist der \lstinline{DEBUG}-Modus aktiv, erscheinen alle Meldungen zusätzlich auf der Konsole. Ist die Fehlermeldung mit dem Parameter \lstinline{secret} gekennzeichnet, erfolgt keine Protokollierung in der Textdatei. Werden Meldungen auf der Konsole ausgegeben, werden diese gemäß dem Schweregrad farblich markiert. Dazu wird das Modul 'colorama' \footnote{\url{https://pypi.org/project/colorama/}} verwendet.
 
+Bei der Formulierung der Fehlermeldungen wurden einige Anforderungen beachtet (vgl. \cite[S. 495]{ux}): 
+
 Im Anhang befinden sich zwei Listings mit den Konsolenausgaben des Programms beim Start (\autoref{log-start}) und beim Verarbeiten einer eingegangenen Nachricht (\autoref{log-msg}).
 
 \section{Startvorgang}
