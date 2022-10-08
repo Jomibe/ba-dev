@@ -1,0 +1,207 @@
+\chapter{Anhang}
+\label{cha:anhang}
+
+\begin{lstlisting}[caption={Konsolenausgabe beim Start des Programms}, label=log-start, xleftmargin=6mm]
+Info: Detaillierte Ausgaben zum Programmablauf sind eingeschaltet. 
+Info: Starte Vorbereitungen... 
+Info: Bereite die Protokollaufzeichnung in eine Datei vor 
+Erfolg: Name für die Protolldatei: log/**entfernt**.log 
+Info: TELEGRAM_BOT_TOKEN = **entfernt** 
+Info: GRAYLOG_USERNAME = **entfernt**
+Info: GRAYLOG_PASSWORD = **entfernt**
+Info: AWS_ACCESS_KEY_ID = **entfernt**
+Info: AWS_SECRET_ACCESS_KEY = **entfernt**
+Info: AWS_S3_BUCKET_NAME = **entfernt**
+Info: AWS_S3_BUCKET_VOICE_DIR = voice/ 
+Info: AWS_REGION = eu-central-1 
+Info: Prüfung der Verbindung zur Telegram API... 
+Erfolg: Telegram API ist in 172.857ms erreichbar 
+Info: Prüfung der Verbindung zur Graylog API... 
+Info: Abrufen eines weiteren temporären Authentifizierungsschlüssels für Graylog... 
+Erfolg: Authentifizierungsschlüssel **entfernt** erfolgreich bezogen 
+Erfolg: Graylog API ist erreichbar 
+Info: Stelle Verbindung zu AWS Transcribe in der Region eu-central-1 her 
+Info: Prüfe Verbindung zu AWS Polly in der Region eu-central-1 
+Erfolg: Verbindung zu AWS Polly aufgebaut 
+Info: Wiederherstellen der aktuellen update_id... 
+Erfolg: Wiederherstellung der aktuellen update_id **entfernt** abgeschlossen. 
+Info: Importiere Inhalt der Datei config.toml 
+Erfolg: Import erfolgreich 
+Info: Prüfe auf Aliase 
+Info: Prüfe auf Alias bei Wert http_response_code: 200 von Eigenschaft Besucher Zugriffe 
+Info: Prüfe auf Alias bei Wert ::ALIAS::Besucher Zugriffe von Eigenschaft Besucher 
+Erfolg: Eigenschafts-Alias Besucher mit Ziel Besucher Zugriffe erkannt 
+Info: Verbinde Ziel Besucher Zugriffe mit Quelle Besucher 
+Info: Prüfe auf Alias bei Wert http_response_code:[500 TO 599] von Eigenschaft Interne Fehler 
+Info: Prüfe auf Alias bei Wert ::ALIAS::Besucher von Eigenschaft Fehler 
+Erfolg: Eigenschafts-Alias Fehler mit Ziel Besucher erkannt 
+Info: Verbinde Ziel Besucher mit Quelle Fehler 
+Info: Prüfe auf Alias bei Wert ::ALIAS::Fehler von Eigenschaft drei 
+Erfolg: Eigenschafts-Alias drei mit Ziel Fehler erkannt 
+Info: Verbinde Ziel Fehler mit Quelle drei 
+Info: Prüfe auf Alias bei Wert http_response_code:[400 TO 499] von Eigenschaft Erreichbarkeit 
+Info: Prüfe auf Alias bei Wert ::ALIAS::Erreichbarkeit von Eigenschaft Verfügbarkeit 
+Erfolg: Eigenschafts-Alias Verfügbarkeit mit Ziel Erreichbarkeit erkannt 
+Info: Verbinde Ziel Erreichbarkeit mit Quelle Verfügbarkeit 
+Info: Prüfe auf Alias bei Wert ::ALIAS::fuenf von Eigenschaft vier 
+Erfolg: Eigenschafts-Alias vier mit Ziel fuenf erkannt 
+Info: Verbinde Ziel fuenf mit Quelle vier 
+Info: Prüfe auf Alias bei Wert ::ALIAS::vier von Eigenschaft fuenf 
+Erfolg: Eigenschafts-Alias fuenf mit Ziel vier erkannt 
+Info: Verbinde Ziel vier mit Quelle fuenf 
+Erfolg: Typ-Alias Eins mit Ziel Webserver erkannt 
+Info: Stelle Verbindung zum Zieltyp Webserver her 
+Info: Der Typ Eins -> Webserver wurde verknüpft 
+Info: Prüfe auf Alias bei Wert http_response_code: 200 von Eigenschaft Besucher Zugriffe 
+Info: Prüfe auf Alias bei Wert http_response_code: 200 von Eigenschaft Besucher 
+Info: Prüfe auf Alias bei Wert http_response_code:[500 TO 599] von Eigenschaft Interne Fehler 
+Info: Prüfe auf Alias bei Wert http_response_code: 200 von Eigenschaft Fehler 
+Info: Prüfe auf Alias bei Wert http_response_code: 200 von Eigenschaft drei 
+Info: Prüfe auf Alias bei Wert http_response_code:[400 TO 499] von Eigenschaft Erreichbarkeit 
+Info: Prüfe auf Alias bei Wert http_response_code:[400 TO 499] von Eigenschaft Verfügbarkeit 
+Info: Prüfe auf Alias bei Wert ::ALIAS::vier von Eigenschaft vier 
+Erfolg: Eigenschafts-Alias vier mit Ziel vier erkannt 
+Info: Verbinde Ziel vier mit Quelle vier 
+Info: Prüfe auf Alias bei Wert ::ALIAS::vier von Eigenschaft fuenf 
+Erfolg: Eigenschafts-Alias fuenf mit Ziel vier erkannt 
+Info: Verbinde Ziel vier mit Quelle fuenf 
+Info: Prüfe auf Alias bei Wert INBOX von Eigenschaft Empfangenene Mails 
+Info: Prüfe auf Alias bei Wert "NOQUEUE: reject" von Eigenschaft Blockierte Mails 
+Erfolg: Typ-Alias Zwei mit Ziel Mailserver erkannt 
+Info: Stelle Verbindung zum Zieltyp Mailserver her 
+Info: Der Typ Zwei -> Mailserver wurde verknüpft 
+Info: Prüfe auf Alias bei Wert INBOX von Eigenschaft Empfangenene Mails 
+Info: Prüfe auf Alias bei Wert "NOQUEUE: reject" von Eigenschaft Blockierte Mails 
+Info: Prüfe auf Alias bei Wert "[UFW BLOCK]" von Eigenschaft Blockierte Pakete 
+Info: Prüfe auf Alias bei Wert ::ALIAS::Blockierte Pakete von Eigenschaft Blockiert 
+Erfolg: Eigenschafts-Alias Blockiert mit Ziel Blockierte Pakete erkannt 
+Info: Verbinde Ziel Blockierte Pakete mit Quelle Blockiert 
+Info: Prüfe auf Alias bei Wert ::ALIAS::Blockiert von Eigenschaft Abgewiesene Pakete 
+Erfolg: Eigenschafts-Alias Abgewiesene Pakete mit Ziel Blockiert erkannt 
+Info: Verbinde Ziel Blockiert mit Quelle Abgewiesene Pakete 
+Info: Prüfe auf Alias bei Wert  von Eigenschaft Top Port 
+Info: Prüfe maximale Wortanzahl von Typ- und Eigenschaftsbezeichnungen der Konfigurationsdatei 
+Info: Prüfe Typ Webserver 
+Erfolg: Typ Webserver erhöht die maximale Wortanzahl von Typbezeichnungen auf 1 
+Info: Prüfe Eigenschaft Besucher Zugriffe 
+Erfolg: Eigenschaft Besucher Zugriffe erhöht die maximale Wortanzahl von Eigenschaftsbezeichnungen auf 2 
+Info: Prüfe Eigenschaft Besucher 
+Info: Prüfe Eigenschaft Interne Fehler 
+Info: Prüfe Eigenschaft Fehler 
+Info: Prüfe Eigenschaft drei 
+Info: Prüfe Eigenschaft Erreichbarkeit 
+Info: Prüfe Eigenschaft Verfügbarkeit 
+Info: Prüfe Eigenschaft vier 
+Info: Prüfe Eigenschaft fuenf 
+Info: Prüfe Typ Eins 
+Info: Prüfe Eigenschaft Besucher Zugriffe 
+Info: Prüfe Eigenschaft Besucher 
+Info: Prüfe Eigenschaft Interne Fehler 
+Info: Prüfe Eigenschaft Fehler 
+Info: Prüfe Eigenschaft drei 
+Info: Prüfe Eigenschaft Erreichbarkeit 
+Info: Prüfe Eigenschaft Verfügbarkeit 
+Info: Prüfe Eigenschaft vier 
+Info: Prüfe Eigenschaft fuenf 
+Info: Prüfe Typ Mailserver 
+Info: Prüfe Eigenschaft Empfangenene Mails 
+Info: Prüfe Eigenschaft Blockierte Mails 
+Info: Prüfe Typ Zwei 
+Info: Prüfe Eigenschaft Empfangenene Mails 
+Info: Prüfe Eigenschaft Blockierte Mails 
+Info: Prüfe Typ Firewall 
+Info: Prüfe Eigenschaft Blockierte Pakete 
+Info: Prüfe Eigenschaft Blockiert 
+Info: Prüfe Eigenschaft Abgewiesene Pakete 
+Info: Prüfe Eigenschaft Top Port 
+Erfolg: Prüfung erfolgreich. Maximale Wortanzahl Typbezeichnungen: 1 . Maximale Wortanzahl Eigenschaftsbezeichnungen: 2 
+Erfolg: Vorbereitungen erfolgreich abgeschlossen 
+Info: Prüfung auf neue Ereignisse der Telegram-API... 
+Info: Rufe Aktualisierungen von der Telegram API ab 
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Konsolenausgabe bei der Verarbeitung einer eintreffenden Nachricht}, label=log-msg, xleftmargin=6mm]
+Info: Rufe Aktualisierungen von der Telegram API ab 
+Erfolg: Antwort in 758.149ms erhalten 
+Erfolg: Es liegen neue Ereignisse vor 
+Info: Name : **entfernt** 
+Info: Chat_id : **entfernt** 
+Info: Aktuelle update_id **entfernt** speichern... 
+Erfolg: Speichern der aktuellen update_id **entfernt** abgeschlossen. 
+Info: Die aktuelle update_id ist nun **entfernt** 
+Info: Sprachnachricht erhalten 
+Info: file_id : **entfernt** 
+Info: Dateityp : audio/ogg 
+Info: Ermittlung des Dateipfads für den Download über die Telegram API 
+Erfolg: Dateipfad bezogen 
+Info: Lade Datei herunter. URL: https://api.telegram.org/file/bot**entfernt**/voice/file_**entfernt**.oga 
+Info: Speichere auf dem Dateisystem. Dateipfad: files/**entfernt**.oga 
+Info: Speichern abgeschlossen 
+Info: Beginne mit Echtzeitübersetzung Sprache zu Text 
+Info: Beginne mit Datenübertragung zu AWS Transcribe 
+Info: Bereite Verarbeitung der von AWS Transcribe übermittelten Daten vor 
+Info: Übertrage Abschnitt von 16384B der Datei files/**entfernt**.oga an AWS Transcribe 
+Erfolg: Datenübertragung abgeschlossen. Warte auf Abschluss des Transkriptionsprozesses 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ. 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ eins 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ eins Bezug. 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ eins bezüglich drei 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ eins bezüglich drei Zeitraum. 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ eins bezüglich drei Zeitraum einen Tag. 
+Info: Transkription wird durchgeführt, nicht finales Ergebnis wurde übermittelt: Typ eins bezüglich drei Zeitraum einen Tag. 
+Erfolg: Transkription abgeschlossen. Ergebnis: Typ eins bezüglich drei Zeitraum einen Tag. 
+Info: Sende Text Die Anfrage "Typ eins bezüglich drei Zeitraum einen Tag." wird verarbeitet... an Chat **entfernt** in einer kombinierten Sprachnachricht. 
+Info: Beginne mit Sprachsynthese 
+Erfolg: Der Sprachsynthesevorgang **entfernt** wurde gestartet 
+Info: Schreibe in Datei 
+Info: Sende Audiodatei files/**entfernt**.mp3 als Sprachnachricht 
+Erfolg: Nachricht in 229.919ms übermittelt 
+Info: Untersuche Nachricht auf Schlüsselwörter... 
+Info: Prüfe auf Typ 
+Erfolg: Schlüsselwort Typ erkannt. Folgende 1 Wörter: eins 
+Info: Untersuche Nachricht auf Schlüsselwörter... 
+Info: Prüfe auf bezüglich 
+Erfolg: Schlüsselwort bezüglich erkannt. Folgende 2 Wörter: drei Zeitraum 
+Info: Untersuche Nachricht auf Schlüsselwörter... 
+Info: Prüfe auf Zeitraum 
+Erfolg: Schlüsselwort Zeitraum erkannt. Folgende 2 Wörter: einen Tag. 
+Info: Extrahiere Informationen zum angeforderten Zeitraum aus einen Tag. 
+Info: Ermittle Anzahl der Zeiteinheiten aus einen 
+Erfolg: Anzahl der Zeiteinheiten wurde bestimmt: 1 
+Info: Ermittle Zeiteinheit aus Tag. 
+Erfolg: Zeiteinheit Tag wurde bestimmt 
+Info: Informationen der letzten 86400 Sekunden werden ausgewertet 
+Info: Prüfe eins auf Übereinstimmung mit Typ Webserver 
+Info: Vergleiche eins und webserver miteinander 
+Info: Prüfe eins auf Übereinstimmung mit Typ Eins 
+Info: Vergleiche eins und eins miteinander 
+Erfolg: Direkte Übereinstimmung 
+Erfolg: Typ Eins identifiziert 
+Info: Prüfe drei Zeitraum auf Übereinstimmung mit Eigenschaft Besucher Zugriffe 
+Info: Vergleiche drei zeitraum und besucher zugriffe miteinander 
+Info: Vergleiche Untermenge drei mit besucher zugriffe 
+Info: Prüfe drei Zeitraum auf Übereinstimmung mit Eigenschaft Besucher 
+Info: Vergleiche drei zeitraum und besucher miteinander 
+Info: Vergleiche Untermenge drei mit besucher 
+Info: Prüfe drei Zeitraum auf Übereinstimmung mit Eigenschaft Interne Fehler 
+Info: Vergleiche drei zeitraum und interne fehler miteinander 
+Info: Vergleiche Untermenge drei mit interne fehler 
+Info: Prüfe drei Zeitraum auf Übereinstimmung mit Eigenschaft Fehler 
+Info: Vergleiche drei zeitraum und fehler miteinander 
+Info: Vergleiche Untermenge drei mit fehler 
+Info: Prüfe drei Zeitraum auf Übereinstimmung mit Eigenschaft drei 
+Info: Vergleiche drei zeitraum und drei miteinander 
+Info: Vergleiche Untermenge drei mit drei 
+Erfolg: Übereinstimmung gefunden 
+Erfolg: Übereinstimmung mit drei 
+Info: Führe Abfrage http_response_code: 200 aus 
+Info: Führe Abfrage http_response_code: 200 im Zeitraum der letzten 86400 Sekunden in Graylog aus 
+Erfolg: Ergebnis der Abfrage: 2732 Ereignisse 
+Info: Sende Text Ergebnis der Anfrage zur Eigenschaft drei des Typs Eins im Zeitraum der letzten einen Tag.: es wurden 2732 Ereignisse erfasst. an Chat **entfernt** in einer kombinierten Sprachnachricht. 
+Info: Beginne mit Sprachsynthese 
+Erfolg: Der Sprachsynthesevorgang **entfernt** wurde gestartet 
+Info: Schreibe in Datei 
+Info: Sende Audiodatei files/**entfernt**.mp3 als Sprachnachricht 
+Erfolg: Nachricht in 266.194ms übermittelt 
+Info: Prüfung auf neue Ereignisse der Telegram-API... 
+\end{lstlisting}

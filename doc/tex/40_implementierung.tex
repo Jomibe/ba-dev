@@ -48,6 +48,8 @@ Für die Protokollierung wurde ein selbstentwickeltes Programmmodul erweitert. A
 
 Alle Statusmeldungen werden in einer Textdatei hinterlegt, wessen Pfad in der Datei \lstinline{config.py} konfiguriert wird. Ist der \lstinline{DEBUG}-Modus aktiv, erscheinen alle Meldungen zusätzlich auf der Konsole. Ist die Fehlermeldung mit dem Parameter \lstinline{secret} gekennzeichnet, erfolgt keine Protokollierung in der Textdatei. Werden Meldungen auf der Konsole ausgegeben, werden diese gemäß dem Schweregrad farblich markiert: Fehler werden rot markiert, Warnungen gelb, Erfolgsmeldungen grün und Infomeldungen blau. Parameternamen können farblich in der Standardfarbe der Konsole (meist grau oder weiß) abgesetzt werden.
 
+Im Anhang befinden sich zwei Listings mit den Konsolenausgaben des Programms beim Start (\autoref{log-start}) und beim Verarbeiten einer eingegangenen Nachricht (\autoref{log-msg}).
+
 \section{Startvorgang}
 \label{sec:startvorgang}
 
