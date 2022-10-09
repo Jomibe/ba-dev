@@ -5,13 +5,13 @@ In diesem Kapitel werden die für die Entwicklung benötigten verwendeten techni
 
 \section{REST}
 
-REST ist eine Abkürzung für 'Representational State Transfer' (zu deutsch 'Repräsentative Zustandsübertragung') und wurde von Roy Fielding in seiner Dissertation aus dem Jahr 2000 \cite[S. 76 ff.]{rest} definiert. Es handelt sich hierbei um eine Auflistung von Eigenschaften und Anforderungen, welche durch eine REST-API erfüllt werden sollen. REST-APIs werden für viele Dienste des Internets meist unsichtbar für die Anwender für die Kommunikation zwischen informationstechnischen Systemen verwendet. In der englischen Sprache wird häufig das Adjektiv 'RESTful' für Ressourcen verwendet, welche die REST-Prinzipien anwenden.
+REST ist eine Abkürzung für 'Representational State Transfer' (zu deutsch 'Repräsentative Zustandsübertragung') und wurde von Roy Fielding in seiner Dissertation aus dem Jahr 2000 \cite[S. 76 ff.]{rest} definiert. Es handelt sich hierbei um eine Auflistung von Eigenschaften und Anforderungen, welche durch eine REST-API erfüllt werden sollen. REST-APIs werden für viele Dienste des Internets meist unsichtbar für die Anwender für die Kommunikation zwischen informationstechnischen Systemen verwendet. In der englischen Sprache wird häufig das Adjektiv 'RESTful' für Ressourcen verwendet, welche die REST-Prinzipien anwenden (vgl. \cite[S. 277]{swdev}).
 
 \subsection{Anwendung in der Praxis}
 
 Heutzutage stellen viele Dienste HTTP-APIs zur Verfügung, welche als 'RESTful' bezeichnet werden können. Die Kommunikation mit den Programmierschnittstellen beschränkt sich dabei auf das HTTP- und HTTPS-Protokoll, welches ebenfalls für den Abruf von Webinhalten im Browser verwendet wird. Durch die hohe Verbreitung wird die Implementierung neuer vernetzter Applikationen für Softwareentwickler stark vereinfacht. Das ursprünglich von Tim Berners-Lee entworfene Konzept des World Wide Web als Hypermedium wird so ebenfalls unterstützt. Ein Hypermedium beschreibt eine Ansammlung von Informationen (beispielsweise Websiten, welche im Quellcode vorliegen) mit Verweisen auf andere Informationen in dieser Menge. Bei in der Beschreibungssprache HTML (Hypertext Markup Language) geschriebenem Quellcode im World Wide Web handelt es sich um Hypertext mit Verweisen auf andere Medien (beispielsweise Quellcode anderer Webseiten; Audio-, Video- oder Bilddaten). 
 
-Der Zugriff auf HTTP-APIs erfolgt analog zum Zugriff auf Webseiten im Internet. Je nach Anforderung werden die HTTP-Methoden 'GET', 'POST' und weitere verwendet. Die von der HTTP-API beziehbaren Informationen werden mit der URL (Uniform Resource Locator) lokalisiert und angefordert. Zusätzlich können Informationen über Header (Kopfzeilen) und Cookies ausgetauscht werden, um beispielsweise Zustandsinformationen (Status des Warenkorbs in einem Webshop, Identifikationsnummer des angemeldeten Benutzers) austauschen zu können.
+Der Zugriff auf HTTP-APIs erfolgt analog zum Zugriff auf Webseiten im Internet. Je nach Anforderung werden die HTTP-Methoden 'GET', 'POST' und weitere verwendet (vgl. \cite[S. 279]{swdev}). Die von der HTTP-API beziehbaren Informationen werden mit der URL (Uniform Resource Locator) lokalisiert und angefordert. Zusätzlich können Informationen über Header (Kopfzeilen) und Cookies ausgetauscht werden, um beispielsweise Zustandsinformationen (Status des Warenkorbs in einem Webshop, Identifikationsnummer des angemeldeten Benutzers) austauschen zu können.
 
 \newpage
 
@@ -36,7 +36,7 @@ GET http://10.10.12.1:9000/api/cluster
 }
 \end{lstlisting}
 
-Die Antwort der HTTP-API erfolgt in vielen Fällen maschinenlesbar in der Sprache JSON.
+Die Antwort der HTTP-API erfolgt in vielen Fällen maschinenlesbar in der Sprache JSON (vgl. \cite[S. 281]{swdev}).
 
 \section{Telegram Messenger}
 
