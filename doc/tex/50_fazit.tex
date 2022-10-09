@@ -35,6 +35,10 @@ Die obige Abbildung zeigt, wie der Bot eine Anfrage beantwortet. Zuerst wird dem
 
 In \autoref{fig:bsp-fehler} wurde dem Bot eine Nachricht zugestellt, welche nicht die erforderlichen Informationen beinhaltet. Der Bot prüft dies anhand der konfigurierten Schlüsselwörter und weißt den Anwender auf jede fehlende Information hin. 
 
+\subsection{Qualitätskontrolle}
+
+Nach Abschluss der Implementierung soll die Qualität der Software bezüglich der Benutzbarkeit im geplanten Anwendungsfall kurz erläutert werden. Die Qualität der Anwendung hängt stark von der Qualität der Spracherkennung ab, da hiervon die höchste Fehlerwahrscheinlichkeit ausgeht. Aufgrund des Vergleichs verschiedener Dienste (vgl. \autoref{sec:vergleich-transkrip}) konnte dieses Qualitätsmerkmal bereits vor der Implementierung optimiert werden. Durch die Möglichkeit, Anfragen ebenfalls als Textnachricht an die Software zu übermitteln, kann der Anwender die Fehlerwahrscheinlichkeit bei der Erkennung des Anliegens reduzieren. Weiterhin ist es möglich, lokale Transkriptionsdienste, beispielsweise von der Tastatur-Applikation auf einem Mobiltelefon zu nutzen. Ein weiteres Werkzeug, um die Spracherkennung zu verbessern sind die Aliasdefinitionen. Der Vergleich der verschiedenen Dienste hat bereits bei einer kleinen Stichprobe gezeigt, dass die Spracherkennung bei Fachbegriffen nicht verlässlich genug arbeitet. Die Definition von Begriffen aus der Alltagssprache als Alias für Fachbegriffe führt daher zu einer Verbesserung der Erkennungsquote und somit zu einer gesteigerten subjektiven Qualität der Anwendung aus Sicht der Benutzer.
+
 \section{Ausblick}
 
 Es sind einige Erweiterungen der Funktionalität der entwickelten Software denkbar. 
