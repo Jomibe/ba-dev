@@ -13,6 +13,8 @@ Heutzutage stellen viele Dienste HTTP-APIs zur Verfügung, welche als 'RESTful' 
 
 Der Zugriff auf HTTP-APIs erfolgt analog zum Zugriff auf Webseiten im Internet. Je nach Anforderung werden die HTTP-Methoden 'GET', 'POST' und weitere verwendet. Die von der HTTP-API beziehbaren Informationen werden mit der URL (Uniform Resource Locator) lokalisiert und angefordert. Zusätzlich können Informationen über Header (Kopfzeilen) und Cookies ausgetauscht werden, um beispielsweise Zustandsinformationen (Status des Warenkorbs in einem Webshop, Identifikationsnummer des angemeldeten Benutzers) austauschen zu können.
 
+\newpage
+
 \begin{lstlisting}[caption={Beispiel eines Aufrufs der Graylog REST-API.}, label=bsp-rest-api, xleftmargin=6mm]
 GET http://10.10.12.1:9000/api/cluster
 
@@ -56,8 +58,6 @@ Der Begriff Bot stammt von dem englischen Begriff robot ab und bezeichnet ein Pr
 
 Aufgrund der weitreichenden Möglichkeiten, der kostenlosen Benutzbarkeit und der auch für frequentierte Applikationen ausreichend dimensionierten Durchsatzratenbegrenzung \footnote{\url{https://core.telegram.org/bots/faq\#my-bot-is-hitting-limits-how-do-i-avoid-this}} steht eine Vielzahl von Bots für die Benutzer der Plattform zur Verfügung. Als Beispiele seien genannt der Bot "WDR aktuell" <\lstinline{@WDRaktuell_bot}> für den Abruf von regionalen Informationen in Nordrhein-Westfalen, der von Google angebotene und daher als "verifiziert" \footnote{\url{https://telegram.org/verify}} markierte "Gmail Bot" <\lstinline{@GmailBot}> für den Nachrichtenabruf und das Senden von Antworten für Gmail sowie der Bot IFTTT <\lstinline{@IFTTT}>, welcher ebenfalls als "verifiziert" markiert wurde, da dieser vom Entwickler des Dienstes für Automatisierung und Verknüpfungen von Webanwendungen IFTTT ("if this then that") bereitgestellt wurde.
 
-%\newpage
-
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.5]{verified_ifttt_bot}
@@ -70,12 +70,16 @@ Aufgrund der weitreichenden Möglichkeiten, der kostenlosen Benutzbarkeit und de
 \caption{Interaktion mit dem Bot von WDR aktuell in Telegram für macOS.}
 \end{figure}
 
+\FloatBarrier
+
 \subsubsection{Beziehen von Aktualisierungen von der Telegram API}
 \label{sec:telegram-getting-updates}
+ \enlargethispage{0.5cm}
 
 Laut der technischen Dokumentation der Telegram API \footnote{\url{https://core.telegram.org/bots/api\#getting-updates}} stehen zwei Möglichkeiten zur Verfügung, um Aktualisierungen zu erhalten: 'long-polling' der API-Methode \lstinline{getUpdates()} oder die Verwendung eines 'webhooks'. Die beiden Möglichkeiten verwenden unterschiedliche Konzepte und bieten damit verschiedene Vor- und Nachteile. Im Fachbereich der Informatik steht der Begriff 'polling' für eine dauerhafte wiederkehrende Abfrage von Informationen bei einem Dienst. Diese Technik beansprucht viel CPU-Zeit eines Systems und wird aufgrund des geringen Gegenwerts der meist leer ausgehenden Abfragen als teuer bezeichnet. 'long-polling' beschreibt eine Technik, bei welcher der Client einer HTTP-Abfrage einen verlängerten Zeitraum bis zum Erhalt der Antwort vom Server akzeptiert, ohne die Abfrage aufgrund einer Zeitüberschreitung abzubrechen. Die Länge des Zeitraums ist variabel. 'long-polling' bietet damit gegenüber dem klassischen 'polling' den Vorteil, dass die benötigte Rechenzeit durch die verlängerten Abfragezeiträume stark reduziert wird. Die Software- und Betriebssystementwicklung bietet eine Technik, um die Verwendung von teurem 'polling' zu umgehen: die Verwendung von 'interrupts' oder 'callbacks' (zu deutsch "Rückruf"). Hierbei erhält der Absender der Anfrage eine Rückmeldung, sobald die Antwort vorliegt. Der Vorteil dieser Technik ist, dass nach dem Absenden der Anfrage keine CPU-Zeit seitens des Absenders notwendig ist. Es muss jedoch eine Möglichkeit vorhanden sein, den Absender im Falle einer eingehenden Antwort zum Vorgang zurückzuführen, sodass die weitere Bearbeitung möglich wird. Im Falle der Anbindung der Telegram API übernimmt dies der 'webhook'. Der 'webhook' muss (durch die Telegram-API) öffentlich aus dem Internet erreichbar und durch den Verwalter des Bots im Vorhinein durch eine entsprechenden URL definiert worden sein. Wird eine Nachricht an den Bot gesendet, prüft die Telegram-API, intern, ob Definitionen für webhooks vorliegen. Im positiven Fall sendet die Telegram API eine HTTP-Anfrage an die URL des webhooks mit den Details zur eingegangenen Nachricht. Nach Erhalt der Anfrage durch den webhook muss dieser die Daten zur verarbeitenden Software zurückführen und die weitere Bearbeitung auslösen.
 
 \subsubsection{Erstellung eines Bots}
+ \enlargethispage{1cm}
 
 Um ein Programm über die Telegram Bot-API anbinden zu können, muss zuvor ein Bot über Telegram erstellt werden. Hierzu wird der Bot \lstinline{@BotFather} verwendet. Sämtliche Einstellungen zu Bots werden über \lstinline{@BotFather} vorgenommen. Soll ein neuer Bot erstellt werden, werden die benötigten Informationen abgefragt. Nachdem der Anzeigename und der Benutzername festgelegt werden, erhält der Benutzer die Zugangsdaten für die HTTP-API und der Bot ist einsatzbereit. \lstinline{@BotFather} kann jederzeit erneut kontaktiert werden, um weitere Einstellungen vorzunehmen: es können Profilbild und Beschreibung geändert, sowie vordefinierte Kommandos festgelegt werden. Der Zugriff auf die HTTP-API erfolgt über die Basis-URL \lstinline{https://api.telegram.org/bot<token>/METHOD_NAME} \footnote{\url{https://core.telegram.org/bots/api\#making-requests}}, wobei \lstinline{<token>} der von \lstinline{@BotFather} erhaltene Zugriffsschlüssel und \lstinline{METHOD_NAME} die API-Methode (beispielsweise \lstinline{getUpdates} oder \lstinline{sendMessage}) ist. Weitere laut API-Dokumentation benötigte Parameter werden als Parameter der HTTP-Anfragen vom Typ 'GET' oder 'POST' übermittelt. Die Antwort der API erfolgt in Form eines JSON-Objekts.
 
@@ -139,6 +143,7 @@ Für die Verarbeitung der erfassten Daten stellt Graylog dem Systemadministrator
 Graylog stellt eine REST-API zur Verfügung, auf welche sowohl mit der integrierten Webschnittstelle als auch per Fernzugriff zugegriffen werden kann. Die integrierte Webschnittstelle nutzt die API für das Beziehen der Informationen aus der ElasticSearch Suchmaschine. Jede Graylog-Instanz verfügt standardmäßig über eine auf der API-Dokumentationssoftware Swagger basierende Übersicht der verfügbaren Funktionen. Die Oberfläche ermöglicht es zusätzlich, die API-Funktionen aus dem Browser heraus mit selbstgewählten Parametern aufzurufen. Softwareentwickler erhalten so eine Übersicht über die in der installierten Graylog-Version verfügbaren API-Funktionen. Das prüfen von API-Funktionen mit Drittanbieterprogrammen wie curl oder Postman entfällt.
 
 \section{Amazon Web Services}
+ \enlargethispage{1cm}
 
 Der Cloudanbieter AWS ist ein Tochterunternehmen des US-amerikanischen Versandhändlers Amazon. Das Unternehmen bietet seine Dienste vor allem für professionelle Endanwender und Unternehmen an. AWS bietet eine Vielzahl von Diensten, welche 'on-demand' (zu deutsch 'auf Abruf') verfügbar sind nach dem Prinzip 'pay as you go' (zu deutsch 'abgerechnet nach Verbrauch') berechnet werden. Zu den bekanntesten Diensten zählen EC2 (elastic compute cloud), welcher virtuelle Maschinen bereitstellt sowie S3 (simple storage service), für das Buchen von Speicherkapazität. AWS gehört neben den allesamt US-amerikanischen Anbietern Microsoft Azure, Google Cloud, Oracle Cloud sowie dem chinesischen Anbieter Alibaba Cloud laut dem Anbieter für Marktforschungsergebnisse Gartner zu den führenden Cloudanbietern weltweit \footnote{\url{https://www.gartner.com/technology/media-products/reprints/AWS/1-271W1OSP-DEU.html}}. Derzeit gibt es keinen gleichwertigen Anbieter aus Europa. Die Anbieter IONOS und Strato aus Deutschland sowie OVH aus Frankreich bieten nur einen Bruchteil der Umfänge der Konkurrenten an.
 
