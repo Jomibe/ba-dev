@@ -1,10 +1,11 @@
 .idea/*
 __pycache__/
-.env
+src/.env
 store.txt
 .DS_Store
 files/*
 log/*
+src/log/*
 doc/tex/*.log
 doc/tex/*.aux
 doc/tex/*.bcf
