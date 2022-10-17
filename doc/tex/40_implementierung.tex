@@ -26,7 +26,6 @@ In absteigender Reihenfolge: die Datei '.env' beinhaltet sensible Zugangsdaten f
 
 \subsection{Module}
 \label{sec:module}
- \enlargethispage{0.5cm}
 
 Der Quellcode wurde in mehrere Module aufgeteilt:
 
@@ -71,7 +70,6 @@ Im Regelbetrieb wird die Funktion \lstinline{getUpdates} der Telegram-API mittel
 Eingehende Nachrichten werden in Echtzeit erkannt und weiterverarbeitet. Falls mehrere Nachrichten vorliegen (dies kommt vor, wenn die Software für längere Zeit nicht mit der Telegram-API verbunden war und in der Zwischenzeit mehrere Nachrichten an den Bot gesendet wurden), wird jeweils nur eine Nachricht verarbeitet, da die Variable 'update\_id' nur um jeweils einen Schritt (statt um die Anzahl der neuen Nachrichten) inkrementiert wird. Zuerst wird anhand der Chat ID (vgl. \autoref{lst:bsp-telegram-api}, Zeile 18) ermittelt, ob der Benutzer durch den Administrator für die Verwendung des Bots freigegeben wurde. Hierzu wird der Wert mit der Liste \lstinline{constants.AUTHORIZED_CHAT_IDS} verglichen. Bei positivem Ergebnis erfolgt die Verarbeitung der Nachrichteninhalte: anhand des Aufbaus des JSON-Objekts wird ermittelt, ob es sich um eine Text- oder Sprachnachricht handelt. Der Text einer Nachricht wird direkt durch die Funktion \lstinline{message_processing.process_text_message} verarbeitet. Handelt es sich um eine Sprachnachricht, wird zuerst die Audiodatei von der Telegram Bot-API bezogen und auf dem lokalen Dateisystem abgelegt. Danach erfolgt der Transkriptionsprozess in einer weiteren Funktion, welche den ermittelten Text in einer Zeichenkette zurückgibt. Schließlich wird der Text ebenfalls durch die Funktion \lstinline{message_processing.process_text_message} verarbeitet.
 
 \subsection{Optimierung der Antwortzeit}
- \enlargethispage{1cm}
 
 Die Bedienung eines Systems mittels Sprache erfordert eine umfangreichere Benutzerführung als die Bedienung eines textbasierten Systems über einen Bildschirm und eine Tastatur. Beim Aufruf einer Webseite in langsamen Netzwerken bietet der Bildschirm durch die Anzeige des Webbrowsers mit diversen Statuselementen eine dauerhafte Möglichkeit für den Benutzer zu prüfen, ob die gewünschte Anfrage eingegangen ist und verarbeitet wird. Eine nur auf Sprache basierende Bedienung bietet keine äquivalente Möglichkeit, dem Benutzer eine Statusübersicht bis zum Abschluss der Anfrage zur Verfügung zu stellen. Um Missverständnisse vorzubeugen und die Bedienung komfortabel zu gestalten, muss das System eine Rückmeldung innerhalb eines durch den Menschen als nicht zu lang empfundenen Zeitraums zurückgeben. Dazu sollte die Zeit ohne sichtbare Veränderung eine Dauer von 10 Sekunden nicht überschreiten (vgl. \cite[Kapitel 5.5]{response-time} \footnote{Auszug aus dem Buch: \url{https://www.nngroup.com/articles/response-times-3-important-limits/}}). 
 
