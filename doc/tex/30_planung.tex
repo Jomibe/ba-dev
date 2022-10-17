@@ -50,7 +50,7 @@ Es bestehen verschiedene Möglichkeiten, Sprache zu Text zu transkribieren und d
 \subsubsection{Vergleich diverser Transkriptionsdienste}
 \label{sec:vergleich-transkrip}
 
-Die Umwandlungsgenauigkeit der genannten Dienste soll mit einem Testset bestehend aus umzuwandelnden Audiodateien mit möglichen Sprachanfragen geprüft werden. Dazu wurden 11 Sprachnachrichten über die Telegram App für iOS auf einem iPhone aufgenommen. Im Anschluss wurden die Audiodaten von der Telegram API extrahiert, sodass diese im OGG-Format vorlagen. Die drei Dienste bevorzugen jeweils andere Audioformate, daher wurden die Dateien aus dem OGG-Format (für das Produkt von Google) ebenfalls in das MP3- (für das Produkt von AWS) und das FLAC-Format (für das Produkt von IBM) umgewandelt. Schließlich wurden jeweils 11 Audiodateien über eine Webkonsole, welche von allen Anbietern angeboten wurde\footnote{\url{https://eu-central-1.console.aws.amazon.com/transcribe/home?region=eu-central-1\#createJob}, \url{https://speech-to-text-demo.ng.bluemix.net}, \url{https://cloud.google.com/speech-to-text}}, an den Dienst übermittelt. Die Webkonsolen verwendeten jeweils die APIs, welche ebenfalls für den programmgesteuerten Zugriff verwendet werden. Die Ergebnisse werden in der \autoref{tab:erg-transkript} abgebildet:
+Die Umwandlungsgenauigkeit der genannten Dienste soll mit einem Testset bestehend aus umzuwandelnden Audiodateien mit möglichen Sprachanfragen geprüft werden. Dazu wurden 10 Sprachnachrichten über die Telegram App für iOS auf einem iPhone aufgenommen. Im Anschluss wurden die Audiodaten von der Telegram API extrahiert, sodass diese im OGG-Format vorlagen. Die drei Dienste bevorzugen jeweils andere Audioformate, daher wurden die Dateien aus dem OGG-Format (für das Produkt von Google) ebenfalls in das MP3- (für das Produkt von AWS) und das FLAC-Format (für das Produkt von IBM) umgewandelt. Schließlich wurden jeweils 10 Audiodateien über eine Webkonsole, welche von allen Anbietern angeboten wurde\footnote{\url{https://eu-central-1.console.aws.amazon.com/transcribe/home?region=eu-central-1\#createJob}, \url{https://speech-to-text-demo.ng.bluemix.net}, \url{https://cloud.google.com/speech-to-text}}, an den Dienst übermittelt. Die Webkonsolen verwendeten jeweils die APIs, welche ebenfalls für den programmgesteuerten Zugriff verwendet werden. Die Ergebnisse werden in der \autoref{tab:erg-transkript} abgebildet.
 
 \begin{figure}[h!]
 \centering
@@ -59,37 +59,36 @@ Die Umwandlungsgenauigkeit der genannten Dienste soll mit einem Testset bestehen
 \label{fig:feier-wohl}
 \end{figure}
 
-Die Audionachrichten beinhalten folgende gesprochene Texte: \\
-Testset01: "Typ Webserver Eigenschaft Fehler Zeitraum 24 Stunden" \\
-Testset02: "Typ Webserver bezüglich Erreichbarkeit Zeitraum 24 Stunden" \\
-Testset03: "Dies ist ein weiterer Test" \\
-Testset04: "Typ Webserver bezüglich Besucherzugriffe Zeitraum 24 Stunden" \\
-Testset05: "Typ Webserver bezüglich Besucherzugriffe Zeitraum 24 Stunden" \\
-Testset06: "Ich benötige Informationen zu Systemen vom Typ Firewall im Zeitraum 24 Stunden bezüglich blockierte Pakete" \\
-Testset07: "Typ eins bezüglich drei Zeitraum ein Tag" \\
-Testset08: "Typ eins bezüglich drei Zeitraum ein Tag" \\
-Testset09: "Typ Webserver Zeitraum 24 Stunden bezüglich Erreichbarkeit" \\
-Testset10: "Typ Webserver Zeitraum 24 Stunden bezüglich Erreichbarkeit" \\
-Testset11: "Typ Mailserver bezüglich empfangene Mails Zeitraum ein Jahr" \\
-
+Die Audionachrichten beinhalten folgende gesprochene Texte:
+\begin{itemize}
+\item \textit{Testset01}: "Typ Webserver Eigenschaft Fehler Zeitraum 24 Stunden"
+\item \textit{Testset02}: "Typ Webserver bezüglich Erreichbarkeit Zeitraum 24 Stunden"
+\item \textit{Testset03}: "Typ Webserver bezüglich Besucherzugriffe Zeitraum 24 Stunden"
+\item \textit{Testset04}: "Typ Webserver bezüglich Besucherzugriffe Zeitraum 24 Stunden"
+\item \textit{Testset05}: "Ich benötige Informationen zu Systemen vom Typ Firewall im Zeitraum 24 Stunden bezüglich blockierte Pakete"
+\item \textit{Testset06}: "Typ eins bezüglich drei Zeitraum ein Tag"
+\item \textit{Testset07}: "Typ eins bezüglich drei Zeitraum ein Tag"
+\item \textit{Testset08}: "Typ Webserver Zeitraum 24 Stunden bezüglich Erreichbarkeit"
+\item \textit{Testset09}: "Typ Webserver Zeitraum 24 Stunden bezüglich Erreichbarkeit"
+\item \textit{Testset10}: "Typ Mailserver bezüglich empfangene Mails Zeitraum ein Jahr"
+\end{itemize}
 
 \begin{table}[hb!]
 \centering
 \begin{tabular}{ccccc}
-Nummer 		& AWS	& Google		& IBM \\
+Testset 		& AWS	& Google		& IBM \\
 01			& n.i.O.	& i.O.		& i.O. \\
 02			& i.O.	& i.O.		& n.i.O. \\
-03			& i.O.	& i.O.		& n.i.O. \\
-04			& i.O.	& i.O.		& i.O. \\
-05			& n.i.O.	& n.i.O.		& n.i.O. \\
+03			& i.O.	& i.O.		& i.O. \\
+04			& n.i.O.	& n.i.O.		& n.i.O. \\
+05			& i.O.	& i.O.		& n.i.O. \\
 06			& i.O.	& i.O.		& n.i.O. \\
 07			& i.O.	& i.O.		& n.i.O. \\
 08			& i.O.	& i.O.		& n.i.O. \\
-09			& i.O.	& i.O.		& n.i.O. \\
-10			& i.O.	& n.i.O.		& n.i.O. \\
-11			& i.O.	& i.O.		& n.i.O. \\
+09			& i.O.	& n.i.O.		& n.i.O. \\
+10			& i.O.	& i.O.		& n.i.O. \\
 \hline
-Summe Fehler	& 2		& 2			& 9
+Summe Fehler	& 2		& 2			& 8
 \end{tabular}
 \caption{Ergebnisse der Transkriptionsaufträge.}
 \label{tab:erg-transkript}
