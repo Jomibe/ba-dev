@@ -21,6 +21,47 @@
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage[ngerman]{babel}
+
+% https://tex.stackexchange.com/questions/150945/automatic-german-quotation-marks
+\usepackage{xspace}
+
+\let\oldquote'
+\newif\ifquoteopen
+\catcode`\'=\active
+\makeatletter
+% we have to redefine \pr@m@s to use an active '
+\def\pr@m@s{%
+  \ifx'\@let@token
+    \expandafter\pr@@@s
+  \else
+    \ifx^\@let@token
+      \expandafter\expandafter\expandafter\pr@@@t
+    \else
+      \egroup
+    \fi
+  \fi}
+\protected\def'{%
+  \ifmmode
+    \expandafter\active@math@prime
+  \else
+    \expandafter\active@text@prime
+  \fi}
+\def\active@text@prime{%
+   \@ifnextchar'{%
+     \ifquoteopen
+       \global\quoteopenfalse\grqq\expandafter\@gobble
+     \else
+       \global\quoteopentrue\glqq\expandafter\@gobble
+     \fi
+   }{%
+     \ifquoteopen
+       \global\quoteopenfalse\grq\xspace
+     \else
+       \global\quoteopentrue\glq
+     \fi
+   }%
+}
+\makeatother
 \usepackage[style=alphabetic, backend=biber, citestyle=ieee, bibstyle=numeric]{biblatex}
 \addbibresource{literatur.bib}
 \usepackage{csquotes}
