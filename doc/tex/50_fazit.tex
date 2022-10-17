@@ -14,20 +14,22 @@ Auch aus Sicht der IT-Sicherheit bringt die Verwendung des Telegram-Bots Vorteil
 Der Code der entwickelten Software wurde über ein GitHub-Repository \footnote{\url{https://github.com/Jomibe/ba}} veröffentlicht, sodass die Installation und Konfiguration des Bots für eine eigene Installation von Graylog wiederverwendet oder optimiert werden kann. Für den Betrieb ist es notwendig, zuvor die angeschlossenen Dienste inkl. der API-Zugriffsdaten zu konfigurieren. Im Anschluss kann die Software mit einem Python Interpreter ausgeführt werden und ist einsatzbereit, sobald die Vorbereitungsphase abgeschlossen ist. Mithilfe der aktivierten ausführlichen Ausgaben zum Programmablauf können die Vorgänge und dessen Auslöser gut zurückverfolgt werden. Im Folgenden zeigen zwei Abbildungen die Interaktion mit dem Bot über den Telegram Messenger:
 
 \begin{figure}[h!]
-\centering
-\includegraphics[scale=0.7]{bsp-betrieb}
-\caption{Bot beantwortet eine Anfrage in Telegram für macOS.}
+    \centering
+    \begin{minipage}{0.5\textwidth}
+        \raggedright
+        \includegraphics[width=0.9\textwidth]{bsp-betrieb}
+        \caption{Bot beantwortet eine \\\hspace{\textwidth}Anfrage in Telegram.}
+        \label{fig:bsp-betrieb}
+    \end{minipage}\hfill
+    \begin{minipage}{0.5\textwidth}
+        \raggedleft
+        \includegraphics[width=0.9\textwidth]{bsp-fehler}
+        \caption{Bot reagiert auf fehlerhafte \\\hspace{\textwidth}Anfrage in Telegram.}
+        \label{fig:bsp-fehler}
+    \end{minipage}
 \end{figure}
-\label{fig:bsp-betrieb}
 
 Die obige Abbildung zeigt, wie der Bot eine Anfrage beantwortet. Zuerst wird dem Benutzer eine Rückmeldung gesendet, sobald die Transkription fertiggestellt ist. Im Anschluss erfolgt die Beantwortung der eingesendeten Anfrage. Alle Nachrichten des Bots werden in einer kombinierten Sprachnachricht gesendet, welche zusätzlich den gesprochenen Text in geschriebener Form enthält. Zusätzlich ist es möglich, Anfragen per Textnachricht einzusenden, wie \autoref{fig:bsp-fehler} zeigt:
-
-\begin{figure}[h!]
-\label{fig:bsp-fehler}
-\centering
-\includegraphics[scale=0.7]{bsp-fehler}
-\caption{Bot reagiert auf fehlerhafte Anfrage in Telegram für macOS.}
-\end{figure}
 
 In \autoref{fig:bsp-fehler} wurde dem Bot eine Nachricht zugestellt, welche nicht die erforderlichen Informationen beinhaltet. Der Bot prüft dies anhand der konfigurierten Schlüsselwörter und weißt den Anwender auf jede fehlende Information hin. 
 
