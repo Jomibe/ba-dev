@@ -9,8 +9,6 @@ Die Software soll in der Skriptsprache Python entwickelt werden. Für die Entsch
 
 Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Die Unterteilung der für den Betrieb notwendigen Dateien inkl. des Quellcodes wird in den folgenden beiden Unterkapiteln beschrieben. Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8 \footnote{\url{https://peps.python.org/pep-0008/}} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Sämtliche Module und Funktionen enthalten nach der Definition einen mehrzeiligen Kommentar mit einer Docstring-Dokumentationen gemäß PEP 257 \footnote{\url{https://peps.python.org/pep-0257/}} im Quellcode.
 
-\newpage
-
 \subsection{Dateisystem}
 
 Nachfolgend wird die Struktur der für den Betrieb notwendigen Ordner und Dateien erläutert.
@@ -84,8 +82,6 @@ Die Transkription wurde optimiert, indem für den Zugriff auf Amazon Transcribe 
 
 Die Entwickler des Transcribe SDK weisen darauf hin, dass sich die Software bislang in einem sehr frühen Entwicklungsstadium befindet. Zum Zeitpunkt der Entwicklung wurde die Version 0.6.0 verwendet. Um die Funktionsfähigkeit des Bots nicht durch die Abhängigkeit zum Entwicklungsstand der Transcribe SDK zu gefährden, besteht die Möglichkeit, zwischen der klassischen Transkription mit boto3 und der Echtzeit-Transkription mit dem Konfigurationsparameter \lstinline{ENABLE_FAILSAFE_TRANSCRIPTION} zu wechseln. Besitzt der Parameter den Wert \lstinline{True}, wird die Verarbeitungszeit der Transkription von 15 Sekunden auf etwa zwei Sekunden reduziert.
 
-\newpage
-
 \subsubsection{Sprachsynthese}
 \label{sec:optimierung-synth}
 
@@ -115,8 +111,6 @@ Nachricht: "Ich benötige Informationen zu Systemen vom \textit{Typ} \underline{
 \item Produktkategorie: Schlüsselwort \textit{Typ}, folgende \textbf{1} Wörter: \underline{Webserver}
 \item Eigenschaft: Schlüsselwort \textit{bezüglich}, folgende \textbf{2} Wörter: \underline{Zugriffe Zeitraum}
 \end{itemize}
-
-\newpage
 
 Nun prüft die Software, ob zu den erfassten Daten Einträge in der Datei 'config.toml' bestehen. Im obigen Fall führt \underline{Webserver} durch direkte Übereinstimmung mit der ersten TOML-Sektion zu einem Fund. Im Folgenden werden die Eigenschaften der ermittelten Produktkategorie auf Übereinstimmung mit \underline{Zugriffe Zeitraum} verglichen. Eine solche Eigenschaft existiert nicht. Besteht der erfasste Wert aus mehr als einem Wort, wird das letzte Wort entfernt. Aus \underline{Zugriffe Zeitraum} wird \underline{Zugriffe}. Damit gibt es eine direkte Übereinstimmung zu Zeile 2 des obigen Listings. Die Software entnimmt der Datenstruktur den Suchbegriff \lstinline{http_response_code: 200} und startet eine Abfrage an die Graylog-API.
 
@@ -148,8 +142,6 @@ Der Benutzer erhält eine spezifische Fehlermeldung für den Fall, dass
 \end{itemize}
 
 Die Antwort der Graylog-API erfolgt in einem JSON-Objekt, welches sämtliche auf den Suchbegriff und Zeitraum passende Ereignisse beinhaltet. Die Software bestimmt die Anzahl der Ereignisse und gibt diese an den Benutzer zurück. Im Anschluss wird die nächste Nachricht verarbeitet.
-
-\newpage
 
 \subsubsection{Implementierung von Aliasdefinitionen}
 
