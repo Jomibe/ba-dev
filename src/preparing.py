@@ -132,15 +132,25 @@ def load_env():
     sensible Daten zu hinterlegen.
     """
 
+    console("Lese sensible Daten aus der Datei", ".env", mode=INFO)
     env = dotenv_values(".env")  # Variablen aus der .env-Datei übertragen
-    constants.telegram_bot_token = env["TELEGRAM_BOT_TOKEN"]
-    constants.graylog_username = env["GRAYLOG_USERNAME"]
-    constants.graylog_password = env["GRAYLOG_PASSWORD"]
-    constants.aws_access_key_id = env["AWS_ACCESS_KEY_ID"]
-    constants.aws_secret_access_key = env["AWS_SECRET_ACCESS_KEY"]
-    constants.aws_s3_bucket_name = env["AWS_S3_BUCKET_NAME"]
-    constants.aws_s3_bucket_voice_dir = env["AWS_S3_BUCKET_VOICE_DIR"]
-    constants.aws_region = env["AWS_REGION"]
+
+    try:
+        constants.telegram_bot_token = env["TELEGRAM_BOT_TOKEN"]
+        constants.graylog_username = env["GRAYLOG_USERNAME"]
+        constants.graylog_password = env["GRAYLOG_PASSWORD"]
+        constants.aws_access_key_id = env["AWS_ACCESS_KEY_ID"]
+        constants.aws_secret_access_key = env["AWS_SECRET_ACCESS_KEY"]
+        constants.aws_s3_bucket_name = env["AWS_S3_BUCKET_NAME"]
+        constants.aws_s3_bucket_voice_dir = env["AWS_S3_BUCKET_VOICE_DIR"]
+        constants.aws_region = env["AWS_REGION"]
+    except KeyError:
+        console("Die Datei ", ".env ", "enthält nicht alle erforderlichen Angaben. Folgende Parameter müssen definiert "
+                                     "sein: ", "TELEGRAM_BOT_TOKEN", ", ", "GRAYLOG_USERNAME", ", ", "GRAYLOG_PASSWORD",
+                ", ", "AWS_ACCESS_KEY_ID", ", ", "AWS_SECRET_ACCESS_KEY", ", ", "AWS_S3_BUCKET_NAME", ", ",
+                "AWS_S3_BUCKET_VOICE_DIR", ", ", "AWS_REGION", mode=ERR, no_space=True)
+        return False
+
     console("TELEGRAM_BOT_TOKEN =", constants.telegram_bot_token, mode=INFO, secret=True)
     console("GRAYLOG_USERNAME =", constants.graylog_username, mode=INFO, secret=True)
     console("GRAYLOG_PASSWORD =", constants.graylog_password, mode=INFO, secret=True)
