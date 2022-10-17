@@ -9,6 +9,7 @@ Diese Datei enthält Funktionen, welche für den ordnungsgemäßen Programmstart
 
 # Imports aus Standardbibliotheken
 import copy
+from pathlib import Path
 import re
 
 # Imports von Drittanbietern
@@ -158,6 +159,22 @@ def set_logfile_filename():
     :return: bool, ob die Aktion erfolgreich war
     """
     console("Bereite die Protokollaufzeichnung in eine Datei vor", mode=INFO)
+
+    console("Prüfe, ob der Ordner", constants.LOGDIR, "existiert. Ordner wird falls notwendig erstellt.", mode=INFO)
+    p = Path(constants.LOGDIR)
+
+    p.mkdir(exist_ok=True)
+
+    if not p.exists():
+        console("Der Pfad", constants.LOGDIR, "existiert nicht.", mode=ERR)
+        return False
+
+    if not p.is_dir():
+        console("Der Pfad", constants.LOGDIR, "ist kein Ordner.", mode=ERR)
+        return False
+
+    console("Der Ordner existiert.", mode=SUCC)
+
     constants.log_filename = f"{get_time_stamp(pretty=False)}.log"
     console("Name für die Protolldatei:", f"{constants.LOGDIR}{constants.log_filename}", mode=SUCC)
 
