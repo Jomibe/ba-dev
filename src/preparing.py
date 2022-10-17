@@ -74,7 +74,23 @@ def load_config_toml():
     """
 
     console("Importiere Inhalt der Datei", "config.toml", mode=INFO)
-    constants.config_toml = toml.load("./src/config.toml")
+
+    console("Prüfe, ob die Datei", "config.toml", "existiert. Datei wird falls notwendig erstellt.", mode=INFO)
+    p = Path("config.toml")
+
+    p.touch(exist_ok=True)
+
+    if not p.exists():
+        console("Der Pfad", "config.toml", "existiert nicht.", mode=ERR)
+        return False
+
+    if not p.is_file():
+        console("Der Pfad", "config.toml", "ist keine Datei.", mode=ERR)
+        return False
+
+    console("Die Datei existiert.", mode=SUCC)
+
+    constants.config_toml = toml.load("config.toml")
     console("Import erfolgreich", mode=SUCC)
 
     console("Prüfe auf Aliase", mode=INFO)
