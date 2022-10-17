@@ -77,7 +77,7 @@ Laut der technischen Dokumentation der Telegram API\footnote{\url{https://core.t
 
 Um ein Programm über die Telegram Bot-API anbinden zu können, muss zuvor ein Bot über Telegram erstellt werden. Hierzu wird der Bot \lstinline{@BotFather} verwendet. Sämtliche Einstellungen zu Bots werden über \lstinline{@BotFather} vorgenommen. Soll ein neuer Bot erstellt werden, werden die benötigten Informationen abgefragt. Nachdem der Anzeigename und der Benutzername festgelegt werden, erhält der Benutzer die Zugangsdaten für die HTTP-API und der Bot ist einsatzbereit. \lstinline{@BotFather} kann jederzeit erneut kontaktiert werden, um weitere Einstellungen vorzunehmen: es können Profilbild und Beschreibung geändert, sowie vordefinierte Kommandos festgelegt werden. Der Zugriff auf die HTTP-API erfolgt über die Basis-URL \lstinline{https://api.telegram.org/bot<token>/METHOD_NAME}\footnote{\url{https://core.telegram.org/bots/api\#making-requests}}, wobei \lstinline{<token>} der von \lstinline{@BotFather} erhaltene Zugriffsschlüssel und \lstinline{METHOD_NAME} die API-Methode (beispielsweise \lstinline{getUpdates} oder \lstinline{sendMessage}) ist. Weitere laut API-Dokumentation benötigte Parameter werden als Parameter der HTTP-Anfragen vom Typ 'GET' oder 'POST' übermittelt. Die Antwort der API erfolgt in Form eines JSON-Objekts.
 
-\begin{lstlisting}[caption={Beispiel eines Aufrufs der Telegram HTTP-API. Erhalt einer Textnachricht "Hallo Welt".}, label=lst:bsp-telegram-api, xleftmargin=6mm]
+\begin{lstlisting}[caption={Beispiel eines Aufrufs der Telegram HTTP-API. Erhalt einer Textnachricht "Hallo Welt".}, label=lst:bsp-telegram-api, numbers=none]
 GET https://api.telegram.org/bot123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11/getUpdates
 
 {
