@@ -124,14 +124,14 @@ Die Texterkennung prüft nun im ersten Schritt, ob die eingegangene Nachricht je
 
 Die maximale Länge von Bezeichnungen der Produktkategorie ist \textbf{1}. Die maximale Länge von Bezeichnungen der Eigenschaft ist \textbf{2}.
 
-Nachricht: "Ich benötige Informationen zu Systemen vom \textit{Typ} \underline{Webserver} \textit{bezüglich} \underline{Zugriffe \textit{Zeitraum}} 24 Stunden"
+Nachricht: "Ich benötige Informationen zu Systemen vom \textit{Typ} \uline{Webserver} \textit{bezüglich} \uline{Zugriffe \textit{Zeitraum}} 24 Stunden"
 
 \begin{itemize}
-\item Produktkategorie: Schlüsselwort \textit{Typ}, folgende \textbf{1} Wörter: \underline{Webserver}
-\item Eigenschaft: Schlüsselwort \textit{bezüglich}, folgende \textbf{2} Wörter: \underline{Zugriffe Zeitraum}
+\item Produktkategorie: Schlüsselwort \textit{Typ}, folgende \textbf{1} Wörter: \uline{Webserver}
+\item Eigenschaft: Schlüsselwort \textit{bezüglich}, folgende \textbf{2} Wörter: \uline{Zugriffe Zeitraum}
 \end{itemize}
 
-Nun prüft die Software, ob zu den erfassten Daten Einträge in der Datei 'config.toml' bestehen. Im obigen Fall führt \underline{Webserver} durch direkte Übereinstimmung mit der ersten TOML-Sektion zu einem Fund. Im Folgenden werden die Eigenschaften der ermittelten Produktkategorie auf Übereinstimmung mit \underline{Zugriffe Zeitraum} verglichen. Eine solche Eigenschaft existiert nicht. Besteht der erfasste Wert aus mehr als einem Wort, wird das letzte Wort entfernt. Aus \underline{Zugriffe Zeitraum} wird \underline{Zugriffe}. Damit gibt es eine direkte Übereinstimmung zu Zeile 2 des obigen Listings. Die Software entnimmt der Datenstruktur den Suchbegriff \lstinline{http_response_code: 200} und startet eine Abfrage an die Graylog-API.
+Nun prüft die Software, ob zu den erfassten Daten Einträge in der Datei 'config.toml' bestehen. Im obigen Fall führt \uline{Webserver} durch direkte Übereinstimmung mit der ersten TOML-Sektion zu einem Fund. Im Folgenden werden die Eigenschaften der ermittelten Produktkategorie auf Übereinstimmung mit \uline{Zugriffe Zeitraum} verglichen. Eine solche Eigenschaft existiert nicht. Besteht der erfasste Wert aus mehr als einem Wort, wird das letzte Wort entfernt. Aus \uline{Zugriffe Zeitraum} wird \uline{Zugriffe}. Damit gibt es eine direkte Übereinstimmung zu Zeile 2 des obigen Listings. Die Software entnimmt der Datenstruktur den Suchbegriff \lstinline{http_response_code: 200} und startet eine Abfrage an die Graylog-API.
 
 Der Zeitraum wird in ähnlicher Form ermittelt. Hierbei wird die Anzahl der zu erfassenden Wörter auf die Anzahl zwei festgelegt. Das zweite Wort entspricht der Zeiteinheit, das erste Wort entspricht der Anzahl der Zeiteinheit. Die Texterkennung der Anzahl erkennt sowohl Zahlen als auch Zahlwörter ("ein", "eine", "letzte"). Wurde eine Übereinstimmung bei der Erkennung beider Werte erreicht, wird die Anzahl der Sekunden berechnet (zwei Tage entsprechen 60s*60*24*2 = 172800s) und der Anfrage an die Graylog-API angehängt.
 
