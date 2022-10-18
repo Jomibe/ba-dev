@@ -100,7 +100,7 @@ Die Entwickler des Transcribe SDK weisen darauf hin, dass sich die Software bisl
 \subsubsection{Sprachsynthese}
 \label{sec:optimierung-synth}
 
-Die Dauer des Text-To-Speech-Vorgangs wurde in ähnlicher Weise optimiert wie die der Transkription. Die dazu notwendigen Funktionen waren bereits in der boto3-Bibliothek enthalten. Statt der Funktion \lstinline{start_speech_synthesis_task} wird die Funktion \lstinline{synthesize_speech} verwendet. Dadurch entfällt die Notwendigkeit, die durch AWS erzeugte Audiodatei aus einem S3-Speicher herunterladen zu müssen. Nachdem der TTS-Auftrag zuvor gestartet wurde, muss dieser ebenfalls mittels 'polling' überwacht werden. Der umzuwandelnde Text wird der API weiterhin als Zeichenkette übergeben. Mit der Funktion \lstinline{synthesize_speech} ist es nun möglich, die Audiodatei aus einem Stream in eine Datei auf dem lokalen Dateisystem zu schreiben. 
+Die Dauer des Text-To-Speech-Vorgangs wurde in ähnlicher Weise optimiert wie die der Transkription. Die dazu notwendigen Funktionen waren bereits in der boto3-Bibliothek enthalten. Statt der Funktion \lstinline{start_speech_synthesis_task} wird die Funktion \lstinline{synthesize_speech} verwendet. Dadurch entfällt die Notwendigkeit, die durch AWS erzeugte Audiodatei aus einem S3-Speicher herunterladen zu müssen. 
 
 Die Verarbeitungszeit der Sprachsynthese wurde von 10 Sekunden auf weniger als eine Sekunde verkürzt.
 
