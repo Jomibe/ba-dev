@@ -11,16 +11,29 @@ Um eine modulare Implementierung der Software zu ermöglichen und darüber hinau
 
 \subsection{Dateisystem}
 
-Nachfolgend wird die Struktur der für den Betrieb notwendigen Ordner und Dateien erläutert.
+Nachfolgend wird die Struktur der in \autoref{fig:dateisystem} dargestellten Ordner und Dateien erläutert.
 
 \begin{figure}[h!]
 \centering
-\includegraphics[scale=0.7]{dateisystem}
-\caption{Gekürzte Ausgabe der im Basisverzeichnis enthaltenen Dateien.}
+\includegraphics[scale=0.75]{dateisystem}
+\caption{Gekürzte Ausgabe der für den Betrieb notwendigen Ordner und Dateien im Basisverzeichnis.}
 \label{fig:dateisystem}
 \end{figure}
 
-In absteigender Reihenfolge: die Datei '.env' beinhaltet sensible Zugangsdaten für die verschiedenen Dienste und wird nicht in das öffentliche GitHub-Repository hochgeladen. Das Verzeichnis 'files' dient als Zwischenspeicher für anfallende Audiodateien, welche aus den eingehenden Sprachnachrichten extrahiert wurden oder per Sprachsynthese erzeugt wurden. Im Verzeichnis 'log' werden die textbasierten Protokolle der Software gespeichert. Zu jedem Start der Software wird eine neue Datei mit dem aktuellen Datum erzeugt. Die Inhalte der Dateien entsprechen der Konsolenausgabe mit der Ausnahme, dass sensible Daten nur in der Konsolenausgabe ausgegeben werden. Die Datei requirements.txt dient als Informationsquelle für den Paketmanager pip, mit welchem die Abhängigkeiten aus dem Python Package Index installiert werden können. Sie beinhaltet Namen und Versionsnummern von externen Softwaremodulen. Der Ordner 'src' (Abkürzung für engl. 'source') beinhaltet den Quellcode. Die Datei '\_\_init\_\_.py' ist notwendig für die Moduldefinitionen in Python und hat keinen Inhalt \cite[S. 337]{python}. Weitere Dateien im Quellcode-Verzeichnis entsprechen den Modulen und werden in \autoref{sec:module} detaillierter erläutert. Schließlich wird die Datei 'store.txt' für die Persistierung des Werts für den Parameter 'update\_id' der Telegram Bot API verwendet.
+Von oben nach unten: 
+
+\begin{itemize}
+\item Die Datei '.env' beinhaltet sensible Zugangsdaten für die verschiedenen Dienste und wird nicht in das öffentliche GitHub-Repository hochgeladen. 
+\item Das Verzeichnis 'files' dient als Zwischenspeicher für anfallende Audiodateien, welche aus den eingehenden Sprachnachrichten extrahiert wurden oder per Sprachsynthese erzeugt wurden. 
+\item Im Verzeichnis 'log' werden die textbasierten Protokolle der Software gespeichert. Zu jedem Start der Software wird eine neue Datei mit dem aktuellen Datum erzeugt. Die Inhalte der Dateien entsprechen der Konsolenausgabe mit der Ausnahme, dass sensible Daten nur in der Konsolenausgabe ausgegeben werden. 
+\item Die Datei requirements.txt dient als Informationsquelle für den Paketmanager Pip, mit welchem die Abhängigkeiten aus dem Python Package Index installiert werden können. Sie beinhaltet Namen und Versionsnummern von externen Softwaremodulen. 
+\item Der Ordner 'src' beinhaltet den Quellcode. 
+\item Die Datei '\_\_init\_\_.py' ist notwendig für die Moduldefinitionen in Python und hat keinen Inhalt 
+\item Die Datei 'store.txt' wird für die Persistierung des Werts für den Parameter 'update\_id' der Telegram Bot API verwendet.\cite[S. 337]{python}.
+
+Weitere Dateien im Quellcode-Verzeichnis entsprechen den Modulen und werden im folgenden \autoref{sec:module} detaillierter erläutert. 
+
+\end{itemize}
 
 \subsection{Module}
 \label{sec:module}
