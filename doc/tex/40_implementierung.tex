@@ -116,7 +116,7 @@ Die weitere Verarbeitung des Nachrichtentexts erfolgt nach dem zuvor definierten
 
 Die Texterkennung prüft nun im ersten Schritt, ob die eingegangene Nachricht jeweils ein Schlüsselwort für die Produktkategorie, Eigenschaft und den Zeitraum enthält. Im nächsten Schritt werden die auf die Schlüsselwörter folgenden Wörter für die Weiterverarbeitung erfasst. Dabei werden so viele Wörter gespeichert, wie beim Startvorgang ermittelt. Zur Erläuterung:
 
-\begin{lstlisting}[caption={Auszug aus der Datei config.toml}, label=config-toml, xleftmargin=6mm]
+\begin{lstlisting}[caption={Beispiel für eine mögliche Konfiguration in der Datei config.toml}, label=config-toml, xleftmargin=6mm]
 [Webserver]
 "Zugriffe" = "http_response_code: 200"
 "Interne Fehler" = "http_response_code:[500 TO 599]"
