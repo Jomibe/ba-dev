@@ -166,7 +166,14 @@ Die Antwort der Graylog-API erfolgt in einem JSON-Objekt, welches sämtliche auf
 
 \subsubsection{Implementierung von Aliasdefinitionen}
 
-Um die Erkennung von Begriffen und die Erweiterbarkeit des Zuordnungssystems in der Datei 'config.toml' zu verbessern, wurden Alias-Bezeichnungen für Produktkategorien und Eigenschaften implementiert. Ein Alias einer Produktkategorie übernimmt sämtliche Eigenschaften der Zieldefinition. Ein Alias einer Eigenschaft übernimmt den Suchbegriff der Zieldefinition. Im folgenden Listing führt die Eigenschaft Besucher der Produktkategorie eins zum Suchbegriff \lstinline{http_response_code: 200}
+Um die Erkennung von Begriffen und die Erweiterbarkeit des Zuordnungssystems in der Datei 'config.toml' zu verbessern, wurden Alias-Bezeichnungen für Produktkategorien und Eigenschaften implementiert. 
+
+\begin{itemize}
+\item Ein Alias einer Produktkategorie übernimmt sämtliche Eigenschaften der Zieldefinition. 
+\item Ein Alias einer Eigenschaft übernimmt den Suchbegriff der Zieldefinition. 
+\end{itemize}
+
+Im folgenden Listing führt die Eigenschaft Besucher der Produktkategorie Eins zum Suchbegriff \lstinline{http_response_code: 200}.
 
 \begin{lstlisting}[caption={Aliasdefinitionen in der Datei config.toml}, label=alias-config-toml, xleftmargin=6mm]
 [Webserver]
