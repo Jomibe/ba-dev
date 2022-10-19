@@ -13,7 +13,7 @@ Es sind einige Erweiterungen der Funktionalität der entwickelten Software denkb
 
 \subsection{Nebenläufigkeit}
 
-Die ersten Voraussetzungen für eine vollständige Nebenläufigkeit von Prozessen wurden bereits mit der Verwendung des Amazon Transcribe SDK erfüllt. Derzeit verarbeitet der Bot die eingehenden Nachrichten synchron, bzw. nacheinander. Es ist jederzeit möglich, neue Nachrichten einzusenden, diese werden jedoch sequenziell statt parallel verarbeitet. Um die parallele Verarbeitung von eingehenden Nachrichten zu ermöglichen, ist es notwendig, asynchrone Funktionen auch in weiteren Programmmodulen einzusetzen. Weiterhin ist es denkbar, die Software für den Betrieb mit mehreren Threads oder einem Orchestrierungsdienst wie Kubernetes anzupassen. Anfragen würden dann von einer Softwarekomponente angenommen und auf freie Instanzen verteilt werden, welche die Anfrage durchführen und das Ergebnis asynchron an die Hauptinstanz zurückführen. 
+Die ersten Voraussetzungen für eine vollständige Nebenläufigkeit von Prozessen wurden bereits mit der Verwendung des Amazon Transcribe SDK erfüllt. Derzeit verarbeitet der Bot die eingehenden Nachrichten synchron, bzw. nacheinander. Es ist jederzeit möglich, neue Nachrichten einzusenden, diese werden jedoch sequenziell statt parallel verarbeitet. Um die parallele Verarbeitung von eingehenden Nachrichten zu ermöglichen, ist es notwendig, asynchrone Funktionen auch in weiteren Programmmodulen einzusetzen. Weiterhin ist es denkbar, die Software für den Betrieb mit mehreren Threads anzupassen. Anfragen würden dann von einer Softwarekomponente angenommen und von einem jeweils dafür erzeugten Thread bearbeitet werden, welche das Ergebnis asynchron an die Hauptinstanz zurückführen. 
 
 \subsection{Datenaufbereitung}
 
