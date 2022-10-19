@@ -1,0 +1,24 @@
+\chapter{Fazit}
+\label{cha:fazit}
+
+\section{Zusammenfassung}
+
+Das Ziel der Abschlussarbeit war die Implementierung einer Software, mit welcher Systemadministratoren sich in Echtzeit über den Status eines administrierten Netzwerkes informieren können. Die Informationsquelle für Abfragen ist die Software Graylog Open, welche Systemprotokolle sämtlicher Geräte in einem Netzwerk zentral sammelt und durchsuchbar macht. Den Administratoren sollte es ermöglicht werden, über eine auf gesprochener Sprache basierende Eingabemöglichkeit Anfragen zu verfassen. Die Aufgabe der zu implementierenden Software ist es, die Informationen aus der über den Messenger Telegram gesendeten Sprachnachricht zu extrahieren und damit eine Anfrage an Graylog zu stellen. Schließlich sollte die Software die Antwort von Graylog ebenfalls in einer Sprachnachricht an den Benutzer zurücksenden. 
+
+Die Implementierung der Software verlief planmäßig, sodass die gestellten Anforderungen erfüllt werden konnten. Während der Entwicklung und bei der Prüfung erster Prototypen fiel auf, dass die nicht-funktionalen Anforderungen Verarbeitungsgeschwindigkeit und Erkennungsgenauigkeit der Spracherkennung an ein Produkt, welches ausschließlich per Sprache bedient werden soll hohe Ansprüche an die Qualität der Implementierung stellen. Durch die Verwendung von asynchronen Funktionen konnte die Verarbeitungsgeschwindigkeit erheblich reduziert werden. Eine weitere Funktion, welche zur Verbesserung der Erkennungsgenauigkeit beigetragen hat, waren die implementierten Aliasdefinitionen. Mit diesen konnte die im Gegensatz zur Transkription von alltäglicher Sprache niedrige Treffergenauigkeit von Fachbegriffen aus dem Bereich der Informatik gut kompensiert werden. 
+
+\section{Ausblick}
+
+Es sind einige Erweiterungen der Funktionalität der entwickelten Software denkbar. 
+
+\subsection{Nebenläufigkeit}
+
+Die ersten Voraussetzungen für eine vollständige Nebenläufigkeit von Prozessen wurden bereits mit der Verwendung des Amazon Transcribe SDK erfüllt. Derzeit verarbeitet der Bot die eingehenden Nachrichten synchron, bzw. nacheinander. Es ist jederzeit möglich, neue Nachrichten einzusenden, diese werden jedoch sequenziell statt parallel verarbeitet. Um die parallele Verarbeitung von eingehenden Nachrichten zu ermöglichen, ist es notwendig, asynchrone Funktionen auch in weiteren Programmmodulen einzusetzen. Weiterhin ist es denkbar, die Software für den Betrieb mit mehreren Threads oder einem Orchestrierungsdienst wie Kubernetes anzupassen. Anfragen würden dann von einer Softwarekomponente angenommen und auf freie Instanzen verteilt werden, welche die Anfrage durchführen und das Ergebnis asynchron an die Hauptinstanz zurückführen. 
+
+\subsection{Datenaufbereitung}
+
+Derzeit gibt die Software für jede Anfrage die Anzahl der erfassten Ereignisse zurück. Diese Angabe ist nicht für jede Abfrage sinnvoll. Zukünfig könnten weitere Funktionen für die Aufbereitung der Informationen inkl. weiteren Schlüsselwörtern implementiert werden, welche beispielsweise den Minimal- oder Maximalwert oder alle verschiedenen Werte (analog zum SQL Statement \lstinline{SELECT DISTINCT}) ausgeben.
+
+\subsection{Verwaltung per Telegram}
+
+Änderungen am Verhalten der Software und insbesondere an den Zuordnungen der Suchbegriffe zu den Schlüsselwörtern können derzeit nur über eine Anpassung von Konfigurationsdateien vorgenommen werden. In Zukunft könnte ein Rollenkonzept eingeführt werden, welches es bestimmten Benutzern erlaubt, Änderungen an den Zuordnungen vornehmen zu dürfen und neue Abfragen definieren zu können.
