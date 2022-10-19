@@ -13,9 +13,10 @@ Heutzutage stellen viele Dienste HTTP-APIs zur Verfügung, welche als 'RESTful' 
 
 Der Zugriff auf HTTP-APIs erfolgt analog zum Zugriff auf Webseiten. Je nach Anforderung werden die HTTP-Methoden 'GET', 'POST' und weitere verwendet \cite[S. 279]{swdev}. Die von der HTTP-API beziehbaren Informationen werden mit der URL (Uniform Resource Locator) lokalisiert und angefordert. Zusätzlich können Informationen über Header (Kopfzeilen) und Cookies ausgetauscht werden, um beispielsweise Zustandsinformationen (Status des Warenkorbs in einem Webshop, Identifikationsnummer des angemeldeten Benutzers) austauschen zu können.
 
-\begin{lstlisting}[caption={Beispiel eines Aufrufs der Graylog REST-API.}, label=bsp-rest-api, numbers=none]
+\begin{lstlisting}[caption={Beispiel eines Aufrufs der Graylog REST-API.}, label=bsp-rest-api, numbers=none, xleftmargin=6mm]
 GET http://10.10.12.1:9000/api/cluster
-
+\end{lstlisting}
+\begin{lstlisting}[xleftmargin=6mm]
 {
   "12ac8e44-0c59-4c38-bd5e-4fe247a55893": {
     "facility": "graylog-server",
@@ -34,7 +35,7 @@ GET http://10.10.12.1:9000/api/cluster
 }
 \end{lstlisting}
 
-Die Antwort der HTTP-API erfolgt in vielen Fällen maschinenlesbar in der Sprache JSON \cite[S. 281]{swdev}.
+Die Antwort der HTTP-API erfolgt in vielen Fällen maschinenlesbar in der Sprache JSON \cite[S. 281]{swdev}, wie in \autoref{bsp-rest-api} ab der ersten Zeile zu sehen.
 
 \section{Telegram Messenger}
 
