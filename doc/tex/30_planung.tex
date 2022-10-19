@@ -24,7 +24,7 @@ Nach dem Start der Software muss geprüft werden, ob ein einwandfreier Betrieb m
 \subsection{Regelbetrieb}
 
 Im Regelbetrieb reagiert die Software in Echtzeit auf eingehende Nachrichten vom Anwender. 
-Um den Betrieb der Software auch mit nicht-öffentlichen IP-Adressen (beispielsweise in einem Heimnetzwerk hinter einem NAT-Router) oder einer Firewall, welche den Zugriff auf Geräte im internen Netzwerk aus dem Internet verbietet, zu ermöglichen, soll das Verfahren des 'long-polling' für den Abruf von Informationen von der Telegram API verwendet werden (vgl. \hyperref[sec:telegram-getting-updates]{erstes Unterkapitel von Abschnitt 2.2.1}). Somit werden lediglich Verbindungen aus dem internen Netzwerk ins Internet aufgebaut. Eventuelle NAT-Router oder Firewalls hinterlegen den Verbindungsaufbau in internen Datenstrukturen wie NAT-Tabellen und lassen Antworten aus dem Internet zu.
+Um den Betrieb der Software auch mit nicht-öffentlichen IP-Adressen (beispielsweise in einem Heimnetzwerk hinter einem NAT-Router) oder einer Firewall, welche den Zugriff auf Geräte im internen Netzwerk aus dem Internet verbietet, zu ermöglichen, soll das Verfahren des Long-polling für den Abruf von Informationen von der Telegram API verwendet werden (vgl. \hyperref[sec:telegram-getting-updates]{erstes Unterkapitel von Abschnitt 2.2.1}). Somit werden lediglich Verbindungen aus dem internen Netzwerk ins Internet aufgebaut. Eventuelle NAT-Router oder Firewalls hinterlegen den Verbindungsaufbau in internen Datenstrukturen wie NAT-Tabellen und lassen Antworten aus dem Internet zu.
 
 Der geplante Ablauf des Regelbetriebs ist im Sequenzdiagramm in \autoref{fig:dia-seq} abgebildet.
 
