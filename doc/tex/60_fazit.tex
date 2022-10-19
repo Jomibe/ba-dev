@@ -13,7 +13,9 @@ Es sind einige Erweiterungen der Funktionalität der entwickelten Software denkb
 
 \subsection{Nebenläufigkeit}
 
-Die ersten Voraussetzungen für eine vollständige Nebenläufigkeit von Prozessen wurden bereits mit der Verwendung des Amazon Transcribe SDK erfüllt. Derzeit verarbeitet der Bot die eingehenden Nachrichten synchron, bzw. nacheinander. Es ist jederzeit möglich, neue Nachrichten einzusenden, diese werden jedoch sequenziell statt parallel verarbeitet. Um die parallele Verarbeitung von eingehenden Nachrichten zu ermöglichen, ist es notwendig, asynchrone Funktionen auch in weiteren Programmmodulen einzusetzen. Weiterhin ist es denkbar, die Software für den Betrieb mit mehreren Threads anzupassen. Anfragen würden dann von einer Softwarekomponente angenommen und von einem jeweils dafür erzeugten Thread bearbeitet werden, welche das Ergebnis asynchron an die Hauptinstanz zurückführen. 
+Die ersten Voraussetzungen für eine vollständige Nebenläufigkeit von Prozessen wurden bereits mit der Verwendung des Amazon Transcribe SDK erfüllt. Derzeit verarbeitet der Bot die eingehenden Nachrichten synchron, bzw. nacheinander. Es ist jederzeit möglich, neue Nachrichten einzusenden, diese werden jedoch sequenziell statt parallel verarbeitet. 
+
+Um die parallele Verarbeitung von eingehenden Nachrichten zu ermöglichen, ist es notwendig, asynchrone Funktionen auch in weiteren Programmmodulen einzusetzen. Weiterhin ist es denkbar, die Software für den Betrieb mit mehreren Threads anzupassen. Anfragen würden dann von einer Softwarekomponente angenommen und von einem jeweils dafür erzeugten Thread bearbeitet werden, welche das Ergebnis asynchron an die Hauptinstanz zurückführen. 
 
 \subsection{Datenaufbereitung}
 
@@ -21,4 +23,4 @@ Derzeit gibt die Software für jede Anfrage die Anzahl der erfassten Ereignisse 
 
 \subsection{Verwaltung per Telegram}
 
-Änderungen am Verhalten der Software und insbesondere an den Zuordnungen der Suchbegriffe zu den Schlüsselwörtern können derzeit nur über eine Anpassung von Konfigurationsdateien vorgenommen werden. In Zukunft könnte ein Rollenkonzept eingeführt werden, welches es bestimmten Benutzern erlaubt, Änderungen an den Zuordnungen vornehmen zu dürfen und neue Abfragen definieren zu können.
+Änderungen am Verhalten der Software und insbesondere an den Zuordnungen der Suchbegriffe zu den Schlüsselwörtern können derzeit nur über eine Anpassung von Konfigurationsdateien vorgenommen werden. Es könnte ein Rollenkonzept eingeführt werden, welches es bestimmten Benutzern erlaubt, Änderungen an den Zuordnungen vornehmen zu dürfen und neue Abfragen definieren zu können.
