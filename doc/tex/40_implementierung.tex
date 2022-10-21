@@ -1,10 +1,6 @@
 \chapter{Implementierung}
 \label{cha:implementierung}
 
-\section{Auswahl der Programmiersprache}
-
-Die Software soll in der Skriptsprache Python entwickelt werden. Für die Entscheidung sprechen mehrere Vorteile: die Plattformunabhängigkeit wird durch die Verfügbarkeit von Interpretern sowohl für unix-artige Betriebssysteme als auch Windows ermöglicht. Die Software liegt jederzeit im Quellcode vor und kann so einfach gewartet und erweitert werden. Des weiteren existiert aufgrund der hohen Popularität\footnote{\url{https://www.tiobe.com/tiobe-index/python/}} eine reichhaltige Auswahl an Bibliotheken und Onlinedokumentationen, welche die Entwicklung der Software vereinfachen. 
-
 \section{Struktur}
 
 Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Die Unterteilung der für den Betrieb notwendigen Dateien inkl. des Quellcodes wird in den folgenden beiden Unterkapiteln beschrieben. Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8\footnote{\url{https://peps.python.org/pep-0008/}} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Sämtliche Module und Funktionen enthalten nach der Definition einen mehrzeiligen Kommentar mit einer Docstring-Dokumentationen gemäß PEP 257\footnote{\url{https://peps.python.org/pep-0257/}} im Quellcode.

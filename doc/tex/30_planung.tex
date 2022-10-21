@@ -3,6 +3,10 @@
 
 In diesem Kapitel werden Anforderungen an die Software und die Systemumgebung definiert sowie verwendete organisatorische Konzepte erläutert.
 
+\section{Auswahl der Programmiersprache}
+
+Die Software soll in der Skriptsprache Python entwickelt werden. Für die Entscheidung sprechen mehrere Vorteile: die Plattformunabhängigkeit wird durch die Verfügbarkeit von Interpretern sowohl für unix-artige Betriebssysteme als auch Windows ermöglicht. Die Software liegt jederzeit im Quellcode vor und kann so einfach gewartet und erweitert werden. Des weiteren existiert aufgrund der hohen Popularität\footnote{\url{https://www.tiobe.com/tiobe-index/python/}} eine reichhaltige Auswahl an Bibliotheken und Onlinedokumentationen, welche die Entwicklung der Software vereinfachen. 
+
 \section{Anforderungen}
 
 Die Software soll auf den nicht-interaktiven Betrieb als Dienst auf unix-artigen Betriebssystemen ausgelegt werden. Dies hat u.\,a. Auswirkungen auf die geplanten Benutzerschnittstellen. Das Programm soll zur Laufzeit keine Konsoleneingaben verlangen, da diese nur bei einem interaktiven Betrieb, z.B. in der Shell, vorgenommen werden können. Stattdessen soll mit dem Anwender vollständig über den Telegram-Messenger interagiert werden und administrative Einstellungen sollen über Konfigurationsdateien vorgenommen werden können. 
