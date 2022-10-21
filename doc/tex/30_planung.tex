@@ -33,6 +33,7 @@ Um den Betrieb der Software auch mit nicht-öffentlichen IP-Adressen (beispielsw
 Der geplante Ablauf des Regelbetriebs ist im Sequenzdiagramm in \autoref{fig:dia-seq} abgebildet.
 
 \subsection{Spracherkennung}
+\label{sec:spracherkennung}
 
 Bei der Ausarbeitung eines Konzepts für die Funktionsweise der Spracherkennung müssen einige funktionale und nicht-funktionale Eigenschaften beachtet werden. Die Entscheidung wird u.\,a. beeinflusst durch Aspekte der ... 
 
@@ -48,10 +49,17 @@ Bei der Ausarbeitung eines Konzepts für die Funktionsweise der Spracherkennung 
 
 Es bestehen verschiedene Möglichkeiten, Sprache zu Text zu transkribieren und den Inhalt im Anschluss zu analysieren, um das Anliegen des Anwenders zu erkennen und eine passende Anfrage für die Suchmaschine in Graylog zu bilden. Für die Transkription ist es notwendig, künstliche Intelligenz einzusetzen. Diese kann lokal oder entfernt ausgeführt werden. Die entfernte Ausführung bietet Vorteile bezüglich der Plattformunabhängigkeit und der (von den lokalen Ressourcen unabhängigen) Geschwindigkeit. Es stehen verschiedene Online-Dienste für die Transkription zur Verfügung, darunter Watson Speech to Text von IBM, Amazon Transcribe von AWS und Speech-To-Text vom Anbieter Google Cloud. 
 
+\subsubsection{Syntax}
+\label{sec:syntax}
+
+Liegt die eingegangene Nachricht als Text vor, müssen die Inhalte analysiert werden. Der Aufbau der Nachricht muss einem festen Muster folgen, welches durch eine Prozedur analysiert werden kann. Hierzu eignet sich die Verwendung von Schlüsselwörtern. Diese bieten den Vorteil, dass keine Analyse der Grammatik notwendig ist. Die Verwendung von künstlicher Intelligenz bietet hierbei keine Vorteile. Das KI-Modell müsste für neue Begriffsdefinitionen, Grammatik (Satzbau) sowie Umgangssprache trainiert werden. Dies ist bei der geplanten Anwendung des Programms nicht durchführbar, da der Aufwand für das Hinzufügen neuer Suchbegriffe möglichst gering gehalten werden soll. Weiterhin bietet ein Algorithmus für die Analyse einer Nachricht mit statischem Aufbau den Vorteil der besseren Nachvollziehbarkeit des ermittelten Ergebnisses.
+
+Es wird ein Aufbau aus Produktkategorie, Eigenschaft und Zeitraum gewählt. Die Produktkategorie entspricht der abzufragenden Gerätegruppe, beispielsweise 'Webserver'. Für jede Produktkategorie können Eigenschaften definiert werden, für die Abfrage von Ereignissen mit einem Statuscode \lstinline{4xx} oder \lstinline{5xx} der Gruppe 'Webserver' beispielsweise 'Fehlermeldungen'. Ein weiteres Schlüsselwort führt zu den Informationen für den abzufragenden Zeitraum, welcher relativ angegeben wird ('letzte fünf Tage', 'letzte Woche', 'letzte 20 Minuten'). Schließlich muss die Erkennung von Zahlwörtern zuverlässig funktionieren.
+
 \subsubsection{Vergleich diverser Transkriptionsdienste}
 \label{sec:vergleich-transkrip}
 
-Die Umwandlungsgenauigkeit der genannten Dienste soll mit einem Testset bestehend aus umzuwandelnden Audiodateien mit möglichen Sprachanfragen geprüft werden. Dazu wurden zehn Sprachnachrichten über die Telegram App für iOS auf einem iPhone aufgenommen. Im Anschluss wurden die Audiodaten von der Telegram API extrahiert, sodass diese im OGG-Format vorlagen. Die drei Dienste bevorzugen jeweils andere Audioformate, daher wurden die Dateien aus dem OGG-Format (für das Produkt von Google Cloud) in das MP3- (für das Produkt von AWS) und das FLAC-Format (für das Produkt von IBM) umgewandelt. Schließlich wurden jeweils zehn Audiodateien über eine Webkonsole, welche von allen Anbietern angeboten wurde\footnote{\url{https://eu-central-1.console.aws.amazon.com/transcribe/home?region=eu-central-1\#createJob}, \url{https://speech-to-text-demo.ng.bluemix.net}, \url{https://cloud.google.com/speech-to-text}}, an den Dienst übermittelt. Die Webkonsolen verwendeten jeweils die APIs, welche ebenfalls für den programmgesteuerten Zugriff verwendet werden. Die Ergebnisse werden in der \autoref{tab:erg-transkript} abgebildet.
+Die Umwandlungsgenauigkeit der in \autoref{sec:spracherkennung} genannten Dienste soll mit einem Testset bestehend aus umzuwandelnden Audiodateien mit möglichen Sprachanfragen geprüft werden. Dazu wurden zehn Sprachnachrichten über die Telegram App für iOS auf einem iPhone aufgenommen. Im Anschluss wurden die Audiodaten von der Telegram API extrahiert, sodass diese im OGG-Format vorlagen. Die drei Dienste bevorzugen jeweils andere Audioformate, daher wurden die Dateien aus dem OGG-Format (für das Produkt von Google Cloud) in das MP3- (für das Produkt von AWS) und das FLAC-Format (für das Produkt von IBM) umgewandelt. Schließlich wurden jeweils zehn Audiodateien über eine Webkonsole, welche von allen Anbietern angeboten wurde\footnote{\url{https://eu-central-1.console.aws.amazon.com/transcribe/home?region=eu-central-1\#createJob}, \url{https://speech-to-text-demo.ng.bluemix.net}, \url{https://cloud.google.com/speech-to-text}}, an den Dienst übermittelt. Die Webkonsolen verwendeten jeweils die APIs, welche ebenfalls für den programmgesteuerten Zugriff verwendet werden. Die Ergebnisse werden in der \autoref{tab:erg-transkript} abgebildet.
 
 \begin{figure}[h!]
 \centering
@@ -97,13 +105,6 @@ Summe Fehler	& 2		& 2			& 8
 \end{table}
 
 Die Transkriptionsdienste von AWS und Google Cloud konnten durch eine geringe Fehlerquote gegenüber dem Produkt vom IBM überzeugen. Aufgrund von bereits existierenden persönlichen Erfahrungen in der Verwendung von AWS wird Amazon Transcribe als Transkriptionsdienst verwendet.
-
-\subsubsection{Syntax}
-\label{sec:syntax}
-
-Liegt die eingegangene Nachricht als Text vor, müssen die Inhalte analysiert werden. Der Aufbau der Nachricht muss einem festen Muster folgen, welches durch eine Prozedur analysiert werden kann. Hierzu eignet sich die Verwendung von Schlüsselwörtern. Diese bieten den Vorteil, dass keine Analyse der Grammatik notwendig ist. Die Verwendung von künstlicher Intelligenz bietet hierbei keine Vorteile. Das KI-Modell müsste für neue Begriffsdefinitionen, Grammatik (Satzbau) sowie Umgangssprache trainiert werden. Dies ist bei der geplanten Anwendung des Programms nicht durchführbar, da der Aufwand für das Hinzufügen neuer Suchbegriffe möglichst gering gehalten werden soll. Weiterhin bietet ein Algorithmus für die Analyse einer Nachricht mit statischem Aufbau den Vorteil der besseren Nachvollziehbarkeit des ermittelten Ergebnisses.
-
-Es wird ein Aufbau aus Produktkategorie, Eigenschaft und Zeitraum gewählt. Die Produktkategorie entspricht der abzufragenden Gerätegruppe, beispielsweise 'Webserver'. Für jede Produktkategorie können Eigenschaften definiert werden, für die Abfrage von Ereignissen mit einem Statuscode \lstinline{4xx} oder \lstinline{5xx} der Gruppe 'Webserver' beispielsweise 'Fehlermeldungen'. Ein weiteres Schlüsselwort führt zu den Informationen für den abzufragenden Zeitraum, welcher relativ angegeben wird ('letzte fünf Tage', 'letzte Woche', 'letzte 20 Minuten'). Schließlich muss die Erkennung von Zahlwörtern zuverlässig funktionieren.
 
 \subsubsection{Konfiguration des Bots}
 
