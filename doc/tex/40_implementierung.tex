@@ -63,7 +63,7 @@ Bei der Formulierung der Fehlermeldungen wurden einige Anforderungen beachtet \c
 \item Fehlermeldungen müssen den Benutzer möglichst schnell auf die Fehlerursache hinweisen und dürfen nicht vorwurfsvoll formuliert sein.
 \end{itemize}
 
-Im Anhang befinden sich zwei Listings mit den Konsolenausgaben des Programms beim Start (\autoref{log-start}) und beim Verarbeiten einer eingegangenen Nachricht (\autoref{log-msg}). In \autoref{fig:bsp-err-log} und \autoref{fig:bsp-warn-log} ist die farbige Darstellung in der Konsole zu sehen.
+In \autoref{fig:bsp-err-log} und \autoref{fig:bsp-warn-log} ist die farbige Darstellung in der Konsole zu sehen. Im Anhang befinden sich zwei Listings mit ausführlicheren Konsolenausgaben, welche im folgenden Absatz erläutert werden.
 
 \begin{figure}[h!]
 \centering
@@ -78,6 +78,10 @@ Im Anhang befinden sich zwei Listings mit den Konsolenausgaben des Programms bei
 \caption{Farbige Ausgaben mit Warnmeldungen.}
 \label{fig:bsp-warn-log}
 \end{figure}
+
+\autoref{log-start}) zeigt die Konsolenausgabe während des Startvorgangs. Zu Beginn wird die Protokollierung in eine Textdatei initialisiert. Danach werden sensible Informationen wie Zugangsdaten aus der Datei .env in Umgebungsvariablen übernommen. Im Anschluss wird die Erreichbarkeit der Dienste von Telegram, Graylog und AWS geprüft. Schließlich wird die Konfiguration aus der Datei config.toml in eine interne Datenstruktur geladen, in welcher die Aliasdefinitionen (diese Funktion wird im \hyperref{ersten Unterkapitel des Abschnitts 4.4.2}[sec:aliasdef] beschrieben) aufgelöst werden. 
+
+(\autoref{log-msg}) zeigt die Konsolenausgabe beim Verarbeiten einer eingegangenen Sprachnachricht. Im ersten Schritt wird der Zähler der Variable \lstinline{update_id} erhöht. Danach wird die Audiodatei von der Telegram Bot API bezogen, auf dem lokalen Dateisystem gespeichert und zu AWS Transcribe übertragen. Nachdem der Übertragungsprozess abgeschlossen ist, werden die Zwischenergebnisse der Transkription angezeigt. Ist der Transkriptionsprozess abgeschlossen, wird der Benutzer über den Status informiert und die Nachricht wird, nun in Textform, auf Schlüsselwörter analysiert. Anhand der Schlüsselwörter werden die Informationen extrahiert und mit den Werten aus der beim Start gefüllten Datenstruktur verglichen. Es wurde eine Übereinstimmung gefunden, somit kann eine Anfrage an Graylog gestellt werden. Das Ergebnis wird dem Benutzer mitgeteilt. Die Verarbeitung ist abgeschlossen und das Programm beginnt erneut mit dem Long-polling der Telegram Bot API.
 
 \section{Startvorgang}
 \label{sec:startvorgang}
@@ -173,6 +177,7 @@ Der Benutzer erhält eine spezifische Fehlermeldung für den Fall, dass
 Die Antwort der Graylog-API erfolgt in einem JSON-Objekt, welches sämtliche auf den Suchbegriff und Zeitraum passende Ereignisse beinhaltet. Die Software bestimmt die Anzahl der Ereignisse und gibt diese an den Benutzer zurück. Im Anschluss wird die nächste Nachricht verarbeitet.
 
 \subsubsection{Implementierung von Aliasdefinitionen}
+\label{sec:aliasdef}
 
 Um die Erkennung von Begriffen und die Erweiterbarkeit des Zuordnungssystems in der Datei 'config.toml' zu verbessern, wurden Alias-Bezeichnungen für Produktkategorien und Eigenschaften implementiert. 
 
