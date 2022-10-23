@@ -45,6 +45,8 @@ Weitere Dateien im Quellcode-Verzeichnis entsprechen den Modulen und werden im f
 
 \end{itemize}
 
+\enlargethispage{0.5cm} 
+
 \subsection{Module}
 \label{sec:module}
 
@@ -106,8 +108,6 @@ Das Modul \lstinline{main} enthält die Methode \lstinline{main()}, welche den S
 
 Im Regelbetrieb wird durch die Hauptfunktion in einer Endlosschleife die Funktion \lstinline{getUpdates()} aufgerufen (siehe \autoref{lst:code-main}). Diese führt Long-Polling der API-Funktion \lstinline{getUpdates} durch (siehe \autoref{lst:code-updates}). Eingehende Nachrichten werden in Echtzeit erkannt und weiterverarbeitet. Falls mehrere Nachrichten vorliegen (dies kommt vor, wenn die Software für längere Zeit nicht mit der Telegram-API verbunden war und in der Zwischenzeit mehrere Nachrichten an den Bot gesendet wurden), wird jeweils nur eine Nachricht verarbeitet, da die Variable 'update\_id' nur um jeweils einen Schritt (statt um die Anzahl der neuen Nachrichten) inkrementiert wird. Der Wert für den Ablauf der HTTP-Anfrage sollte so hoch wie möglich, aber so gering wie notwendig gewählt werden. Um Probleme durch Netzwerkinfrastruktur und Serverprozesse zu vermeiden, beträgt dieser standardmäßig 30 Sekunden \cite[Abs. 5.5. Timeouts]{rfc6202} und kann mittels des Parameters \lstinline{TELEGRAM_LONG_POLL_TIMEOUT} verändert werden. Dieser Parameter beeinflusst, wie lange die Verbindung seitens des Clients (diese Rolle übernimmt hier die in dieser Arbeit entwickelte Software) geöffnet bleibt. Nachdem die Zeit vergangen ist, wird die Anfrage mit einem Timeout vom Client abgebrochen. Durch die Endlosschleife wird sofort eine neue Anfrage gestartet. Trifft eine Antwort des Servers vor Ablauf der Zeitspanne ein, wird die Nachricht verarbeitet und die Software eröffnet im Anschluss eine neue Anfrage mit der angegebenen Wartezeit. Dies wird in \autoref{fig:long-polling} dargestellt. Der Ablauf der Verarbeitung wird im folgenden Absatz beschrieben.
 
-\newpage
-
 \begin{lstlisting}[caption={Programmcode der Hauptfunktion ohne Kommentare und Ausgaben zur Fehleranalyse}, label=lst:code-main, numbers=none]
 def main():
     colorama.init()
@@ -154,8 +154,6 @@ Beim Test eines frühen Prototyps fiel auf, dass die Dauer zwischen Absenden der
 
 Ursprünglich wurde die Boto3-Bibliothek für die Interaktion mit Amazon Transcribe verwendet. Mit der Boto3-Bibliothek ist eine Verarbeitung in Echtzeit nicht möglich; die Audiodatei muss zuerst in einen S3-Speicher hochgeladen werden. Eine Möglichkeit für die direkte Zuführung der Datei besteht nicht. Im Anschluss muss ein Auftrag in Amazon Transcribe über das \lstinline{client}-Objekt in \lstinline{constants.aws_transcribe_obj} erstellt und die Datei im S3-Speicher damit verknüpft werden. Danach wird der Auftrag durch AWS verarbeitet. Die Möglichkeit eines Callbacks oder der Verwendung von Long-polling (vgl. \autoref{sec:telegram-getting-updates}) besteht nicht, daher muss die AWS-API mittels Polling durchgehend erneut kontaktiert werden, bis der Auftrag abgeschlossen ist. Der transkribierte Text wird nach der Bearbeitung des Auftrags durch AWS in einem S3-Speicher als JSON-Objekt in einer Textdatei hinterlegt. Nachdem die Datei von S3 bezogen wurde, konnte der Text durch die Software weiterverarbeitet werden.
 
-\newpage
-
 Die Transkription wurde optimiert, indem für den Zugriff auf Amazon Transcribe statt der Boto3-Bibliothek das Amazon Transcribe Streaming SDK\footnote{\url{https://github.com/awslabs/amazon-transcribe-streaming-sdk}} verwendet wird. Hierdurch ergaben sich neue Möglichkeiten für die Übermittlung der Audionachricht und des ermittelten Texts durch den Einsatz von HTTP-Streams und asynchronen Funktionen. Es wurde eine vom Hersteller bereitgestellte Vorlage für die asynchrone Verarbeitung\footnote{\url{https://github.com/awslabs/amazon-transcribe-streaming-sdk/blob/v0.6.0/examples/simple\_file.py}} für den vorliegenden Einsatzzweck verwendet. Im Gegensatz zur oben beschriebenen Verwendung von Boto3 werden die Audiodaten hierbei direkt Amazon Transcribe über einen HTTP-Stream zugeführt. Dazu wird die zu übertragende Datei, welche sich nach dem Bezug von der Telegram Bot-API auf dem lokalen Dateisystem befindet, mittels des Python-Moduls 'aiofile'\footnote{\url{https://pypi.org/project/aiofile/}} in Blöcke mit einer Größe von 16 Kbyte aufgeteilt und in mehreren Paketen an die AWS-API übertragen. Bereits während der Übertragung und dem Erhalt der ersten Blöcke durch AWS beginnt die Transkription. In der Botsoftware wurde gleichzeitig ein Event Handler \lstinline{handle_transcript_event()} in der Datei aws.py implementiert, welcher Daten von der AWS API in Echtzeit empfängt und nach Abschluss eines Satzes (dies ist an dem Parameter \lstinline{is_partial} erkennbar) den Text der Software zuführt und die weitere Verarbeitung durch Abschluss der Funktion auslöst.
 
 Die Entwickler des Transcribe SDK weisen darauf hin, dass sich die Software bislang in einem sehr frühen Entwicklungsstadium befindet. Zum Zeitpunkt der Entwicklung wurde die Version 0.6.0 verwendet. Um die Funktionsfähigkeit des Bots nicht durch die Abhängigkeit zum Entwicklungsstand der Transcribe SDK zu gefährden, besteht die Möglichkeit, zwischen der klassischen Transkription mit Boto3 und der Echtzeit-Transkription mit dem Konfigurationsparameter \lstinline{ENABLE_FAILSAFE_TRANSCRIPTION} zu wechseln. Wird dieser auf den Wert \lstinline{True} gesetzt, wird die Verarbeitungszeit der Transkription von 15 Sekunden auf etwa zwei Sekunden reduziert.
@@ -200,8 +198,6 @@ Danach werden die Eigenschaften der ermittelten Produktkategorie auf Übereinsti
 
 Der Zeitraum wird in ähnlicher Form ermittelt. Hierbei wird die Anzahl der zu erfassenden Wörter auf die Anzahl 2 festgelegt. Das zweite Wort entspricht ist die Zeiteinheit (Minute, Stunde, etc.), das erste Wort ist die Anzahl. Die Texterkennung der Anzahl akzeptiert sowohl Zahlen als auch Zahlwörter ("ein", "eine", "letzte"). Wurde eine Übereinstimmung bei der Erkennung beider Werte erreicht, wird die Anzahl der Sekunden berechnet (zwei Tage entsprechen $60~\mathrm{s} \times 60 \times 24 \times 2 = 172800~\mathrm{s}$) und der Anfrage an die Graylog-API angehängt.
 
-\newpage
-
 \begin{lstlisting}[caption={Anfrage der Software an Graylog mit den ermittelten Daten}, label=graylog-query, xleftmargin=6mm]
 GET http://10.10.12.1:9000/api/views/search/messages
 
@@ -233,6 +229,8 @@ Die Antwort der Graylog-API erfolgt in einem JSON-Objekt, welches sämtliche auf
 \label{sec:aliasdef}
 
 Um die Erkennung von Begriffen und die Erweiterbarkeit des Zuordnungssystems in der Datei 'config.toml' zu verbessern, wurden Alias-Bezeichnungen für Produktkategorien und Eigenschaften implementiert. 
+
+\newpage
 
 \begin{itemize}
 \item Ein Wert \lstinline{"::ALIAS::"} direkt gefolgt von dem Namen einer anderen Eigenschaft der Produktkategorie stellt eine Verknüpfung von zwei Eigenschaften her. Mit der dritten Zeile von \autoref{alias-config-toml} werden Anfragen für die Eigenschaft Besucher so behandelt, als wäre die Eigenschaft Besucher Zugriffe.
