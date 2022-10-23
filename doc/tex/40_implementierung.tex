@@ -3,7 +3,19 @@
 
 \section{Struktur}
 
-Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Die Unterteilung der für den Betrieb notwendigen Dateien inkl. des Quellcodes wird in den folgenden beiden Unterkapiteln beschrieben. Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8\footnote{\url{https://peps.python.org/pep-0008/}} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Sämtliche Module und Funktionen enthalten nach der Definition einen mehrzeiligen Kommentar mit einer Docstring-Dokumentationen gemäß PEP 257\footnote{\url{https://peps.python.org/pep-0257/}} im Quellcode.
+Um eine modulare Implementierung der Software zu ermöglichen und darüber hinaus den Quellcode getrennt von nicht für die Öffentlichkeit bestimmten Daten (beispielsweise Anmeldedaten für APIs) bereitstellen zu können, ist es notwendig, die Softwareentwicklungsumgebung entsprechend zu gestalten. Die Unterteilung der für den Betrieb notwendigen Dateien inkl. des Quellcodes wird in den folgenden beiden Unterkapiteln beschrieben. Um die Lesbarkeit und Erweiterbarkeit zu verbessern, wurden die im Python Enhancement Proposal (PEP) Nr. 8\footnote{\url{https://peps.python.org/pep-0008/}} vorgeschlagenen Formatierungsrichtlinien umgesetzt. Sämtliche Module und Funktionen enthalten nach der Definition einen mehrzeiligen Kommentar mit einer Docstring-Dokumentation gemäß PEP 257\footnote{\url{https://peps.python.org/pep-0257/}} im Quellcode, siehe \autoref{lst:bsp-docstring}.
+
+\begin{lstlisting}[caption={Beispiel für einen Docstring.}, label=lst:bsp-docstring, numbers=none]
+def execute_query(query, seconds):
+    """
+    Diese Funktion führt eine ElasticSearch-Abfrage über die Graylog API aus.
+    :param query: str, Graylog ElasticSearch-Abfrage
+    :param seconds: int, Anzahl der Sekunden des relativen Zeitraums
+    :return: Gibt die Anzahl der gezählten Ereignisse zurück
+    """
+\end{lstlisting}
+
+Als Docstring wird ein mehrzeiliger Kommentar bezeichnet, welcher in der Zeile nach der Funktionsdefinition für den Entwickler wichtige Informationen enthält. Durch die standardisierte Syntax können die Informationen in vielen IDEs, darunter PyCharm von JetBrains, für eine interaktive Dokumentation innerhalb der Entwicklungsumgebung verwendet werden. Der Docstring enthält einen kurzen Satz zum funktionalen Umfang. Im Anschluss werden die Parameter und die von der Funktion zurückgegebenen Daten erläutert. Da Python dynamische Typisierung anwendet (Variablen werden nicht explizit mit einem Datentyp wie Ganzzahl oder Zeichenkette initialisiert sondern der Datentyp hängt vom zugewiesenen Wert ab), sorgen die Angaben für eine beschleunigte und, durch die Vermeidung von Typkonflikten, weniger fehleranfällige Entwicklung.
 
 \subsection{Dateisystem}
 
