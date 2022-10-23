@@ -241,9 +241,7 @@ Um die Erkennung von Begriffen und die Erweiterbarkeit des Zuordnungssystems in 
 
 Im folgenden Listing führt die Eigenschaft Besucher der Produktkategorie Eins zum Suchbegriff \lstinline{http_response_code: 200}.
 
-\newpage
-
-\begin{lstlisting}[caption={Aliasdefinitionen in der Datei config.toml}, label=alias-config-toml, xleftmargin=6mm]
+\begin{lstlisting}[caption={Beispiel für Aliasdefinitionen in der Datei config.toml}, label=alias-config-toml, xleftmargin=6mm]
 [Webserver]
 "Besucher Zugriffe" = "http_response_code: 200"
 "Besucher" = "::ALIAS::Besucher Zugriffe"
