@@ -1,7 +1,7 @@
 # ba-dev
 Repository für die Weiterentwicklung einer im Rahmen der Bachelorarbeit implementierten Software.
 
-In diesem Repository findet die aktive Entwicklung der Software statt. Der Stand zum Zeitpunkt der Abgabe der Bachelorarbeit kann in [Jomibe/ba](https://github.com/Jomibe/ba-dev) angesehen werden.
+In diesem Repository findet die aktive Entwicklung der Software statt. Der Stand zum Zeitpunkt der Abgabe der Bachelorarbeit kann in [Jomibe/ba](https://github.com/Jomibe/ba) angesehen werden.
 
 ## Setup
 
