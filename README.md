@@ -21,4 +21,12 @@ Die Software wurde für den Betrieb auf unix-artigen Systemen ausgelegt. Die Kom
     5. Abhängigkeiten laden `pip install -r requirements.txt`
     6. Zur Überprüfung der Anpassungen das main-Modul ausführen, das Programm wird sich nach Ausgabe einer Fehlermeldung beenden `python -m main`
 
+### AWS
+
+AWS stellt die Dienste Polly, S3 und Transcribe zur Verfügung. Um auf die Dienste programmgesteuert zugreifen zu können, muss ein IAM-Benutzer mit passenden Berechtigungen erstellt werden. Hierfür kann die [Vorlage](https://github.com/Jomibe/ba-dev/blob/main/aws-permissions.json) verwendet werden.
+
+### Graylog
+
+Für den programmgesteuerten Zugriff auf Graylog muss ebenfalls ein Benutzer angelegt werden. 
+
 ## Verwendung
